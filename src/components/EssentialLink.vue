@@ -59,9 +59,20 @@ export default defineComponent({
       contMyStyle,
 
       changeStyle(e) {
-        console.log(e.target.parentNode.parentNode.classList);
+
+        // console.log(e.target.parentNode.parentNode.classList);
+
+        // Get the target from q-item
         let myDrawerElements = e.target.parentNode.parentNode.parentNode.parentNode;
         let myClassList = e.target.parentNode.parentNode.classList
+
+        /*
+          In q-item there are three divs that the user can touch.
+          Every div have have more or few parenNode
+          I want to change the style of an specific div of the q-item
+          So depending of what div the user touch i need to make the verification to climb up in the nodes
+          We check the classList to differnciate between the divs
+        */
 
         if (e.target.parentNode.parentNode.classList.length == 0) {
           myDrawerElements = e.target.parentNode.parentNode.parentNode;
