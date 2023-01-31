@@ -1,49 +1,99 @@
 <template>
-  <q-item
-    clickable
-    tag="a"
-    target="_blank"
-    :href="link"
-  >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
-      <q-icon :name="icon" />
-    </q-item-section>
+  <div v-if="exact">
+    <q-item
+      clickable
+      to="/"
+      :active="contMyStyle === true"
+      @click="changeStyle($event)"
 
-    <q-item-section>
-      <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
-    </q-item-section>
-  </q-item>
+      active-class="my-menu-link"
+      v-ripple
+    >
+      <q-item-section v-if="icon" avatar>
+        <q-icon :name="icon" />
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label>{{ title }}</q-item-label>
+        <!-- <q-item-label caption>{{ caption }}</q-item-label> -->
+      </q-item-section>
+    </q-item>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import { ref } from "vue";
 
 export default defineComponent({
-  name: 'EssentialLink',
+  name: "EssentialLink",
+
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
 
     caption: {
       type: String,
-      default: ''
+      default: "",
     },
 
     link: {
       type: String,
-      default: '#'
+      default: "#",
     },
 
     icon: {
       type: String,
-      default: ''
-    }
-  }
-})
+      default: "",
+    },
+    exact: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup() {
+    const contMyStyle = ref("Jurado");
+    return {
+      contMyStyle,
+
+      changeStyle(e) {
+        console.log(e.target.parentNode.parentNode.classList);
+        let myDrawerElements = e.target.parentNode.parentNode.parentNode.parentNode;
+        let myClassList = e.target.parentNode.parentNode.classList
+
+        if (e.target.parentNode.parentNode.classList.length == 0) {
+          myDrawerElements = e.target.parentNode.parentNode.parentNode;
+          myClassList = e.target.parentNode.classList
+        }else if (e.target.parentNode.parentNode.classList.length == 2) {
+          myDrawerElements = e.target.parentNode.parentNode;
+          myClassList = e.target.classList
+        }
+
+
+
+        for (let i = 0; i < myDrawerElements.children.length; i++) {
+
+          let tokenListClass =  myDrawerElements.children[i].children[0].classList; // This is a tokendDOM List. So you need to trun into an array
+          let classArray = Array.from(tokenListClass) // find only work in arrays
+          let checker = classArray.find(element => element == 'my-menu-link');
+          if (checker) {
+            myDrawerElements.children[i].children[0].classList.remove('my-menu-link');
+          }
+        }
+
+        myClassList.add('my-menu-link');
+
+      }
+    };
+  },
+});
 </script>
+
+<style>
+.my-menu-link {
+  color: #de331d;
+  background-color: #444444;
+}
+</style>
