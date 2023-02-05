@@ -13,6 +13,21 @@ const routes = [
         name: "login",
         component: () => import("pages/LoginPage.vue"),
       },
+      {
+        path: "jurado",
+        name: "jurado",
+        component: () => import("pages/JuradoPage.vue"),
+      },
+      {
+        path: "jurado/Nuevo",
+        name: "jurado/Nuevo",
+        component: () => import("pages/NuevoJuradoPage.vue"),
+      },
+      {
+        path: "jurado/Nuevo/editar",
+        name: "jurado/Nuevo/editar",
+        component: () => import("pages/EditJuradoPage.vue"),
+      },
     ],
   },
 
