@@ -16,7 +16,21 @@ const routes = [
       {
         path: "ronda1Page",
         name: "ronda1Page",
-        component: () => import("src/pages/Ronda1Page.vue"),
+        component: () => import("pages/Ronda1Page.vue"),
+       },
+        path: "jurado",
+        name: "jurado",
+        component: () => import("pages/JuradoPage.vue"),
+      },
+      {
+        path: "jurado/Nuevo",
+        name: "jurado/Nuevo",
+        component: () => import("pages/NuevoJuradoPage.vue"),
+      },
+      {
+        path: "jurado/Nuevo/editar",
+        name: "jurado/Nuevo/editar",
+        component: () => import("pages/EditJuradoPage.vue"),
       },
     ],
   },
