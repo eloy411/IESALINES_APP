@@ -13,7 +13,7 @@ export const useLayoutStore = defineStore("layout", {
       {
         title: "Ronda 1",
         // icon: "code",
-        link: "/ronda_1",
+        link: "/ronda1Page",
         exact: 'false',
       },
       {

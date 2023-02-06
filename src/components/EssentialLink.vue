@@ -2,7 +2,7 @@
   <div v-if="exact">
     <q-item
       clickable
-      to="/"
+      :to="link"
       :active="contMyStyle === true"
       @click="changeStyle($event)"
 

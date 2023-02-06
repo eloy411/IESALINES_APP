@@ -13,6 +13,11 @@ const routes = [
         name: "login",
         component: () => import("pages/LoginPage.vue"),
       },
+      {
+        path: "ronda1Page",
+        name: "ronda1Page",
+        component: () => import("src/pages/Ronda1Page.vue"),
+      },
     ],
   },
 
