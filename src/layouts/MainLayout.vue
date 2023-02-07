@@ -23,13 +23,15 @@
     </q-header>
 
     <q-drawer class="bg-black" v-model="leftDrawerOpen" show-if-above bordered>
-      <div class="q-mb-md q-pa-md row center-header self-end">
+      <div class=" q-pa-md row center-header self-end">
         <img src="~assets/logo.svg" style="height: 48px" />
-        <h4  class="text-secondary">{{ year }}</h4>
+        <h6  class="text-secondary">{{ year }}</h6>
       </div>
       <q-list>
+        <!-- <q-icon name="how_to_vote" /> -->
         <q-expansion-item
           class="white"
+          icon="how_to_vote"
           :content-inset-level="0.5"
           expand-separator
           label="Votación"
@@ -58,35 +60,12 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { storeToRefs } from 'pinia'
 import EssentialLink from "components/EssentialLink.vue";
 import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 import { useAuthStore } from "src/stores/authStore";
+import { useLayoutStore } from "src/stores/layoutStore";
 
-const linksList = [
-  {
-    title: "Jurado",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "/jurado",
-  },
-  {
-    title: "Ronda 1",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Resultados",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev/",
-  },
-  {
-    title: "Configuración",
-    caption: "forum.quasar.dev",
-    link: "/configuracion",
-  },
-];
 export default defineComponent({
   name: "MainLayout",
 
@@ -97,14 +76,21 @@ export default defineComponent({
 
   setup() {
     const authStore = useAuthStore();
+    const layoutStore = useLayoutStore();
     const leftDrawerOpen = ref(false);
     const year = ref('2022');
 
+
+    const {year, linksList} = storeToRefs(layoutStore);
+
+
     return {
       authStore,
-      essentialLinks: linksList,
-      leftDrawerOpen,
+      layoutStore,
       year,
+      essentialLinks: linksList ,
+      leftDrawerOpen,
+      // year,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
@@ -116,11 +102,10 @@ export default defineComponent({
 <style>
 .white {
   color: white;
-}
 
 .center-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: baseline;
+  justify-content: space-evenly;
 }
 </style>
