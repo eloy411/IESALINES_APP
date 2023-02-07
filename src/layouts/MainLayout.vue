@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar class="bg-black">
+      <q-toolbar class="bg-white">
         <q-btn
           flat
           dense
@@ -9,9 +9,9 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
+          style="color: black"
         />
         <q-toolbar-title shrink class="row items-center no-wrap">
-          <img src="~assets/logo.svg" style="height: 30px" />
         </q-toolbar-title>
         <q-space></q-space>
         <MenuPerfilButton
@@ -22,19 +22,35 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer class="bg-black" v-model="leftDrawerOpen" show-if-above bordered>
+      <div class="q-mb-md q-pa-md row center-header self-end">
+        <img src="~assets/logo.svg" style="height: 48px" />
+        <h4  class="text-secondary">{{ year }}</h4>
+      </div>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-expansion-item
+          class="white"
+          :content-inset-level="0.5"
+          expand-separator
+          label="Votación"
+        >
+          <EssentialLink
+            v-for="link in essentialLinks"
+            :key="link.title"
+            v-bind="link"
+          />
+        </q-expansion-item>
       </q-list>
     </q-drawer>
 
     <q-page-container>
+      <div class="q-pa-md q-gutter-sm">
+        <q-breadcrumbs>
+        <q-breadcrumbs-el label="Home" />
+        <q-breadcrumbs-el label="Components" />
+        <q-breadcrumbs-el label="Breadcrumbs" />
+        </q-breadcrumbs>
+      </div>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -44,52 +60,33 @@
 import { defineComponent, ref } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
 import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
+import { useAuthStore } from "src/stores/authStore";
 
 const linksList = [
   {
-    title: "Docs",
+    title: "Jurado",
     caption: "quasar.dev",
     icon: "school",
-    link: "https://quasar.dev",
+    link: "/jurado",
   },
   {
-    title: "Github",
+    title: "Ronda 1",
     caption: "github.com/quasarframework",
     icon: "code",
     link: "https://github.com/quasarframework",
   },
   {
-    title: "Discord Chat Channel",
+    title: "Resultados",
     caption: "chat.quasar.dev",
     icon: "chat",
-    link: "https://chat.quasar.dev",
+    link: "https://chat.quasar.dev/",
   },
   {
-    title: "Forum",
+    title: "Configuración",
     caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
+    link: "/configuracion",
   },
 ];
-import { useAuthStore } from "src/stores/authStore";
 export default defineComponent({
   name: "MainLayout",
 
@@ -101,11 +98,13 @@ export default defineComponent({
   setup() {
     const authStore = useAuthStore();
     const leftDrawerOpen = ref(false);
+    const year = ref('2022');
 
     return {
       authStore,
       essentialLinks: linksList,
       leftDrawerOpen,
+      year,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
@@ -113,3 +112,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.white {
+  color: white;
+}
+
+.center-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>
