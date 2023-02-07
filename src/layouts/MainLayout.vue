@@ -66,7 +66,6 @@ import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 import { useAuthStore } from "src/stores/authStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 
-
 export default defineComponent({
   name: "MainLayout",
 
@@ -79,6 +78,7 @@ export default defineComponent({
     const authStore = useAuthStore();
     const layoutStore = useLayoutStore();
     const leftDrawerOpen = ref(false);
+    const year = ref('2022');
 
 
     const {year, linksList} = storeToRefs(layoutStore);
@@ -102,9 +102,6 @@ export default defineComponent({
 <style>
 .white {
   color: white;
-  font-weight: 400;
-}
-
 
 .center-header {
   display: flex;
