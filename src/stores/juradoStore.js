@@ -24,33 +24,8 @@ export const useJuradoStore = defineStore("jurados", {
       { name: 'Aceptación', label: 'ACEPTACIÓN', align: 'center', field: 'Aceptación', sortable: true},
       { name: 'buttons', label: '', align: 'center', field: 'buttons'},
     ],
-    juradosTest: [
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-    ]
+    juradosRonda: [],
+    juradosTest: []
   }),
   getters: {
     getJuradosTest:  (state) => state.juradosTest,
@@ -93,6 +68,30 @@ export const useJuradoStore = defineStore("jurados", {
         console.log(error)
       }
 
+    },
+
+    async getJuradosRonda() {
+      try {
+        const res = await api.get("http://127.0.0.1:8000/api/jurado");
+        if (res.status >= 200 && res.status < 400) {
+          this.juradosRonda = [];
+
+          res.data.forEach(jurado => {
+            let auxObject = {
+              nombre:[jurado.Nombre ,jurado.Empresa],
+              tipo: jurado.Tipo_jurado,
+              progreso: '100%',
+              último_Acceso: '12/5/2002 12:45h',
+              recordatorio:'',
+              deleteVotos:'',
+            }
+            this.juradosRonda.push(auxObject);
+          })
+
+        }
+      }catch(error) {
+        console.log(error);
+      }
     },
     async postJurado() {
       try {
