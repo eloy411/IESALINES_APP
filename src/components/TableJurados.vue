@@ -13,11 +13,6 @@
           <q-btn  flat class="q-pa-xs" icon="mark_email_read" size="1em" to="/jurado/Nuevo/editar"></q-btn>
           <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em" to="/jurado/Nuevo/editar"></q-btn>
           <q-btn flat class="q-pa-xs" icon="close" size="1em" to="/jurado/Nuevo/editar"></q-btn>
-
-          <!-- <q-icon name="mark_email_read" size="1.5em" @click="sendMail" />
-          <q-icon class="q-pa-xs" name="edit_square" size="1.5em" to="/jurado/Nuevo/editar" />
-          <q-icon  name="close" size="1.5em" @click="deleteJuradoFromTable" /> -->
-          <!-- {{ props.col.label }} -->
         </q-th>
       </template>
 
