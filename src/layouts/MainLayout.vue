@@ -78,7 +78,6 @@ export default defineComponent({
     const authStore = useAuthStore();
     const layoutStore = useLayoutStore();
     const leftDrawerOpen = ref(false);
-    const year = ref('2022');
 
 
     const {year, linksList} = storeToRefs(layoutStore);
@@ -102,7 +101,7 @@ export default defineComponent({
 <style>
 .white {
   color: white;
-
+}
 .center-header {
   display: flex;
   align-items: baseline;
