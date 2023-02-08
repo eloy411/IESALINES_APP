@@ -1,8 +1,8 @@
 {
   "name": "aspid",
   "version": "0.0.1",
-  "description": "Sistema de votaciones Premios Aspid y Backkoffice",
-  "productName": "Sistema de votaciones Premios Aspid",
+  "description": "FrontEnd",
+  "productName": "FrontEnd",
   "author": "rogerQ <rogerdavid444@gmail.com>",
   "private": true,
   "scripts": {

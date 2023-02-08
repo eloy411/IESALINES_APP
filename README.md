@@ -1,6 +1,6 @@
-# Sistema de votaciones Premios Aspid (aspid)
+# Sistema de votaciones
 
-Sistema de votaciones Premios Aspid y Backkoffice
+Sistema de votaciones
 
 ## Install the dependencies
 ```bash
