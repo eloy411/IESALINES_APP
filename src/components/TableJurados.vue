@@ -22,7 +22,7 @@
 
         <!-- <q-icon name="mail"></q-icon> -->
         <div class="q-pa-md q-gutter-sm">
-          <q-btn @click="exportTable"  class="q-pa-md radius" outline style="color: #de331d;" label="Descargar CSV" />
+          <q-btn @click="juradoStore.descargaCSV"  class="q-pa-md radius" outline style="color: #de331d;" label="Descargar CSV" />
           <q-btn to="/jurado/nuevo" class="bg-secondary q-pa-md radius" style="color: white" label="Nuevo Jurado" />
         </div>
       </template>
