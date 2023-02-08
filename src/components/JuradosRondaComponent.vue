@@ -35,7 +35,8 @@
             {{ props.row.último_Acceso}}
           </q-td>
           <q-td key="recordatorio" :props="props">
-            <q-btn flat name="" label='' icon='mail'  :disabled="props.row.progreso =='100%'"/>
+            <q-btn disabled v-if="props.row.progreso =='100%'"  flat name="" label='' icon='mail' />
+            <q-btn v-else flat name="" label='' icon='mail'  to="ronda1Page/EmailRecordatorioVotacion"   @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
             <q-btn flat name="" label='' icon='delete' @click="deleteval(rows.indexOf(props.row))" />
@@ -51,10 +52,11 @@
 
   <script>
   import { ref, defineComponent } from "vue";
-  // import { useJuradosStore } from "src/stores/TablaJuradoStore";
-  import { useJuradoStore } from "src/stores/juradoStore";
-import { data } from "browserslist";
 
+    // import { useJuradosStore } from "src/stores/TablaJuradoStore";
+    import { useJuradoStore } from "src/stores/juradoStore";
+import { data } from "browserslist";
+  
   export default defineComponent({
     name: "JuradosRondaComponent",
     setup () {
@@ -91,6 +93,15 @@ import { data } from "browserslist";
             this.rows.splice(index, 1);
 
             console.log(this.rows)
+          },
+
+          getJuradoName(row){
+            console.log(row)
+            // let auxArr=[row.nombre[0],row.nombre[1]];
+            juradoStore.value.mailDestinatario = row.tipo;
+            juradoStore.value.checker=true;
+            // location.href= "ronda1Page/EmailInicioVotacion";
+
           }
 
         }
@@ -122,6 +133,6 @@ import { data } from "browserslist";
 
 .empresa{
   display: inline-block;
-
+    
   }
   </style>
