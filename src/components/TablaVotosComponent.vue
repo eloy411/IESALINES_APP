@@ -2,8 +2,8 @@
     <div class="q-pa-md tableclass">
       <q-table
         title="Progreso de la votación por Categoría"
-        :rows="rowVotos" 
-       
+        :rows="rowVotos"
+
       >
       <template v-slot:top>
         <h5><b>Progreso de la votación por Categoría</b></h5>
@@ -16,7 +16,7 @@
           <q-td key="progreso" :props="props" id="progresoCol" v-bind:style="[props.row.progreso =='100%' ? 'color: green;font-weight:600' : 'color: red;']">
             {{ props.row.progreso }}
           </q-td>
-          <q-td key="delete" :props="props"> 
+          <q-td key="delete" :props="props">
             <q-btn flat name="Delete" label='' icon='delete' @click="deleteval(rowVotos.indexOf(props.row))"/>
           </q-td>
         </q-tr>
@@ -26,7 +26,7 @@
 </template>
 <script>
 import { ref, defineComponent } from 'vue'
-import {useVotosStore} from "src/stores/TablaVotosStore";
+import {useVotosStore} from "src/stores/categoriaStore";
 
 export default defineComponent({
   name: 'TablaVotosComponent',
@@ -52,10 +52,10 @@ export default defineComponent({
         deleteval(index){
             console.log(index)
             this.rowVotos.splice(index, 1);
-            
+
             console.log(this.rows)
           }
-        
+
       }
   }
 })

@@ -1,7 +1,6 @@
 <template>
     <div class="q-pa-md">
-
-      <q-table class="tableclass" title="Progreso de la votación por Jurado" :rows="rows"  :data="data">
+      <q-table class="tableclass" title="Progreso de la votación por Jurado" :rows="juradoStore.juradosRonda"  :data="data">
         <template v-slot:top>
             <h5 class="card1Title"><b>Progreso de la votación por Jurado</b></h5>
         </template>
@@ -35,7 +34,8 @@
             {{ props.row.último_Acceso}}
           </q-td>
           <q-td key="recordatorio" :props="props">
-            <q-btn flat name="" label='' icon='mail'  :disabled="props.row.progreso =='100%'"/>
+            <q-btn disabled v-if="props.row.progreso =='100%'"  flat name="" label='' icon='mail' />
+            <q-btn v-else flat name="" label='' icon='mail'  to="ronda1Page/EmailRecordatorioVotacion"   @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
             <q-btn flat name="" label='' icon='delete' @click="inception = true"/><!--JURADO-->
@@ -66,7 +66,6 @@
                 </q-card-actions>
               </q-card>
             </q-dialog>
-
         </q-tr>
       </template>
 
@@ -77,14 +76,16 @@
 
   <script>
   import { ref, defineComponent } from "vue";
-  import { useJuradosStore } from "src/stores/TablaJuradosStore";
+
+    // import { useJuradosStore } from "src/stores/TablaJuradoStore";
+    import { useJuradoStore } from "src/stores/juradoStore";
 import { data } from "browserslist";
 
   export default defineComponent({
     name: "JuradosRondaComponent",
     setup () {
-      const juradoStore = ref(useJuradosStore());
-      const rows = juradoStore.value.juradosRonda;
+      const juradoStore = ref(useJuradoStore());
+      // const rows = juradoStore.value.juradosRonda;
       const loading = ref(false);
 
         return {
@@ -92,7 +93,8 @@ import { data } from "browserslist";
           secondDialog: ref(false),
           active: ref(true),
           loading,
-          rows,
+          juradoStore,
+          // rows,
           columns: [
             {
               name: 'nombre',
@@ -117,10 +119,21 @@ import { data } from "browserslist";
             this.rows.splice(index, 1);
 
             console.log(this.rows)
+          },
+
+          getJuradoName(row){
+            console.log(row)
+            // let auxArr=[row.nombre[0],row.nombre[1]];
+            juradoStore.value.mailDestinatario = row.tipo;
+            juradoStore.value.checker=true;
+            // location.href= "ronda1Page/EmailInicioVotacion";
+
           }
 
         }
-
+    },
+    mounted() {
+      this.juradoStore.getJuradosRonda();
     }
   })
 

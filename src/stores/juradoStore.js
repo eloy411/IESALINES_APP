@@ -24,33 +24,8 @@ export const useJuradoStore = defineStore("jurados", {
       { name: 'Aceptación', label: 'ACEPTACIÓN', align: 'center', field: 'Aceptación', sortable: true},
       { name: 'buttons', label: '', align: 'center', field: 'buttons'},
     ],
-    juradosTest: [
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-      // {
-      //   nombre: 'Manuel Carrasco',
-      //   Tipo: 'Jurado de creatividad',
-      //   Email: 'email@dominio.com',
-      //   Aceptación: '12/5/2002 12:45h',
-      // },
-    ]
+    juradosRonda: [],
+    juradosTest: []
   }),
   getters: {
     getJuradosTest:  (state) => state.juradosTest,
@@ -80,7 +55,7 @@ export const useJuradoStore = defineStore("jurados", {
             let auxObject = {
               Nombre: jurado.Nombre,
               Empresa: jurado.Empresa,
-              Tipo: jurado.Tipo_jurado,
+              Tipo: jurado.tipo_jurado,
               Email: jurado.Email,
               Aceptación: '12/5/2002 12:45h',
               id: jurado.id
@@ -93,6 +68,68 @@ export const useJuradoStore = defineStore("jurados", {
         console.log(error)
       }
 
+    },
+    async descargaCSV() {
+      try {
+
+        await api({
+          url: 'http://127.0.0.1:8000/api/descarga-csv',
+          method: 'GET',
+          responseType: 'blob', // Important
+        }).then((response) => {
+          if (response.status >=200 && response.status < 400) {
+            const href = URL.createObjectURL(response.data);
+
+            // create "a" HTML element with href to file & click
+            const link = document.createElement('a');
+            link.href = href;
+            link.setAttribute('download', 'file.csv'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+
+            // clean up "a" element & remove ObjectURL
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+
+          }else {
+            console.log('Status is not 200 -->', response.status)
+          }
+
+        });
+        // const res = await api.get("http://127.0.0.1:8000/api/descarga-csv");
+        if (res.status >= 200 && res.status <= 400 ) {
+          console.log(res);
+
+        }
+      } catch(error) {
+        console.log(error)
+      }
+    },
+
+    async getJuradosRonda() {
+      try {
+
+
+        const res = await api.get("http://127.0.0.1:8000/api/jurado");
+        if (res.status >= 200 && res.status < 400) {
+          this.juradosRonda = [];
+
+          res.data.forEach(jurado => {
+            let auxObject = {
+              nombre:[jurado.Nombre ,jurado.Empresa],
+              tipo: jurado.Tipo_jurado,
+              progreso: '100%',
+              último_Acceso: '12/5/2002 12:45h',
+              recordatorio:'',
+              deleteVotos:'',
+            }
+            this.juradosRonda.push(auxObject);
+          })
+
+        }
+      }catch(error) {
+        console.log(error);
+      }
     },
     async postJurado() {
       try {
