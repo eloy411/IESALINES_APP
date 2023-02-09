@@ -19,8 +19,8 @@ export const useLayoutStore = defineStore("layout", {
       {
         title: "Resultados",
         // icon: "chat",
-        link: "/resultados",
-        exact: 'false',
+        link: "/results",
+        exact: 'true',
       },
       {
         title: "Configuración",

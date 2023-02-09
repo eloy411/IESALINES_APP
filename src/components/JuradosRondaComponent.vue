@@ -1,6 +1,5 @@
 <template>
     <div class="q-pa-md">
-
       <q-table class="tableclass" title="Progreso de la votación por Jurado" :rows="juradoStore.juradosRonda"  :data="data">
         <template v-slot:top>
             <h5 class="card1Title"><b>Progreso de la votación por Jurado</b></h5>
@@ -39,9 +38,34 @@
             <q-btn v-else flat name="" label='' icon='mail'  to="ronda1Page/EmailRecordatorioVotacion"   @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
-            <q-btn flat name="" label='' icon='delete' @click="deleteval(rows.indexOf(props.row))" />
+            <q-btn flat name="" label='' icon='delete' @click="inception = true"/><!--JURADO-->
           </q-td>
 
+            <!--JURADO-->
+            <q-dialog v-model="inception">
+              <q-card  class="pop_sure">
+                <q-card-section class="q-pt-none">
+                      ¿Seguro que quieres eliminar los votos de esta categoria?
+                </q-card-section>
+
+                <q-card-actions align="center">
+                  <q-btn class="myButton" v-close-popup name="" label='Si' @click="deleteval(rows.indexOf(props.row)),secondDialog = true"/>
+                  <q-btn class="myButton" label="No" v-close-popup/>
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+
+            <!--done pop-->
+            <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
+              <q-card class="bg-teal text-white" style="width: 300px">
+                <q-card-section>
+                  <div class="text-h6" align="center">Votos eliminado</div>
+                </q-card-section>
+                <q-card-actions align="center" class="bg-white text-teal">
+                  <q-btn flat label="OK" v-close-popup="2"/>
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
         </q-tr>
       </template>
 
@@ -56,7 +80,7 @@
     // import { useJuradosStore } from "src/stores/TablaJuradoStore";
     import { useJuradoStore } from "src/stores/juradoStore";
 import { data } from "browserslist";
-  
+
   export default defineComponent({
     name: "JuradosRondaComponent",
     setup () {
@@ -65,6 +89,8 @@ import { data } from "browserslist";
       const loading = ref(false);
 
         return {
+          inception: ref(false),
+          secondDialog: ref(false),
           active: ref(true),
           loading,
           juradoStore,
@@ -105,7 +131,6 @@ import { data } from "browserslist";
           }
 
         }
-
     },
     mounted() {
       this.juradoStore.getJuradosRonda();
@@ -117,6 +142,18 @@ import { data } from "browserslist";
 
 
   <style>
+  .q-pt-none{
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .pop_sure{
+    background: rgb(200, 200, 200);
+  }
+  .myButton{
+    width: 70px;
+    background: white;
+    margin-bottom: 10px;
+  }
   .radius {
     border-radius: 20px;
   }
@@ -133,6 +170,6 @@ import { data } from "browserslist";
 
 .empresa{
   display: inline-block;
-    
+
   }
   </style>
