@@ -17,7 +17,8 @@ const routes = [
         path: "ronda1Page",
         name: "ronda1Page",
         component: () => import("pages/Ronda1Page.vue"),
-       },
+      },
+      {
         path: "jurado",
         name: "jurado",
         component: () => import("pages/JuradoPage.vue"),
@@ -32,6 +33,11 @@ const routes = [
         name: "jurado/Nuevo/editar",
         component: () => import("pages/EditJuradoPage.vue"),
       },
+      {
+        path: "results",
+        name: "results",
+        component: () => import("pages/ResultsPage.vue")
+      }
     ],
   },
 
