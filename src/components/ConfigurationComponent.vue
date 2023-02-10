@@ -117,9 +117,6 @@
                 </ul>
               </div>
 
-
-
-
               <q-btn class="botonG2" color="red" label="Guardar" @click="showNotif" />
             </q-card-section>
           </q-card>
