@@ -10,7 +10,8 @@
             <q-toggle v-model="active"  color="blue" label="Si" />
 
               <q-btn-dropdown
-                :disable="!active"
+                :disable-main-btn="!active"
+                :disable-dropdown="!active"
                 split
                 class="mailBtn"
                 color="red"
@@ -75,7 +76,7 @@
       const loading = ref(false);
       const options="";
         return {
-          active: ref(true),
+          active: ref(false),
           loading,
           tipoJ,
     
