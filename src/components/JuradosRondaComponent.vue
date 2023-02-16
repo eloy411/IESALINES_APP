@@ -1,7 +1,6 @@
 <template>
   <div class="q-pa-md">
     <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="rows" :data="data" title-class="text-weight-bold q-mt-md">
-
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
@@ -180,6 +179,7 @@ export default defineComponent({
   display: inline-block;
 
 }
+
 h6.card2Title{
   margin-top: 1rem;
 }
