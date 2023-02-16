@@ -6,57 +6,135 @@ const routes = [
       {
         path: "",
         name: "home",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'Home'
+            }
+          ]
+        },
         component: () => import("pages/IndexPage.vue"),
       },
       {
         path: "login",
         name: "login",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'login'
+            }
+          ]
+        },
         component: () => import("pages/LoginPage.vue"),
       },
       {
         path: "result",
         name: "result",
-        component: () => import("pages/ResultPage.vue"),
+        meta: {
+          breadCrumb: [
+            {
+              text: 'result'
+            }
+          ]
+        },
+        component: () => import("pages/ResultsPage.vue"),
       },
+      {
         path: "configuracion",
         name: "configuracion",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'configuracion'
+            }
+          ]
+        },
         component: () => import("pages/ConfiguracionPage.vue"),
       },
       {
         path: "ronda1Page",
         name: "ronda1Page",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'ronda1Page'
+            }
+          ]
+        },
         component: () => import("pages/Ronda1Page.vue"),
 
        },
       {
         path: "jurado",
         name: "jurado",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'jurado'
+            }
+          ]
+        },
         component: () => import("pages/JuradoPage.vue"),
 
       },
       {
         path: "jurado/Nuevo",
-        name: "jurado/Nuevo",
+        name: "Nuevo",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'Nuevo'
+            }
+          ]
+        },
         component: () => import("pages/NuevoJuradoPage.vue"),
       },
       {
         path: "jurado/Nuevo/editar",
-        name: "jurado/Nuevo/editar",
+        name: "editar",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'editar'
+            }
+          ]
+        },
         component: () => import("pages/EditJuradoPage.vue"),
       },
       {
         path: "ronda1Page/EmailRecordatorioVotacion",
-        name: "ronda1Page/EmailRecordatorioVotacion",
+        name: "EmailRecordatorioVotacion",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'EmailRecordatorioVotacion'
+            }
+          ]
+        },
         component: () => import("components/RecordatorioVotacionComponent.vue"),
       },
       {
         path: "ronda1Page/EmailInicioVotacion",
-        name: "ronda1Page/EmailInicioVotacion",
+        name: "EmailInicioVotacion",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'EmailInicioVotacion'
+            }
+          ]
+        },
         component: () => import("components/InicioVotacionComponent.vue"),
       },
       {
         path: "ronda1Page/EmailRecordatorioVotacion2",
-        name: "ronda1Page/EmailRecordatorioVotacion2",
+        name: "EmailRecordatorioVotacion2",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'EmailRecordatorioVotacion2'
+            }
+          ]
+        },
         component: () => import("components/RecordatorioVotacionBtn.vue"),
       }
     ],

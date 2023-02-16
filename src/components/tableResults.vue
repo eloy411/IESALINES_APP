@@ -1,13 +1,18 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      title="TEST"
+      title="categorias"
       :rows="rows"
       :columns="columns"
-      row-key="name"
-      hide-header
       hide-bottom
-    />
+      @row-click="onRowClick"
+      >
+      <template v-slot:top>
+        <h3>Resultados de la votación</h3>
+        <q-space />
+
+      </template>
+    </q-table>
 <!--------------------------------------------------------------------------------------------------->
   </div>
     <div class="q-pa-md q-gutter-sm">
@@ -51,54 +56,38 @@
 <script>
 const columns = [
     {
-    name: 'name',
-    required: true,
-    label: 'Dessert (100g serving)',
+    name: 'Categoria',
+    field: 'Categoria',
+    label: 'Categoria',
     align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
-  {
-    name: 'desc',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
-  {
-    name: 'tag',
-    align: 'left',
-    label: 'Calories',
-    field: 'calories',
     sortable: true
   },
 ]
 
 const rows = [
   {
-    name: 'Frozen Yogurt',
-    calories: 159,
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
   },
   {
-    name: 'Ice cream sandwich',
-    calories: 237,
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
   },
   {
-    name: 'Eclair',
-    calories: 262,
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
+  },
+  {
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
+  },
+  {
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
+  },
+  {
+    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
+  },
 
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-
-  }
 
 ]
   import { ref } from 'vue'
+  import routes from 'src/router/routes'
   export default {
     setup () {
       return {
@@ -110,6 +99,9 @@ const rows = [
           sortBy: 'name',
           descending: true,
         },
+        onRowClick(evt, row) {
+          console.log(row);
+        }
       }
     }
   }

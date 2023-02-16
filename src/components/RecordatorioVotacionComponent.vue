@@ -7,21 +7,24 @@
                 class="q-gutter-md"
                 >
 
-            <h5>Email de Recordatorio de Votacion  {{ juradoStore.mailDestinatario }} </h5>
+            <h5>Email de Recordatorio de Votacion  {{ juradoStore.Nombre }} </h5>
             <p>De: Premios Aspid 	&lt;sede@premiosaspid.es&gt; </p>
-            <p>Para: {{juradoStore.mailDestinatario }} ,  con votaciones pendientes</p>
-
+            <p>Para: {{ juradoStore.Nombre }} &lt;{{juradoStore.Email }}&gt; ,  con votaciones pendientes</p>
+            <!-- mailDestinatario -->
             <div class="asunto">
               <label>Asunto:</label><q-input square outlined v-model="text" style="width:100% "/>
             </div>
-            
-            
+
+
             <q-input
             v-model="text"
             outlined
             type="textarea"
             />
-            <q-btn label="Enviar" type="submit" color="red" style="display:flex;align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
+            <q-btn
+              label="Enviar" type="submit" color="red"
+              @click="juradoStore.postJuradoFromEmail()"
+              style="display:flex;align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
         </q-form>
         </q-card-section>
     </q-card>
@@ -51,7 +54,7 @@ export default defineComponent ({
     display: flex;
     align-items: center;
     gap:1em;
-    
+
 }
 .inputAsunto{
     max-width: 100%;

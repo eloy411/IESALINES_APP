@@ -46,13 +46,14 @@
     </q-drawer>
 
     <q-page-container>
-      <div class="q-pa-md q-gutter-sm">
+      <BreadcrumbsComponent />
+      <!-- <div class="q-pa-md q-gutter-sm">
         <q-breadcrumbs>
-        <q-breadcrumbs-el label="Home" />
-        <q-breadcrumbs-el label="Components" />
-        <q-breadcrumbs-el label="Breadcrumbs" />
+        <q-breadcrumbs-el :label="routes[0].name" :to="routes[0].route" />
+        <q-breadcrumbs-el :label="routes[1].name" :to="routes[1].route" />
+        <q-breadcrumbs-el label="" to="" />
         </q-breadcrumbs>
-      </div>
+      </div> -->
       <router-view />
     </q-page-container>
   </q-layout>
@@ -65,6 +66,7 @@ import EssentialLink from "components/EssentialLink.vue";
 import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 import { useAuthStore } from "src/stores/authStore";
 import { useLayoutStore } from "src/stores/layoutStore";
+import BreadcrumbsComponent from "src/components/BreadcrumbsComponent.vue";
 
 export default defineComponent({
   name: "MainLayout",
@@ -72,9 +74,11 @@ export default defineComponent({
   components: {
     EssentialLink,
     MenuPerfilButton,
+    BreadcrumbsComponent
   },
 
   setup() {
+
     const authStore = useAuthStore();
     const layoutStore = useLayoutStore();
     const leftDrawerOpen = ref(false);
@@ -84,17 +88,31 @@ export default defineComponent({
 
 
     return {
+      routes: [
+        {
+        name: 'jurado',
+        route: '/jurado'
+      },
+      {
+        name: 'MariCarmen',
+        route: '/ronda1Page'
+      },
+    ],
       authStore,
       layoutStore,
       year,
       essentialLinks: linksList ,
       leftDrawerOpen,
+      BreadcrumbsComponent,
       // year,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
     };
   },
+  mounted() {
+    this.layoutStore.getYear();
+  }
 });
 </script>
 

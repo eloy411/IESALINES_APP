@@ -38,7 +38,7 @@
             <q-btn v-else flat name="" label='' icon='mail'  to="ronda1Page/EmailRecordatorioVotacion"   @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
-            <q-btn flat name="" label='' icon='delete' @click="inception = true"/><!--JURADO-->
+            <q-btn flat name="" label='' icon='delete' @click="inception = true"/>
           </q-td>
 
             <!--JURADO-->
@@ -72,14 +72,14 @@
       </q-table>
 
     </div>
-  </template>
+</template>
 
-  <script>
+<script>
   import { ref, defineComponent } from "vue";
 
     // import { useJuradosStore } from "src/stores/TablaJuradoStore";
     import { useJuradoStore } from "src/stores/juradoStore";
-import { data } from "browserslist";
+  import { data } from "browserslist";
 
   export default defineComponent({
     name: "JuradosRondaComponent",
@@ -138,10 +138,10 @@ import { data } from "browserslist";
   })
 
 
-  </script>
+</script>
 
 
-  <style>
+<style>
   .q-pt-none{
     margin-top: 20px;
     margin-bottom: 10px;
@@ -172,4 +172,4 @@ import { data } from "browserslist";
   display: inline-block;
 
   }
-  </style>
+</style>
