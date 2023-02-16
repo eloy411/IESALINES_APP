@@ -47,12 +47,9 @@
 
     <q-page-container>
       <div class="q-pa-md q-gutter-sm">
-        <q-breadcrumbs>
-        <q-breadcrumbs-el label="Home" />
-        <q-breadcrumbs-el label="Components" />
-        <q-breadcrumbs-el label="Breadcrumbs" />
-        </q-breadcrumbs>
+        <BreadcrumbsComponent></BreadcrumbsComponent>
       </div>
+      
       <router-view />
     </q-page-container>
   </q-layout>
@@ -65,13 +62,14 @@ import EssentialLink from "components/EssentialLink.vue";
 import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 import { useAuthStore } from "src/stores/authStore";
 import { useLayoutStore } from "src/stores/layoutStore";
-
+import BreadcrumbsComponent from "src/components/BreadcrumbsComponent.vue";
 export default defineComponent({
   name: "MainLayout",
 
   components: {
     EssentialLink,
     MenuPerfilButton,
+    BreadcrumbsComponent,
   },
 
   setup() {
