@@ -1,117 +1,71 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      title="TEST"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      hide-header
-      hide-bottom
-    />
-<!--------------------------------------------------------------------------------------------------->
-  </div>
-    <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Click me" color="primary" @click="inception = true" />
+    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name" @row-click="goto()"
+      title-class="text-weight-bold" hide-bottom virtual-scroll v-model:pagination="pagination"
+      :rows-per-page-options="[0]" class="row">
 
-    <q-dialog v-model="inception">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Inception</div>
-        </q-card-section>
+      <template v-slot:body-cell-Categoria="props">
+        <q-td :props="props">
+          <!-- <div v-if="props.value == '-'"> -->
+            {{ props.row.Categoria }}
+            <q-chip class="chip" square color="red" text-color="white" label="Empate" />
+          <!-- </div> -->
+          <!-- <div v-else>
+            {{ props.row.Categoria }}
+          </div> -->
+        </q-td>
+      </template>
 
-        <q-card-section class="q-pt-none">
-              ¿Seguro que quieres eliminar los votos de esta categoria?
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Si" @click="secondDialog = true" />
-          <q-btn flat label="No" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-<!-------------------------------------------------------------------------------------------------------->
-    <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
-      <q-card class="bg-teal text-white" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6">Persistent</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Click/Tap on the backdrop.
-        </q-card-section>
-
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="OK" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </div>
+    </q-table>
+</div>
 </template>
 
+
 <script>
+import router from "../router";
 const columns = [
-    {
-    name: 'name',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
   {
-    name: 'desc',
-    required: true,
-    label: 'Dessert (100g serving)',
+    name: 'Categoria',
+    field: 'Categoria',
+    label: 'Categoria',
     align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
-  {
-    name: 'tag',
-    align: 'left',
-    label: 'Calories',
-    field: 'calories',
-    sortable: true
   },
 ]
 
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
 
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
+import { ref } from 'vue'
+import { useresultStore } from "src/stores/resultStore";
+export default {
+  setup() {
 
-  }
+    const resultStore = ref(useresultStore());
+    const rows = resultStore.value.resultStore;
 
-]
-  import { ref } from 'vue'
-  export default {
-    setup () {
-      return {
-        columns,
-        rows,
-        inception: ref(false),
-        secondDialog: ref(false),
-        pagination: {
-          sortBy: 'name',
-          descending: true,
-        },
-      }
+    return {
+      columns,
+      rows,
+      resultStore,
+      inception: ref(false),
+      secondDialog: ref(false),
+      pagination: {
+        sortBy: 'name',
+        descending: true,
+      },
+      goto() {
+        location.href = "result";
+        // this.$router.push("configuracion")
+        // console.log("foca")
+      },
     }
   }
+}
 </script>
 
+<style>
+.chip {
+  height: 1rem;
+  margin-left: 1rem;
+  margin-top: 0rem;
+  font-size: 10px;
+}
+</style>
