@@ -1,9 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table class="tableclass" title="Progreso de la votación por Jurado" :rows="rows" :data="data">
-      <template v-slot:top>
-        <h5 class="card1Title"><b>Progreso de la votación por Jurado</b></h5>
-      </template>
+    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="rows" :data="data" title-class="text-weight-bold q-mt-md">
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
@@ -15,6 +12,7 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="nombre" :props="props">
+            <div style="display: inline-flex; align-items: center;">
             <q-avatar size="72px">
               <q-icon name="person"></q-icon>
             </q-avatar>
@@ -23,6 +21,7 @@
               {{ props.row.nombre[0] }} <br>
               {{ props.row.nombre[1] }}
             </div>
+          </div>
           </q-td>
           <q-td key="tipo" :props="props">
             {{ props.row.tipo }}
@@ -173,11 +172,15 @@ export default defineComponent({
 }
 
 #progreso {
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 .empresa {
   display: inline-block;
 
+}
+
+h6.card2Title{
+  margin-top: 1rem;
 }
 </style>
