@@ -66,9 +66,9 @@ export default defineComponent({
 
     }
   },
-  mounted() {
-    this.juradoStore.getJurados();
-  },
+  // mounted() {
+  //   this.juradoStore.getJurados();
+  // },
 })
 
 

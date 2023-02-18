@@ -40,35 +40,35 @@
               @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
-            <q-btn flat name="" label='' icon='delete' @click="inception = true" /><!--JURADO-->
+            <q-btn flat name="" label='' icon='delete' @click="abrirDialogo" /><!--JURADO-->
           </q-td>
 
           <!--JURADO-->
-          <q-dialog v-model="inception">
+          <q-dialog v-model="showDialog">
             <q-card class="pop_sure">
               <q-card-section class="q-pt-none">
                 ¿Seguro que quieres eliminar los votos de esta categoria?
               </q-card-section>
 
               <q-card-actions align="center">
-                <q-btn class="myButton" v-close-popup name="" label='Si'
-                  @click="deleteval(rows.indexOf(props.row)), secondDialog = true" />
+                <q-btn class="myButton" name="" label='Si' @click="showNotif() ; deleteval(rows.indexOf(props.row))" />
                 <q-btn class="myButton" label="No" v-close-popup />
               </q-card-actions>
             </q-card>
           </q-dialog>
 
-          <!--done pop-->
-          <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
-            <q-card class="bg-teal text-white" style="width: 300px">
-              <q-card-section>
-                <div class="text-h6" align="center">Votos eliminado</div>
-              </q-card-section>
-              <q-card-actions align="center" class="bg-white text-teal">
-                <q-btn flat label="OK" v-close-popup="2" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
+
+          <!-- done pop
+                    <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
+                      <q-card class="bg-teal text-white" style="width: 300px">
+                        <q-card-section>
+                          <div class="text-h6" align="center">Votos eliminado</div>
+                        </q-card-section>
+                        <q-card-actions align="center" class="bg-white text-teal">
+                          <q-btn flat label="OK" v-close-popup="2" />
+                        </q-card-actions>
+                      </q-card>
+                    </q-dialog> -->
         </q-tr>
       </template>
 
@@ -83,6 +83,7 @@ import { ref, defineComponent } from "vue";
 // import { useJuradosStore } from "src/stores/TablaJuradoStore";
 import { useJuradoStore } from "src/stores/juradoStore";
 import { data } from "browserslist";
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: "JuradosRondaComponent",
@@ -90,9 +91,21 @@ export default defineComponent({
     const juradoStore = ref(useJuradoStore());
     const rows = juradoStore.value.juradosRonda;
     const loading = ref(false);
+    const $q = useQuasar()
+
+    const showDialog = ref(false)
+
+    const abrirDialogo = () => {
+      showDialog.value = true
+      setTimeout(() => {
+        showDialog.value = false
+      }, 2000)
+    }
 
     return {
-      inception: ref(false),
+      showDialog,
+      abrirDialogo,
+      // inception: ref(false),
       secondDialog: ref(false),
       active: ref(true),
       loading,
@@ -131,6 +144,14 @@ export default defineComponent({
         juradoStore.value.checker = true;
         // location.href= "ronda1Page/EmailInicioVotacion";
 
+      },
+
+      showNotif() {
+        console.log("llega a la noti");
+        $q.notify({
+          message: 'Votos Eliminados',
+          color: 'green'
+        })
       }
 
     }

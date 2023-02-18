@@ -49,7 +49,7 @@ export default defineComponent({
           { name: 'delete', align: 'left', label: '', field: '' }
         ],
         rowVotos,  // si no se retornan no se visualizan
-        deleteval(index){
+          deleteval(index){
             console.log(index)
             this.rowVotos.splice(index, 1);
 
