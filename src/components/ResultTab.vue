@@ -11,9 +11,12 @@
         <q-tab-panels v-model="tab" animated>
           <!-- Tabla ranking -->
           <q-tab-panel name="ranking">
-            <q-table title-class="q-mt-lg" id="table" title="Ranking:  B1. Packaging" :data="tableData" :rows="rows" :columns="ranking"
-              row-key="jurado" selection="single" v-model:selected="selected" v-model:pagination="pagination" hide-bottom
-              virtual-scroll :rows-per-page-options="[0]">
+            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="rows" :columns="ranking" row-key="jurado"
+              selection="single" v-model:selected="selected" v-model:pagination="pagination" hide-bottom virtual-scroll
+              :rows-per-page-options="[0]">
+              <template v-slot:top>
+                <h5> <b>Ranking</b> {{categoriaStore.subCategorias}}</h5>
+              </template>
               <!-- Casilla de seleccion de cada fila -->
               <div class="q-mt-md">
                 Selected: {{ JSON.stringify(selected) }}
@@ -22,7 +25,7 @@
               <template v-slot:body-cell-votos="props">
                 <td :props="props">
                   <div v-if="props.value != '-'">
-                    <q-badge color="black" :label="props.value"></q-badge>
+                    <q-badge class="numVotos" color="black" :label="props.value"></q-badge>
                   </div>
                 </td>
               </template>
@@ -94,10 +97,12 @@
 
           <!-- Tabla votos jurado -->
           <q-tab-panel name="votos_jurado">
-            <q-table id="table" title="Votos por Jurado:  B1. Packaging" title-class="q-mt-lg" :rows="resultJuradosStore.resultStore"
-              :columns="voto" row-key="name" v-model:pagination="pagination" hide-bottom virtual-scroll
-              :rows-per-page-options="[0]">
-
+            <q-table id="table" title-class="q-mt-lg"
+              :rows="resultJuradosStore.resultStore" :columns="voto" row-key="name" v-model:pagination="pagination"
+              hide-bottom virtual-scroll :rows-per-page-options="[0]">
+              <template v-slot:top>
+                <h5> <b>Votos por Jurado</b> {{categoriaStore.subCategorias}}</h5>
+              </template>
               <template v-slot:body-cell-voto="props">
                 <q-td :props="props">
                   <div v-if="props.value == '-'">
@@ -112,15 +117,15 @@
               <template v-slot:body-cell-jurado="props">
                 <td :props="props">
                   <div style="display: inline-flex; align-items: center;">
-                  <q-avatar size="72px">
-                    <q-icon name="person"></q-icon>
-                  </q-avatar>
-                  <div class="empresa">
-                    {{ props.row.jurado }}
-                    <br>
-                    {{ props.row.empresa }}
+                    <q-avatar size="72px">
+                      <q-icon name="person"></q-icon>
+                    </q-avatar>
+                    <div class="empresa">
+                      {{ props.row.jurado }}
+                      <br>
+                      {{ props.row.empresa }}
+                    </div>
                   </div>
-                </div>
                 </td>
               </template>
             </q-table>
@@ -128,7 +133,7 @@
         </q-tab-panels>
       </q-card>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -136,6 +141,7 @@
 import { ref } from 'vue'
 import { useresultStore } from "src/stores/resultStore"
 import { useresultJuradosStore } from "src/stores/resultJuradosStore"
+import { useVotosStore } from "src/stores/categoriaStore";
 
 // Columnas jurado
 const ranking = [
@@ -190,7 +196,7 @@ export default {
     const resultStore = ref(useresultStore());
     const rows = resultStore.value.resultStore;
     const resultJuradosStore = ref(useresultJuradosStore());
-
+    const categoriaStore = ref(useVotosStore());
     // Esta funcion no funciona al 100%. Se utiliza para comparar los votos y que aparezca el boton de otorgar premio. Se puede prescindir de ella porque no termina de funcionar bien.
     const OtorgarPremio = () => {
       const pos1 = rows[0];
@@ -203,11 +209,11 @@ export default {
 
 
 
-
-
     return {
       OtorgarPremio,
+      resultStore,
       resultJuradosStore,
+      categoriaStore,
       model: ref(null),
       // Las opciones de seleccion del apartado tipo dentro del popup de otorgar premio.
       options: [
@@ -234,7 +240,7 @@ export default {
 
 
     }
-  }
+  },
 }
 </script>
 
@@ -294,6 +300,15 @@ export default {
 .empresa {
   display: inline-block;
 }
+
+/* Estilo cuadrado Votos */
+.numVotos{
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
 
 /* ---------  --------- */
 </style>

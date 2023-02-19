@@ -1,23 +1,27 @@
 <template>
   <div class="q-pa-md">
-    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name" @row-click="goto()"
+    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name"
       title-class="text-weight-bold" hide-bottom virtual-scroll v-model:pagination="pagination"
       :rows-per-page-options="[0]" class="row">
 
       <template v-slot:body-cell-Categoria="props">
-        <q-td :props="props">
-          <!-- <div v-if="props.value == '-'"> -->
-            {{ props.row.Categoria }}
+
+    
+          <q-td :props="props" @click="getSubcategoria(props.row)">
+            <router-link class="linkCat" to="results/ResultTab"> {{ props.row.Categoria }}</router-link>
             <q-chip class="chip" square color="red" text-color="white" label="Empate" />
-          <!-- </div> -->
-          <!-- <div v-else>
-            {{ props.row.Categoria }}
-          </div> -->
-        </q-td>
+          </q-td>
+    
+
+        <!-- </div> -->
+        <!-- <div v-else>
+                          {{ props.row.Categoria }}
+                        </div> -->
+
       </template>
 
     </q-table>
-</div>
+  </div>
 </template>
 
 
@@ -35,27 +39,33 @@ const columns = [
 
 import { ref } from 'vue'
 import { useresultStore } from "src/stores/resultStore";
+import { useVotosStore } from "src/stores/categoriaStore";
 export default {
   setup() {
 
     const resultStore = ref(useresultStore());
     const rows = resultStore.value.resultStore;
+    const categoriaStore = ref(useVotosStore());
 
     return {
       columns,
       rows,
       resultStore,
+      categoriaStore,
       inception: ref(false),
       secondDialog: ref(false),
       pagination: {
         sortBy: 'name',
         descending: true,
       },
-      goto() {
-        location.href = "result";
-        // this.$router.push("configuracion")
-        // console.log("foca")
-      },
+      getSubcategoria(row) {
+        console.log(row)
+        categoriaStore.value.subCategorias = row.Categoria;
+        categoriaStore.value.checker = true;
+        console.log(categoriaStore.value.subCategorias)
+       
+      }
+
     }
   }
 }
@@ -67,5 +77,10 @@ export default {
   margin-left: 1rem;
   margin-top: 0rem;
   font-size: 10px;
+}
+
+.linkCat{
+  text-decoration: none;
+  color: black;
 }
 </style>
