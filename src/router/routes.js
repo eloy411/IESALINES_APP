@@ -14,11 +14,6 @@ const routes = [
         component: () => import("pages/LoginPage.vue"),
       },
       {
-        path: "result",
-        name: "result",
-        component: () => import("pages/ResultPage.vue"),
-      },
-      {
         path: "results",
         name: "results",
         component: () => import("pages/ResultsPage.vue"),
@@ -64,7 +59,12 @@ const routes = [
         path: "ronda1Page/EmailRecordatorioVotacion2",
         name: "ronda1Page/EmailRecordatorioVotacion2",
         component: () => import("components/RecordatorioVotacionBtn.vue"),
-      }
+      },
+      {
+        path: "results/ResultTab",
+        name: "results/ResultTab",
+        component: () => import("components/ResultTab.vue"),
+      },
     ],
   },
 
