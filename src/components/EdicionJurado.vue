@@ -23,7 +23,7 @@
             </div>
             <div class="my-input q-pa-xs center">
               <div class="text-right q-pa-md" style="grid-column: 1 / 1;" >Tipo</div>
-              <q-select style="grid-column: 2 / 4;" outlined v-model="juradoStore.Tipo" :options="juradoStore.options" label="" />
+              <q-select style="grid-column: 2 / 4;" outlined v-model="juradoStore.Tipo" :options="juradoStore.optionsTipoJurado" label="" />
             </div>
             <div class="my-input q-pa-xs center">
               <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Cargo</div>
@@ -40,7 +40,6 @@
 
             <div class="btn-group center">
               <q-btn class="q-mr-lg"  color="secondary" @click="juradoStore.putJurado(); "  label="Guardar" />
-
             </div>
           </div>
         </div>
@@ -75,6 +74,12 @@ export default defineComponent({
         }
       },
     };
+  },
+  mounted() {
+    // just in case, to prevent another petition
+    if (this.juradoStore.tipoJuradoChecker == false) {
+      this.juradoStore.getJuradoTipo();
+    }
   }
 });
 </script>

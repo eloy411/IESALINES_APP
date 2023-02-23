@@ -7,7 +7,7 @@ import { ref, defineComponent } from "vue";
 import  tableResults  from "components/tableResults.vue";
 
 export default defineComponent({
-  name: "JuradoPage",
+  name: "ResultsPage",
 
   components: {
     tableResults

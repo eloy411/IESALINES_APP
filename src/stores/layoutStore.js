@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { api } from 'boot/axios'
 
 export const useLayoutStore = defineStore("layout", {
   state: () => ({
@@ -19,7 +20,7 @@ export const useLayoutStore = defineStore("layout", {
       {
         title: "Resultados",
         // icon: "chat",
-        link: "/results",
+        link: "/result",
         exact: 'true',
       },
       {
@@ -31,9 +32,20 @@ export const useLayoutStore = defineStore("layout", {
     ]
   }),
   actions: {
-    getYear() {
-      console.log('petición para coger el año');
-      // this.year =
+    async getYear() {
+      try {
+        const response = await api.get(`http://127.0.0.1:8000/api/edicion`)
+        if (response.status >= 200 && response.status < 400 ) {
+          let auxYear = response.data[0].anio;
+          let romanAuxYear = '(' +  response.data[0].anio_romano + ')';
+          this.year = auxYear + romanAuxYear;
+          this.notification = true;
+        }else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   persist: true,

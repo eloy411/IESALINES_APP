@@ -72,7 +72,6 @@
       </template>
 
     </q-table>
-
   </div>
 </template>
 
@@ -138,6 +137,7 @@ export default defineComponent({
   //   this.juradoStore.getJuradosRonda();
   // }
 })
+
 
 
 </script>

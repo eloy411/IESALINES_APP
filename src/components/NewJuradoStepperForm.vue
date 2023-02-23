@@ -24,7 +24,7 @@
           <div>
             <div class="my-input q-pa-xs center">
               <div class="text-right q-pa-md" style="grid-column: 1 / 1;" >Tipo</div>
-              <q-select style="grid-column: 2 / 4;" outlined v-model="juradoStore.Tipo" :options="juradoStore.options" label="" />
+              <q-select style="grid-column: 2 / 4;" outlined v-model="juradoStore.Tipo" :options="juradoStore.optionsTipoJurado " label="" />
             </div>
             <div class="my-input q-pa-xs center">
               <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Nombre</div>
@@ -43,7 +43,7 @@
       </div>
 
         <div class="btn-group center">
-          <q-btn class="q-mr-lg"  color="secondary" to="/jurado/Nuevo/editar" label="Añadir y Enviar invitación" />
+          <q-btn class="q-mr-lg"  color="secondary" to="/ronda1Page/EmailRecordatorioVotacion" label="Añadir y Enviar invitación" />
           <q-btn outline color="secondary"  @click="juradoStore.postJurado" label="Solo añadir" />
 
         </div>
@@ -80,6 +80,9 @@ export default defineComponent( {
       },
 
     }
+  },
+  mounted(){
+    this.juradoStore.getJuradoTipo();
   }
 })
 </script>

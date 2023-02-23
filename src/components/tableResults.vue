@@ -63,7 +63,6 @@ export default {
         categoriaStore.value.subCategorias = row.Categoria;
         categoriaStore.value.checker = true;
         console.log(categoriaStore.value.subCategorias)
-       
       }
 
     }

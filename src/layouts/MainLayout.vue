@@ -49,7 +49,6 @@
       <div class="q-pa-md q-gutter-sm">
         <BreadcrumbsComponent></BreadcrumbsComponent>
       </div>
-      
       <router-view />
     </q-page-container>
   </q-layout>
@@ -73,6 +72,7 @@ export default defineComponent({
   },
 
   setup() {
+
     const authStore = useAuthStore();
     const layoutStore = useLayoutStore();
     const leftDrawerOpen = ref(false);
@@ -82,17 +82,31 @@ export default defineComponent({
 
 
     return {
+      routes: [
+        {
+        name: 'jurado',
+        route: '/jurado'
+      },
+      {
+        name: 'MariCarmen',
+        route: '/ronda1Page'
+      },
+    ],
       authStore,
       layoutStore,
       year,
       essentialLinks: linksList ,
       leftDrawerOpen,
+      BreadcrumbsComponent,
       // year,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
     };
   },
+  mounted() {
+    this.layoutStore.getYear();
+  }
 });
 </script>
 

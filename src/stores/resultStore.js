@@ -89,7 +89,32 @@ state: ()=> ({
 
     ]
 }),
+ actions: {
+    async getSubcategorias() {
+      try {
+        const res = await api.get("http://127.0.0.1:8000/api/jurado");
+        if (res.status >= 200 && res.status <= 400 ) {
+          console.log(res);
+          this.juradosTest = [];
 
+          res.data.forEach(jurado => {
+            let auxObject = {
+              Nombre: jurado.Nombre,
+              Empresa: jurado.Empresa,
+              Tipo: jurado.tipo_jurado,
+              Email: jurado.Email,
+              Aceptación: '12/5/2002 12:45h',
+              id: jurado.id
+            };
+            this.juradosTest.push(auxObject);
+          });
+
+        }
+      } catch(error) {
+        console.log(error)
+      }
+    }
+  }
 
 // mounted () {
 //     this.getPosts ()
