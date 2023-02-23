@@ -64,7 +64,7 @@ const routes = [
         component: () => import("pages/Ronda1Page.vue"),
 
        },
-      {
+       {
         path: "jurado",
         name: "jurado",
         meta: {
@@ -72,7 +72,8 @@ const routes = [
             {
               text: 'jurado'
             }
-          ]
+          ],
+          requiresAuth: true
         },
         component: () => import("pages/JuradoPage.vue"),
 
