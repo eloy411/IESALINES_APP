@@ -1,109 +1,85 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      title="categorias"
-      :rows="rows"
-      :columns="columns"
-      hide-bottom
-      @row-click="onRowClick"
-      >
-      <template v-slot:top>
-        <h3>Resultados de la votación</h3>
-        <q-space />
+    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name"
+      title-class="text-weight-bold" hide-bottom virtual-scroll v-model:pagination="pagination"
+      :rows-per-page-options="[0]" class="row">
+
+      <template v-slot:body-cell-Categoria="props">
+
+    
+          <q-td :props="props" @click="getSubcategoria(props.row)">
+            <router-link class="linkCat" to="results/ResultTab"> {{ props.row.Categoria }}</router-link>
+            <q-chip class="chip" square color="red" text-color="white" label="Empate" />
+          </q-td>
+    
+
+        <!-- </div> -->
+        <!-- <div v-else>
+                          {{ props.row.Categoria }}
+                        </div> -->
 
       </template>
+
     </q-table>
-<!--------------------------------------------------------------------------------------------------->
-  </div>
-    <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Click me" color="primary" @click="inception = true" />
-
-    <q-dialog v-model="inception">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Inception</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-              ¿Seguro que quieres eliminar los votos de esta categoria?
-        </q-card-section>
-
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Si" @click="secondDialog = true" />
-          <q-btn flat label="No" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-<!-------------------------------------------------------------------------------------------------------->
-    <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
-      <q-card class="bg-teal text-white" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6">Persistent</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Click/Tap on the backdrop.
-        </q-card-section>
-
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="OK" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
+
 <script>
+import router from "../router";
 const columns = [
-    {
+  {
     name: 'Categoria',
     field: 'Categoria',
     label: 'Categoria',
     align: 'left',
-    sortable: true
   },
 ]
 
-const rows = [
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
-  {
-    Categoria: 'A1. Campaña integral de Aspid plata y no se que mas',
-  },
 
+import { ref } from 'vue'
+import { useresultStore } from "src/stores/resultStore";
+import { useVotosStore } from "src/stores/categoriaStore";
+export default {
+  setup() {
 
-]
-  import { ref } from 'vue'
-  import routes from 'src/router/routes'
-  export default {
-    setup () {
-      return {
-        columns,
-        rows,
-        inception: ref(false),
-        secondDialog: ref(false),
-        pagination: {
-          sortBy: 'name',
-          descending: true,
-        },
-        onRowClick(evt, row) {
-          console.log(row);
-        }
+    const resultStore = ref(useresultStore());
+    const rows = resultStore.value.resultStore;
+    const categoriaStore = ref(useVotosStore());
+
+    return {
+      columns,
+      rows,
+      resultStore,
+      categoriaStore,
+      inception: ref(false),
+      secondDialog: ref(false),
+      pagination: {
+        sortBy: 'name',
+        descending: true,
+      },
+      getSubcategoria(row) {
+        console.log(row)
+        categoriaStore.value.subCategorias = row.Categoria;
+        categoriaStore.value.checker = true;
+        console.log(categoriaStore.value.subCategorias)
       }
+
     }
   }
+}
 </script>
 
+<style>
+.chip {
+  height: 1rem;
+  margin-left: 1rem;
+  margin-top: 0rem;
+  font-size: 10px;
+}
+
+.linkCat{
+  text-decoration: none;
+  color: black;
+}
+</style>

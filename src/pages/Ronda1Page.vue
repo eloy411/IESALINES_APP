@@ -1,11 +1,11 @@
 <template>
-    <q-page>
-      <ActivacionRondaComponent></ActivacionRondaComponent>
+  <q-page>
+    <ActivacionRondaComponent></ActivacionRondaComponent>
 
-      <JuradosRondaComponent></JuradosRondaComponent>
-      <TablaVotosComponent></TablaVotosComponent>
-    </q-page>
-  
+    <JuradosRondaComponent></JuradosRondaComponent>
+    <TablaVotosComponent></TablaVotosComponent>
+  </q-page>
+
 </template>
 
 <script>
@@ -19,59 +19,59 @@ import { useJuradosStore } from "src/stores/TablaJuradosStore";
 import { ref } from 'vue'
 
 export default defineComponent({
-  name: "ronda1Page",
+name: "ronda1Page",
 
-  components:{
-    TablaVotosComponent,
-    JuradosRondaComponent,
-    ActivacionRondaComponent,
-    // MailVotacionComponent,
-    
-  },
-  setup(){
-    const juradoStore = ref(useJuradosStore());
-    
+components:{
+  TablaVotosComponent,
+  JuradosRondaComponent,
+  ActivacionRondaComponent,
+  // MailVotacionComponent,
 
-    return{
-        juradoStore,
-        active: ref(true),
-        hover:false,
-        options: ref(['inicio votación', 'recordatorio votación']),
-        tipoCreatividad:ref('Jurado de Creatividad'),
-        tipoFormacion:ref('Jurado de Formación'),
-    }
+},
+setup(){
+  const juradoStore = ref(useJuradosStore());
+
+
+  return{
+      juradoStore,
+      active: ref(true),
+      hover:false,
+      options: ref(['inicio votación', 'recordatorio votación']),
+      tipoCreatividad:ref('Jurado de Creatividad'),
+      tipoFormacion:ref('Jurado de Formación'),
   }
+}
 })
 
 </script>
 <style>
 .radius {
-  border-radius: 20px;
-  margin-right: 2rem;
+border-radius: 20px;
+margin-right: 2rem;
 }
 .my-card{
-  margin:1em ;
-  padding-top: 1em;
-  
+margin:1em ;
+padding-top: 1em;
+
 }
 .my-items{
-  display: inline-block;
+display: inline-block;
 }
 .my-item:hover{
-  background-color: #FFDAD8
+background-color: #FFDAD8
 }
 .mailBtn{
-  float: right;
+float: right;
 }
 .infoIcon{
-  margin-right: 0.3em;
+margin-right: 0.3em;
 }
 
 .infoDiv{
-  float:right;
-  text-align: left;
-  margin-top: -7em;
-  display:inline-flex;
-  color: #AAAAAA;
+float:right;
+text-align: left;
+margin-top: -5em;
+display:inline-flex;
+color: #AAAAAA;
 }
 </style>

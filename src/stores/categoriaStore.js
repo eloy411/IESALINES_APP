@@ -5,6 +5,8 @@ import { api } from 'boot/axios'
 export const useVotosStore = defineStore("votos", {
 
   state:()=> ({
+    subCategorias:'',
+    checker:false,
     VotosTable: [
       {
           categoria: 'A1. Campaña Integral de promoción de producto (Aspid Oro y Plata)',
@@ -74,6 +76,10 @@ export const useVotosStore = defineStore("votos", {
       },
     ]
   }),
+  // getters: {
+  //   getSubcategoria:  (state) => state.VotosTable,
+
+  // },
   actions: {
 
     async getCategorias() {
