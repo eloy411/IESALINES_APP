@@ -14,6 +14,11 @@ const routes = [
         component: () => import("pages/LoginPage.vue"),
       },
       {
+        path: "loginv",
+        name: "loginv",
+        component: () => import("pages/LoginVotacionPage.vue"),
+      },
+      {
         path: "configuracion",
         name: "configuracion",
         component: () => import("pages/ConfiguracionPage.vue"),
@@ -21,8 +26,6 @@ const routes = [
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),
