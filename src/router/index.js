@@ -32,7 +32,7 @@ export default route(function (/* { store, ssrContext } */) {
     if (to.matched.some(route => route.meta.requiresAuth)) {
       if (useAuthStore().isAuth) {
         next()
-        useAuthStore().isAuth = false;
+        // useAuthStore().isAuth = false;
       } else {
         next('/login')
       }

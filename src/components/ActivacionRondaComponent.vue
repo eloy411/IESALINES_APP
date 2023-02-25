@@ -7,7 +7,7 @@
          <div class="infoDiv">
            <q-icon class="infoIcon" name="info" size="27px" /><p icon='info' class="infoText">La activación de la ronda 1 permite al jurado el acceso a <br>  la aplicación de votación y emitir los votos Oro y Aspid</p>
          </div>
-         <q-toggle v-model="active" class="q-ml-md" color="blue" label="Si" />
+         <q-toggle v-model="active" @click="layoutStore.switchRonda" class="q-ml-md" color="blue" label="Si" />
 
            <q-btn-dropdown
              :disable-main-btn="!active"
@@ -66,12 +66,14 @@
 <script>
 import { ref, defineComponent } from "vue";
 import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
+import {useLayoutStore} from "src/stores/layoutStore"
 import { data } from "browserslist";
 
 export default defineComponent({
  name: "ActivacionRondaComponent",
  setup () {
    const tipoStore = ref(useTipoJuradosStore());
+   const layoutStore = ref(useLayoutStore());
    const tipoJ = tipoStore.value.Tipo;
    const loading = ref(false);
    const options="";
@@ -79,10 +81,10 @@ export default defineComponent({
        active: ref(false),
        loading,
        tipoJ,
+       layoutStore,
 
 
        getJuradoTipo(tipoJ){
-         console.log(tipoJ)
          // let auxArr=[row.nombre[0],row.nombre[1]];
          tipoStore.value.mailDestinatario = tipoJ;
          tipoStore.value.checker=true;

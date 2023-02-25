@@ -10,7 +10,7 @@
         <q-td :props="props">
           <q-btn disabled flat class="q-pa-xs" icon="mark_email_read" size="1em" ></q-btn>
           <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em" to="/jurado/Nuevo/editar"></q-btn>
-          <q-btn flat @click="inception = true" class="q-pa-xs" icon="close" size="1em"></q-btn>
+          <q-btn flat @click="juradoStore.deleteJurado(props.row)" class="q-pa-xs" icon="close" size="1em"></q-btn>
         </q-td>
       </template>
 
@@ -41,7 +41,7 @@
 
         <!--DIALOG-->
       </q-table>
-        <q-dialog v-model="inception">
+        <!-- <q-dialog v-model="inception">
           <q-card  class="pop_sure">
             <q-card-section class="q-pt-none">
                   ¿Seguro que quieres eliminar los votos de esta categoria?
@@ -54,10 +54,7 @@
               <q-btn class="myButton" label="No" v-close-popup/>
             </q-card-actions>
           </q-card>
-        </q-dialog>
-
-
-
+        </q-dialog> -->
   </div>
 </template>
 
@@ -106,7 +103,6 @@ export default defineComponent({
       columnsTable,
       inception: ref(false),
       onRowClick (row) {
-        console.log('clicked on', row)
         juradoStore.value.Nombre = row.Nombre;
         juradoStore.value.Empresa = row.Empresa;
         juradoStore.value.Tipo = row.Tipo;

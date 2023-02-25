@@ -28,6 +28,18 @@ const routes = [
         component: () => import("pages/LoginPage.vue"),
       },
       {
+        path: "login/:login",
+        name: "login/",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'login'
+            }
+          ]
+        },
+        component: () => import("pages/authenticationPage.vue"),
+      },
+      {
         path: "results",
         name: "results",
         meta: {

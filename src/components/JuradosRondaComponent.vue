@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="rows" :data="data" title-class="text-weight-bold q-mt-md">
+    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :data="data" title-class="text-weight-bold q-mt-md">
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
@@ -39,11 +39,11 @@
               @click="getJuradoName(props.row)" />
           </q-td>
           <q-td key="deleteVotos" :props="props">
-            <q-btn flat name="" label='' icon='delete' @click="inception = true" /><!--JURADO-->
+            <q-btn flat name="" label='' icon='delete' @click="juradoStore.deleteJuradoVotaciones(props.row); deleteval(props.row)" />
           </q-td>
 
           <!--JURADO-->
-          <q-dialog v-model="inception">
+          <!-- <q-dialog v-model="inception">
             <q-card class="pop_sure">
               <q-card-section class="q-pt-none">
                 ¿Seguro que quieres eliminar los votos de esta categoria?
@@ -51,13 +51,12 @@
 
               <q-card-actions align="center">
                 <q-btn class="myButton" v-close-popup name="" label='Si'
-                  @click="deleteval(rows.indexOf(props.row)), secondDialog = true" />
+                  @click=" juradoStore.deleteJuradoVotaciones(rows.indexOf(props.row)); deleteval(rows.indexOf(props.row)), secondDialog = true" />
                 <q-btn class="myButton" label="No" v-close-popup />
               </q-card-actions>
             </q-card>
           </q-dialog>
 
-          <!--done pop-->
           <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
             <q-card class="bg-teal text-white" style="width: 300px">
               <q-card-section>
@@ -67,7 +66,7 @@
                 <q-btn flat label="OK" v-close-popup="2" />
               </q-card-actions>
             </q-card>
-          </q-dialog>
+          </q-dialog> -->
         </q-tr>
       </template>
 
@@ -116,14 +115,12 @@ export default defineComponent({
 
       // juradoStore,
       deleteval(index) {
-        console.log(index)
         this.rows.splice(index, 1);
+        // this.juradoStore.value.deleteJuradoVotaciones(index);
 
-        console.log(this.rows)
       },
 
       getJuradoName(row) {
-        console.log(row)
         // let auxArr=[row.nombre[0],row.nombre[1]];
         juradoStore.value.mailDestinatario = row.tipo;
         juradoStore.value.checker = true;
