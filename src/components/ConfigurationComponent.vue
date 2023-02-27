@@ -100,22 +100,42 @@
               <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Que categorías vota cada jurado.</p>
               <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
 
-
               <q-separator inset class="q-mt-lg" size="1px" />
 
-              <div class="row">
-                <ul id="row1">
-                  <li>Item 1</li>
-                  <li>Item 2</li>
-                  <li>Item 3</li>
-                </ul>
+    <div>
+    <div class="row no-wrap justify-around q-px-md q-pt-md">
+      <div
+        v-mutation="handler1"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave"
+        @dragover="onDragOver"
+        @drop="onDrop"
+        class="drop-target rounded-borders overflow-hidden"
+      >
+        <div id="box1" draggable="true" @dragstart="onDragStart" class="box">
+          <li>A1. Telemedicina</li>
+        </div>
+        <div id="box2" draggable="true" @dragstart="onDragStart" class="box">
+          <li>A2. Packaging</li>
+        </div>
+        <div id="box3" draggable="true" @dragstart="onDragStart" class="box">
+          <li>C1 - Programas de formación</li>
+        </div>
+        <div id="box4" draggable="true" @dragstart="onDragStart" class="box">
+          <li>C2 - Apps</li>
+        </div>
+      </div>
 
-                <ul id="row2">
-                  <li>Item 4</li>
-                  <li>Item 5</li>
-                  <li>Item 6</li>
-                </ul>
-              </div>
+      <div
+        v-mutation="handler2"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave"
+        @dragover="onDragOver"
+        @drop="onDrop"
+        class="drop-target rounded-borders overflow-hidden"
+      />
+    </div>
+  </div>
 
               <q-btn class="botonG2" color="red" label="Guardar" @click="showNotif" />
             </q-card-section>
@@ -171,9 +191,68 @@ export default defineComponent({
   setup() {
     // title = ref('');
     const $q = useQuasar()
+    const status1 = ref([])
+    const status2 = ref([])
 
     return {
-      // title,
+      status1,
+      status2,
+      handler1 (mutationRecords) {
+        status1.value = []
+        for (const index in mutationRecords) {
+          const record = mutationRecords[ index ]
+          const info = `type: ${record.type}, nodes added: ${record.addedNodes.length > 0 ? 'true' : 'false'}, nodes removed: ${record.removedNodes.length > 0 ? 'true' : 'false'}, oldValue: ${record.oldValue}`
+          status1.value.push(info)
+        }
+      },
+      handler2 (mutationRecords) {
+        status2.value = []
+        for (const index in mutationRecords) {
+          const record = mutationRecords[ index ]
+          const info = `type: ${record.type}, nodes added: ${record.addedNodes.length > 0 ? 'true' : 'false'}, nodes removed: ${record.removedNodes.length > 0 ? 'true' : 'false'}, oldValue: ${record.oldValue}`
+          status2.value.push(info)
+        }
+      },
+      onDragStart (e) {
+        e.dataTransfer.setData('text', e.target.id)
+        e.dataTransfer.dropEffect = 'move'
+      },
+
+      onDragEnter (e) {
+        // don't drop on other draggables
+        if (e.target.draggable !== true) {
+          e.target.classList.add('drag-enter')
+        }
+      },
+      onDragLeave (e) {
+        e.target.classList.remove('drag-enter')
+      },
+
+      onDragOver (e) {
+        e.preventDefault()
+      },
+      onDrop (e) {
+        e.preventDefault()
+
+        // don't drop on other draggables
+        if (e.target.draggable === true) {
+          return
+        }
+
+        const draggedId = e.dataTransfer.getData('text')
+        const draggedEl = document.getElementById(draggedId)
+
+        // check if original parent node
+        if (draggedEl.parentNode === e.target) {
+          e.target.classList.remove('drag-enter')
+          return
+        }
+
+        // make the exchange
+        draggedEl.parentNode.removeChild(draggedEl)
+        e.target.appendChild(draggedEl)
+        e.target.classList.remove('drag-enter')
+      },
       areaValue: ref('Has terminado la votacion de la primera ronda! Ahora solo queda votar los Aspid Plata, resolver los desempates y votar el Platino ! Esto tendra lugar via videoconferencia el pròximo día 22 de junio a las 10h. Bloqueate la mañana en tu calendario ! Recibiras más detalles por email.'),
       model: ref(null),
       options: ref(["Jurado de Creatividad", "Jurado de Formación", "Jurado de eSalud"]),
@@ -181,20 +260,9 @@ export default defineComponent({
         $q.notify({
           message: 'Guardado !!',
           color: 'positive'
-        }),
-          row1.addEventListener('click', function (e) {
-            if (e.target != this) {
-              row2.appendChild(e.target.cloneNode(true));
-              e.target.remove()
-            }
-          })
-        row2.addEventListener('click', function (e) {
-          if (e.target != this) {
-            row1.appendChild(e.target.cloneNode(true));
-            e.target.remove()
-          }
         })
-      }
+      },
+
     }
   }
 })
@@ -204,34 +272,24 @@ export default defineComponent({
 .row {
   display: flex;
 }
-
 .botonG {
   width: 10rem;
   margin-left: 10rem;
 }
-
 .botonG2 {
   width: 10rem;
   margin-left: 40%;
+  margin-top: 2rem;
 }
-
 .texto1 {
   margin-top: -1.4rem;
 }
-
 .jurado-input {
   width: 24rem;
 }
-
 .input-texts {
   width: 27rem;
 }
-
-.row {
-  display: flex;
-}
-
-/* Create two equal columns that sits next to each other */
 .column {
   padding: 10px;
 }
@@ -246,5 +304,42 @@ export default defineComponent({
   margin-left: -2rem;
   position: absolute;
   gap: 1rem;
+}
+.drop-target{
+  height: 250px;
+  width: 200px;
+  overflow-y: scroll !important;
+  /* min-width: 200px; */
+  /* background-color: gainsboro; */
+  border: 1px solid rgb(181, 181, 181);
+}
+.drag-enter{
+  outline-style: dashed;
+}
+.box{
+  display: flex;
+  align-items: center;
+  float: left;
+  cursor: pointer;
+  width: 200px;
+  border: 1px solid rgb(181, 181, 181);
+  list-style-type: none;
+  height: 2rem;
+  align-items: center;
+}
+.box:nth-child(3){
+  clear: both;
+}
+.navy{
+  background-color: navy;
+}
+.red{
+  background-color: firebrick;
+}
+.green{
+  background-color: darkgreen;
+}
+.orange{
+  background-color: orange;
 }
 </style>
