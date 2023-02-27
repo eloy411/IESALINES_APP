@@ -128,12 +128,12 @@ export default defineComponent({
 
       }
 
+        }
+    },
+    mounted() {
+      this.juradoStore.getJuradosRonda();
     }
-  },
-  // mounted() {
-  //   this.juradoStore.getJuradosRonda();
-  // }
-})
+  })
 
 
 

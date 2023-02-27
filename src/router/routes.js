@@ -150,6 +150,18 @@ const routes = [
         },
         component: () => import("components/RecordatorioVotacionBtn.vue"),
       },
+        {
+        path: "jurado/InvitacionJurado",
+        name: "InvitacionJurado",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'InvitacionJurado'
+            }
+          ]
+        },
+        component: () => import("components/InvitacionJuradoComponent.vue"),
+      },
       {
         path: "results/ResultTab",
         name: "results/ResultTab",
