@@ -1,60 +1,60 @@
 <template>
   <div class="q-pa-lg">
 
-    <q-spinner v-if="juradoStore.juradosTest.length <= 0"
-      color="primary"
-      size="3em"
-    />
+    <q-spinner v-if="juradoStore.juradosTest.length <= 0" color="primary" size="3em" />
     <q-table v-else title="Treats" :rows="juradoStore.juradosTest" :columns="columnsTable">
       <template v-slot:body-cell-buttons="props">
         <q-td :props="props">
-          <q-btn disabled flat class="q-pa-xs" icon="mark_email_read" size="1em" ></q-btn>
-          <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em" to="/jurado/Nuevo/editar"></q-btn>
+          <q-btn disabled flat class="q-pa-xs" icon="mark_email_read" size="1em"></q-btn>
+          <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em"
+            to="/jurado/Nuevo/editar"></q-btn>
           <q-btn flat @click="inception = true" class="q-pa-xs" icon="close" size="1em"></q-btn>
         </q-td>
       </template>
 
       <template v-slot:body-cell-Nombre="props">
-      <!-- <template v-slot:body="props"> -->
+        <!-- <template v-slot:body="props"> -->
         <q-td key="Nombre" :props="props">
-            <q-avatar size="72px">
-              <q-icon name="person"></q-icon>
-            </q-avatar>
+          <q-avatar size="72px">
+            <q-icon name="person"></q-icon>
+          </q-avatar>
 
-           <div class="empresa">
-            {{ props.row.Nombre}}
+          <div class="empresa">
+            {{ props.row.Nombre }}
             <br>
-            {{ props.row.Empresa}}
+            {{ props.row.Empresa }}
           </div>
         </q-td>
       </template>
 
       <template v-slot:top>
-        <h3>Jurado Aspid 2022</h3>
+        <h5><b>Jurado Aspid 2022</b></h5>
         <q-space />
 
         <div class="q-pa-md q-gutter-sm">
-          <q-btn @click="juradoStore.descargaCSV"  class="q-pa-md radius" outline style="color: #de331d;" label="Descargar CSV" />
-          <q-btn to="/jurado/nuevo" class="bg-secondary q-pa-md radius" style="color: white" label="Nuevo Jurado" />
+          <q-btn class="my-btn q-pt-sm q-pb-sm q-pr-lg q-pl-lg radius" @click="juradoStore.descargaCSV" outline
+            style="color: #de331d;" label="Descargar CSV" />
+          <q-btn to="/jurado/nuevo" class="bg-secondary q-pt-sm q-pb-sm q-pr-lg q-pl-lg" style="color: white"
+            label="Nuevo Jurado" />
         </div>
       </template>
 
-        <!--DIALOG-->
-      </q-table>
-        <q-dialog v-model="inception">
-          <q-card  class="pop_sure">
-            <q-card-section class="q-pt-none">
-                  ¿Seguro que quieres eliminar los votos de esta categoria?
-            </q-card-section>
+      <!-- DIALOG -->
+    </q-table>
+    <q-dialog v-model="inception">
+      <q-card class="pop_sure">
+        <q-card-section class="q-pt-none">
+          ¿Seguro que quieres eliminar los votos de esta categoria?
+        </q-card-section>
 
-            <q-card-actions align="center">
-              <q-btn class="myButton" v-close-popup name="" label='Si'
-                @click="deleteJuradoFromTable(rows.indexOf(props.row)),secondDialog = true, juradoStore.deleteJurado(props.row)"/>
+        <q-card-actions align="center">
+          <q-btn class="myButton" name="" label='Si'
+            @click="deleteJuradoFromTable(rows.indexOf(props.row)), juradoStore.deleteJurado(props.row)" />
 
-              <q-btn class="myButton" label="No" v-close-popup/>
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+          <q-btn class="myButton" label="No" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
 
 
@@ -64,11 +64,13 @@
 <script>
 import { ref, defineComponent } from "vue";
 import { useJuradoStore } from "src/stores/juradoStore";
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: "TableJurados",
-  setup () {
+  setup() {
     const juradoStore = ref(useJuradoStore());
+    const $q = useQuasar();
     const columnsTable = ref([
       {
         name: "Nombre",
@@ -105,7 +107,7 @@ export default defineComponent({
       juradoStore,
       columnsTable,
       inception: ref(false),
-      onRowClick (row) {
+      onRowClick(row) {
         console.log('clicked on', row)
         juradoStore.value.Nombre = row.Nombre;
         juradoStore.value.Empresa = row.Empresa;
@@ -123,14 +125,25 @@ export default defineComponent({
       },
 
       deleteJuradoFromTable() {
-        console.log('Jurado Eliminado')
+        console.log('Jurado Eliminado');
+        $q.notify({
+          message: 'Jurado Eliminado',
+          color: 'green'
+        })
+      },
+
+      getJuradoName(row){
+        console.log(row)
+        juradoStore.value.mailDestinatario = row.tipo;
+        juradoStore.value.checker=true;
+           
+
       }
+
 
     }
   },
-  mounted() {
-    this.juradoStore.getJurados();
-  },
+
 })
 
 
@@ -139,8 +152,22 @@ export default defineComponent({
 
 <style>
 .radius {
-  border-radius: 20px;
+  border-radius: 5px !important;
 }
+
+td {
+  text-align: left !important;
+}
+
+.empresa {
+  display: inline-block;
+  text-align: left;
+}
+
+.row {
+  text-align: left;
+}
+
 .center-header {
   display: flex;
   align-items: center;
@@ -151,8 +178,12 @@ export default defineComponent({
   background: rgb(200, 200, 200);
   padding: 1em;
 }
+
 .myButton {
   background: white;
 }
 
+.my-btn {
+  border-radius: 15px;
+}
 </style>

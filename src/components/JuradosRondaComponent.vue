@@ -132,9 +132,9 @@
 
         }
     },
-    mounted() {
-      this.juradoStore.getJuradosRonda();
-    }
+    // mounted() {
+    //   this.juradoStore.getJuradosRonda();
+    // }
   })
 
 

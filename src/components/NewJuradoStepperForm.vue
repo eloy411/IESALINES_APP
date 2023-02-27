@@ -43,8 +43,8 @@
       </div>
 
         <div class="btn-group center">
-          <q-btn class="q-mr-lg"  color="secondary" to="/ronda1Page/EmailRecordatorioVotacion" label="Añadir y Enviar invitación" />
-          <q-btn outline color="secondary"  @click="juradoStore.postJurado" label="Solo añadir" />
+          <q-btn class="q-mr-lg" style="width: 37%;"  color="secondary" to="InvitacionJurado"  @click="showNotif" label="Añadir y Enviar invitación" />
+          <q-btn class="q-mr-lg" style="width: 37%;" outline color="secondary"  @click="juradoStore.postJurado , showNotif()" label="Solo añadir" />
 
         </div>
 
@@ -54,9 +54,11 @@
 </template>
 
 
+
 <script>
 import { ref, defineComponent } from "vue";
 import { useJuradoStore } from "src/stores/juradoStore";
+import { useQuasar } from 'quasar'
 
 export default defineComponent( {
   name: "NewJuradoStepperForm",
@@ -65,6 +67,7 @@ export default defineComponent( {
     const step = ref(1)
     const done1 = ref(false)
     const done2 = ref(false)
+    const $q = useQuasar()
 
     return {
       step,
@@ -78,6 +81,13 @@ export default defineComponent( {
         done3.value = false
         step.value = 1
       },
+
+      showNotif () {
+        $q.notify({
+          message: 'Jurado añadido.',
+          color: 'green'
+        })
+      }
 
     }
   },
@@ -102,6 +112,8 @@ export default defineComponent( {
 
   .btn-group {
     padding: 1em;
+    flex-direction: column;
+    gap: 1em;
   }
 
   .grid {

@@ -15,7 +15,32 @@ export const useJuradoStore = defineStore("jurados", {
     notification: "",
     optionsTipoJurado: [],
     juradosRonda: [],
-    juradosTest: [],
+    juradosTest: [
+      {
+        nombre: 'Manuel Carrasco',
+        Tipo: 'Jurado de creatividad',
+        Email: 'email@dominio.com',
+        Aceptación: '12/5/2002 12:45h',
+      },
+      {
+        nombre: 'Manuel Carrasco',
+        Tipo: 'Jurado de creatividad',
+        Email: 'email@dominio.com',
+        Aceptación: '12/5/2002 12:45h',
+      },
+      {
+        nombre: 'Manuel Carrasco',
+        Tipo: 'Jurado de creatividad',
+        Email: 'email@dominio.com',
+        Aceptación: '12/5/2002 12:45h',
+      },
+      {
+        nombre: 'Manuel Carrasco',
+        Tipo: 'Jurado de creatividad',
+        Email: 'email@dominio.com',
+        Aceptación: '12/5/2002 12:45h',
+      },
+    ]
   }),
   getters: {
     getJuradosTest: (state) => state.juradosTest,

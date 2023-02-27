@@ -21,7 +21,7 @@
             outlined
             type="textarea"
             />
-            <q-btn label="Enviar" type="submit" color="red" style="display:flex;align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
+            <q-btn label="Enviar" type="submit" color="red" @click="showNotif()" style="display:flex;align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
         </q-form>
         </q-card-section>
     </q-card>
@@ -33,18 +33,26 @@
 import { ref, defineComponent } from 'vue'
 import { useJuradosStore } from "src/stores/TablaJuradosStore";
 import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
-
+import { useQuasar } from 'quasar';
 export default defineComponent ({
   name: 'MailVotacionComponent',
   setup () {
     const juradoStore = ref(useJuradosStore());
     const tipoStore = ref(useTipoJuradosStore());
     const rows = juradoStore.value.juradosRonda;
+     const $q = useQuasar();
     return {
        rows,
        juradoStore,
        tipoStore,
       text: ref(''),
+
+        showNotif () {
+        $q.notify({
+          message: 'Email Enviado',
+          color: 'green'
+        })
+      }
     }
   }
 })
