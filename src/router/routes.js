@@ -28,6 +28,18 @@ const routes = [
         component: () => import("pages/LoginPage.vue"),
       },
       {
+        path: "login/:login",
+        name: "login/",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'login'
+            }
+          ]
+        },
+        component: () => import("pages/authenticationPage.vue"),
+      },
+      {
         path: "results",
         name: "results",
         meta: {
@@ -64,7 +76,7 @@ const routes = [
         component: () => import("pages/Ronda1Page.vue"),
 
        },
-      {
+       {
         path: "jurado",
         name: "jurado",
         meta: {
@@ -72,7 +84,8 @@ const routes = [
             {
               text: 'jurado'
             }
-          ]
+          ],
+          requiresAuth: true
         },
         component: () => import("pages/JuradoPage.vue"),
 

@@ -9,7 +9,7 @@
       />
     </q-breadcrumbs>
 </template>
-  
+
   <script>
     export default {
         name: 'BreadcrumbsComponent',
@@ -18,15 +18,13 @@
             const matchedRoutes = this.$route.matched;
             let myRoutesPath = this.$route.matched[1].path
             let myRoutes = myRoutesPath.split('/');
-            console.log(myRoutes)
-            console.log(this.$route);
-    
-    
+
+
             let myCompletedRoutes = []
             let routes = ''
             let cont = 0;
-    
-    
+
+
             for (let i = 0; i < myRoutes.length; i++) {
             let myCompletedRoute = {};
             if ( i == 0) {
@@ -43,15 +41,12 @@
             myCompletedRoute['to'] = routes;
             myCompletedRoutes.push(myCompletedRoute);
             }
-    
-            console.log("dsadsa",myCompletedRoutes);
-    
-    
+
             const crumbs = myCompletedRoutes.map(route => ({
             label: route.label, //label
             to: route.to //to
             }));
-            
+
             return crumbs;
         }
         }

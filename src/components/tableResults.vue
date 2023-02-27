@@ -6,17 +6,11 @@
 
       <template v-slot:body-cell-Categoria="props">
 
-    
-          <q-td :props="props" @click="getSubcategoria(props.row)">
-            <router-link class="linkCat" to="results/ResultTab"> {{ props.row.Categoria }}</router-link>
-            <q-chip class="chip" square color="red" text-color="white" label="Empate" />
-          </q-td>
-    
 
-        <!-- </div> -->
-        <!-- <div v-else>
-                          {{ props.row.Categoria }}
-                        </div> -->
+        <q-td :props="props" @click="getSubcategoria(props.row)">
+          <router-link class="linkCat" to="results/ResultTab"> {{ props.row.Categoria }}</router-link>
+          <q-chip class="chip" square color="red" text-color="white" label="Empate" />
+        </q-td>
 
       </template>
 
@@ -66,6 +60,9 @@ export default {
       }
 
     }
+  },
+  mounted() {
+    this.resultStore.getSubCategoriasIndependent();
   }
 }
 </script>

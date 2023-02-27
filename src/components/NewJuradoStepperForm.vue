@@ -13,7 +13,7 @@
         </q-input>
 
         <q-stepper-navigation>
-          <q-btn @click="() => { done1 = true; step = 2 }" color="secondary" label="Continue" />
+          <q-btn @click="() => { done1 = true; step = 2;juradoStore.postSteperJurado(); }" color="secondary" label="Continue" />
         </q-stepper-navigation>
       </q-step>
 
