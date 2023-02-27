@@ -28,8 +28,8 @@ const routes = [
         component: () => import("pages/LoginPage.vue"),
       },
       {
-        path: "result",
-        name: "result",
+        path: "results",
+        name: "results",
         meta: {
           breadCrumb: [
             {
@@ -148,7 +148,12 @@ const routes = [
           ]
         },
         component: () => import("components/InvitacionJuradoComponent.vue"),
-      }
+      },
+      {
+        path: "results/ResultTab",
+        name: "results/ResultTab",
+        component: () => import("components/ResultTab.vue"),
+      },
     ],
   },
 

@@ -1,6 +1,4 @@
-<template>
-
-  <!-- <h3>Jurado Aspid 2022</h3> -->
+<template><!-- <h3>Jurado Aspid 2022</h3> -->
   <q-card flat bordered class="my-card">
     <div class="q-pa-md" style="max-width: 1080px">
       <q-list bordered>
@@ -8,47 +6,52 @@
           header-class="text-secondry text-weight-bolder text-subtitle1">
           <q-card>
             <q-card-section>
-              <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje que aparece y email que se envía al
-                jurado cuando éste termina su votación en la ronda 1.</p>
+              <div class="row">
+                <div class="column">
+                  <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje que aparece y email que se envía al
+                    jurado cuando éste termina su votación en la ronda 1.</p>
 
-              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
-
-
-              <q-separator inset class="q-mt-lg" size="1px" />
-
-              <!-- <q-img src="../assets/Frame1.png" style="height: 140px; max-width: 150px" /> -->
-
-              <p class="q-mt-lg q-ml-md"><b>Mensaje (PopUp) en aplicación de votación</b></p>
-
-              <div class="q-ml-md" style="max-width: 32rem;max-height: 33rem;">
-
-                <q-input v-model="areaValue" outlined type="textarea" class="text-primary" />
-
-              </div>
-
-              <p class="q-ml-md q-mt-md"><b>Fecha y hora de la cita telemática para crear links al calendar</b></p>
+                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
 
 
+                  <q-separator inset class="q-mt-lg" size="1px" />
 
-              <div id="q-app">
-                <div class="q-ml-md md" style="max-width: 30rem">
-                  <q-input outlined v-model="datetime" mask="date" :rules="['date']">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy>
-                          <q-date v-model="date"></q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
+
+                  <p class="q-mt-lg q-ml-md"><b>Mensaje (PopUp) en aplicación de votación</b></p>
+
+                  <div class="q-ml-md" style="max-width: 32rem;max-height: 33rem;">
+
+                    <q-input v-model="areaValue" outlined type="textarea" class="text-primary" />
+
+                  </div>
+
+                  <p class="q-ml-md q-mt-md"><b>Fecha y hora de la cita telemática para crear links al calendar</b></p>
+
+
+
+                  <div id="q-app">
+                    <div class="q-ml-md md" style="max-width: 30rem">
+                      <q-input outlined v-model="datetime" mask="date" :rules="['date']">
+                        <template v-slot:append>
+                          <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy>
+                              <q-date v-model="date"></q-date>
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="q-ml-md"><b>Email de confirmación que se le envía al Jurado</b></p>
+
+                    <a class="q-ml-md" href="#">Personalizar email</a>
+                  </div>
+                </div>
+                <div class="column">
+                  <q-img src="../assets/Frame1.png" class="imagen1" style="height: 340px; max-width: 350px" />
                 </div>
               </div>
-              <div>
-                <p class="q-ml-md"><b>Email de confirmación que se le envía al Jurado</b></p>
-
-                <a class="q-ml-md" href="#">Personalizar email</a>
-              </div>
-
               <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="showNotif" />
             </q-card-section>
           </q-card>
@@ -65,10 +68,7 @@
 
               <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
 
-              <q-separator inset class="q-mt-lg" size="1px" />
-
-              <!-- <q-img :src="" spinner-color="white" style="height: 140px; max-width: 150px" /> -->
-
+              <q-separator inset class="q-mt-lg" size="1px"  />
 
               <p class="q-ml-md q-mt-md"><b>Fecha y hora límite</b></p>
 
@@ -128,24 +128,30 @@
           header-class="text-primary text-weight-bolder text-subtitle1">
           <q-card>
             <q-card-section>
-              <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje y video de bienvenida para cada jurado al acceder a la aplicación.</p>
-              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
+              <div class="row">
+                <div class="column">
+                  <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje y video de bienvenida para cada jurado al
+                    acceder a la aplicación.</p>
+                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
 
+                  <q-separator inset class="q-mt-lg" size="1px" />
 
-              <q-separator inset class="q-mt-lg" size="1px" />
+                  <p class="q-ml-md q-mt-md"><b>Titulo</b></p>
+                  <q-input class="input-texts q-ml-md" outlined v-model="title" :dense="dense" />
 
-              <p class="q-ml-md q-mt-md"><b>Titulo</b></p>
-              <q-input class="input-texts q-ml-md" outlined v-model="title" :dense="dense" />
+                  <p class="q-ml-md q-mt-md"><b>Subtitulo</b></p>
+                  <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
 
-              <p class="q-ml-md q-mt-md"><b>Subtitulo</b></p>
-              <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
+                  <p class="q-ml-md q-mt-md"><b>Mensaje</b></p>
+                  <q-input class="input-texts q-ml-md" v-model="text" outlined />
 
-              <p class="q-ml-md q-mt-md"><b>Mensaje</b></p>
-              <q-input class="input-texts q-ml-md" v-model="text" outlined />
-
-              <p class="q-ml-md q-mt-md"><b>Ruta video</b></p>
-              <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
-
+                  <p class="q-ml-md q-mt-md"><b>Ruta video</b></p>
+                  <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
+                </div>
+                <div class="column">
+                  <q-img src="../assets/Explicacion.png" class="imagen2"/>
+                </div>
+              </div>
               <q-btn class="botonG2" color="red" label="Guardar" @click="showNotif" />
 
             </q-card-section>
@@ -153,9 +159,7 @@
         </q-expansion-item>
       </q-list>
     </div>
-  </q-card>
-
-
+</q-card>
 </template>
 
 <script>
@@ -178,12 +182,12 @@ export default defineComponent({
           message: 'Guardado !!',
           color: 'positive'
         }),
-        row1.addEventListener('click', function (e) {
-          if (e.target != this) {
-            row2.appendChild(e.target.cloneNode(true));
-            e.target.remove()
-          }
-        })
+          row1.addEventListener('click', function (e) {
+            if (e.target != this) {
+              row2.appendChild(e.target.cloneNode(true));
+              e.target.remove()
+            }
+          })
         row2.addEventListener('click', function (e) {
           if (e.target != this) {
             row1.appendChild(e.target.cloneNode(true));
@@ -205,6 +209,7 @@ export default defineComponent({
   width: 10rem;
   margin-left: 10rem;
 }
+
 .botonG2 {
   width: 10rem;
   margin-left: 40%;
@@ -215,9 +220,31 @@ export default defineComponent({
 }
 
 .jurado-input {
+  width: 24rem;
+}
+
+.input-texts {
   width: 27rem;
 }
-.input-texts{
-  width: 32rem;
+
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  padding: 10px;
+}
+.imagen1{
+  margin-top: 8rem;
+  margin-left: -6rem;
+  position: absolute;
+}
+.imagen2{
+  width: 27rem;
+  margin-top: 13rem;
+  margin-left: -2rem;
+  position: absolute;
+  gap: 1rem;
 }
 </style>
