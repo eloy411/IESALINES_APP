@@ -60,8 +60,6 @@ export default defineComponent({
 
       changeStyle(e) {
 
-        // console.log(e.target.parentNode.parentNode.classList);
-
         // Get the target from q-item
         let myDrawerElements = e.target.parentNode.parentNode.parentNode.parentNode;
         let myClassList = e.target.parentNode.parentNode.classList

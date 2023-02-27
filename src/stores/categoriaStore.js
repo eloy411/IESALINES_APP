@@ -84,23 +84,44 @@ export const useVotosStore = defineStore("votos", {
 
     async getCategorias() {
       try {
-        const res = await api.get("http://127.0.0.1:8000/api/categorias");
+        console.log('==== get categorias ====');
+        const res = await api.get("http://127.0.0.1:8000/api/subcategorias");
         if (res.status >= 200 && res.status <= 400 ) {
           console.log(res);
-          this.juradosTest = [];
 
-          res.data.forEach(categoria => {
-            let auxObject = {
-              categoria: 'G1 - Programas de Formación a Profesionales (presencial) (Aspid oro y Plata)',
-              progreso: '27%',
-              delete: '',
-            };
-            this.juradosTest.push(auxObject);
-          });
-
+          console.log('==== get progress ====');
+          const responseProgress = await api.get("http://127.0.0.1:8000/api/ronda/subcat-porcentaje");
+          console.log(responseProgress);
+          if (res.status >=200 && res.status <= 400) {
+            res.data.forEach(categoria => {
+              let auxObject = {
+                categoria: `${categoria.id_area}${categoria.codigo} - ${categoria.descrip}`,
+                progreso: '27%',
+                delete: '',
+              };
+              this.VotosTable.push(auxObject);
+            });
+          }
         }
       } catch(error) {
         console.log(error)
+      }
+    },
+
+    async deleteSubCategoriesVotaciones(rowToDelete){
+      try {
+        console.log(' ==== delete subcat-votaciones ====');
+        console.log(rowToDelete)
+        const res = await api.delete('http://127.0.0.1:8000/api/ronda/subcat-votaciones',{
+          id_cod_particip: ""
+        });
+        console.log(res);
+
+        if (res.status >= 200 && res.status <= 400) {
+
+        }
+      }catch(error) {
+        console.log(error);
       }
     },
   }

@@ -11,7 +11,7 @@
                   <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje que aparece y email que se envía al
                     jurado cuando éste termina su votación en la ronda 1.</p>
 
-                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
+                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="juradoStore.optionsTipoJurado" />
 
 
                   <q-separator inset class="q-mt-lg" size="1px" />
@@ -66,7 +66,7 @@
             <q-card-section>
               <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Fecha limite votación ronda 1.</p>
 
-              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
+              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="juradoStore.optionsTipoJurado" />
 
               <q-separator inset class="q-mt-lg" size="1px"  />
 
@@ -98,7 +98,7 @@
           <q-card>
             <q-card-section>
               <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Que categorías vota cada jurado.</p>
-              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
+              <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="juradoStore.optionsTipoJurado" />
 
               <q-separator inset class="q-mt-lg" size="1px" />
 
@@ -152,27 +152,28 @@
                 <div class="column">
                   <p class="text-grey-14 text-weight-medium texto1 q-ml-md">Mensaje y video de bienvenida para cada jurado al
                     acceder a la aplicación.</p>
-                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="model" :options="options" />
+                  <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="data.tipo" :options="juradoStore.optionsTipoJurado" />
 
                   <q-separator inset class="q-mt-lg" size="1px" />
 
                   <p class="q-ml-md q-mt-md"><b>Titulo</b></p>
-                  <q-input class="input-texts q-ml-md" outlined v-model="title" :dense="dense" />
+                  <q-input class="input-texts q-ml-md" outlined v-model="data.titulo" :dense="dense" />
 
                   <p class="q-ml-md q-mt-md"><b>Subtitulo</b></p>
-                  <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
+                  <q-input class="input-texts q-ml-md" outlined v-model="data.subtitulo" :dense="dense" />
 
                   <p class="q-ml-md q-mt-md"><b>Mensaje</b></p>
-                  <q-input class="input-texts q-ml-md" v-model="text" outlined />
+                  <q-input class="input-texts q-ml-md" v-model="data.mensaje" outlined />
 
                   <p class="q-ml-md q-mt-md"><b>Ruta video</b></p>
-                  <q-input class="input-texts q-ml-md" outlined v-model="text" :dense="dense" />
+                  <q-input class="input-texts q-ml-md" outlined v-model="data.rutaVideo" :dense="dense" />
                 </div>
                 <div class="column">
                   <q-img src="../assets/Explicacion.png" class="imagen2"/>
                 </div>
               </div>
-              <q-btn class="botonG2" color="red" label="Guardar" @click="showNotif" />
+              <q-btn class="botonG2" color="red" label="Guardar" @click="juradoStore.putConfigPopUp(data)" />
+               <!-- showNotif -->
 
             </q-card-section>
           </q-card>
@@ -185,16 +186,34 @@
 <script>
 import { ref, defineComponent } from "vue";
 import { useQuasar } from 'quasar';
+import { useJuradoStore } from "src/stores/juradoStore";
+import { useLayoutStore } from "src/stores/layoutStore";
 
 export default defineComponent({
   name: "ConfigurationComponent",
   setup() {
     // title = ref('');
-    const $q = useQuasar()
-    const status1 = ref([])
-    const status2 = ref([])
 
+    const juradoStore = ref(useJuradoStore());
+    const layoutStore = ref(useLayoutStore());
+    const $q = useQuasar();
+    const status1 = ref([]);
+    const status2 = ref([]);
+
+    const data = ref({
+      idEdicion: layoutStore.value.id_edicion,
+      tipo: "",
+      titulo: "",
+      subtitulo: "",
+      mensaje: "",
+      fechaReunion: "",
+      rutaVideo: ""
+    })
+   
     return {
+    // title,
+      data,
+      juradoStore,
       status1,
       status2,
       handler1 (mutationRecords) {
@@ -255,7 +274,7 @@ export default defineComponent({
       },
       areaValue: ref('Has terminado la votacion de la primera ronda! Ahora solo queda votar los Aspid Plata, resolver los desempates y votar el Platino ! Esto tendra lugar via videoconferencia el pròximo día 22 de junio a las 10h. Bloqueate la mañana en tu calendario ! Recibiras más detalles por email.'),
       model: ref(null),
-      options: ref(["Jurado de Creatividad", "Jurado de Formación", "Jurado de eSalud"]),
+      // options: ref(["Jurado de Creatividad", "Jurado de Formación", "Jurado de eSalud"]),
       showNotif() {
         $q.notify({
           message: 'Guardado !!',
@@ -263,6 +282,11 @@ export default defineComponent({
         })
       },
 
+    }
+  },
+  mounted() {
+    if (this.juradoStore.tipoJuradoChecker == false) {
+      this.juradoStore.getJuradoTipo();
     }
   }
 })

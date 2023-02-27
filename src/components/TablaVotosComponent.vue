@@ -17,7 +17,7 @@
           {{ props.row.progreso }}
         </q-td>
         <q-td key="delete" :props="props">
-          <q-btn flat name="Delete" label='' icon='delete' @click="deleteval(rowVotos.indexOf(props.row))"/>
+          <q-btn flat name="Delete" label='' icon='delete' @click="votosStore.deleteSubCategoriesVotaciones(props.row); deleteval(rowVotos.indexOf(props.row))"/>
         </q-td>
       </q-tr>
     </template>
@@ -29,11 +29,13 @@ import { ref, defineComponent } from 'vue'
 import {useVotosStore} from "src/stores/categoriaStore";
 
 export default defineComponent({
-name: 'TablaVotosComponent',
-setup () {
-  const votosStore = ref(useVotosStore());
-  const rowVotos=votosStore.value.VotosTable;
+  name: 'TablaVotosComponent',
+  setup () {
+    const votosStore = ref(useVotosStore());
+    const rowVotos=votosStore.value.VotosTable;
     return {
+      rowVotos,  // si no se retornan no se visualizan,
+      votosStore,
       columns: [
         {
           name: 'categoria',
@@ -48,16 +50,19 @@ setup () {
         { name: 'progreso', label: 'Progreso', field: 'progreso', align:'left', sortable: true },
         { name: 'delete', align: 'left', label: '', field: '' }
       ],
-      rowVotos,  // si no se retornan no se visualizan
+
       deleteval(index){
-          console.log(index)
-          this.rowVotos.splice(index, 1);
+        console.log(index)
+        this.rowVotos.splice(index, 1);
 
-          console.log(this.rows)
-        }
-
+        console.log(this.rows)
+      }
     }
-}
+  },
+  mounted() {
+    this.votosStore.getCategorias();
+  }
+
 })
 </script>
 <style>
