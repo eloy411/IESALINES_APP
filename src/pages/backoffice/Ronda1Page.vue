@@ -11,9 +11,9 @@
 <script>
 
 import { defineComponent } from 'vue'
-import TablaVotosComponent from 'src/components/TablaVotosComponent.vue'
-import JuradosRondaComponent from 'src/components/JuradosRondaComponent.vue'
-import ActivacionRondaComponent from 'src/components/ActivacionRondaComponent.vue'
+import TablaVotosComponent from 'src/components/backoffice/TablaVotosComponent.vue'
+import JuradosRondaComponent from 'src/components/backoffice/JuradosRondaComponent.vue'
+import ActivacionRondaComponent from 'src/components/backoffice/ActivacionRondaComponent.vue'
 // import MailVotacionComponent from 'src/components/MailVotacionComponent.vue'
 import { useJuradosStore } from "src/stores/TablaJuradosStore";
 import { ref } from 'vue'

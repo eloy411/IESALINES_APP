@@ -49,7 +49,7 @@
                   </div>
                 </div>
                 <div class="column">
-                  <q-img src="../assets/Frame1.png" class="imagen1" style="height: 340px; max-width: 350px" />
+                  <q-img src="../../assets/Frame1.png" class="imagen1" style="height: 340px; max-width: 350px" />
                 </div>
               </div>
               <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="showNotif" />
@@ -169,7 +169,7 @@
                   <q-input class="input-texts q-ml-md" outlined v-model="data.rutaVideo" :dense="dense" />
                 </div>
                 <div class="column">
-                  <q-img src="../assets/Explicacion.png" class="imagen2"/>
+                  <q-img src="../../assets/Explicacion.png" class="imagen2"/>
                 </div>
               </div>
               <q-btn class="botonG2" color="red" label="Guardar" @click="juradoStore.putConfigPopUp(data)" />
@@ -209,7 +209,7 @@ export default defineComponent({
       fechaReunion: "",
       rutaVideo: ""
     })
-   
+
     return {
     // title,
       data,

@@ -28,10 +28,10 @@
                    </q-item-section>
                    <q-menu anchor="top right" self="top start">
                      <q-list>
-                       <q-item class="my-item" dense clickable to="ronda1Page/EmailInicioVotacion"   @click="getJuradoTipo(tipoJ[0])">
+                       <q-item class="my-item" dense clickable to="/backoffice/ronda1Page/EmailInicioVotacion"   @click="getJuradoTipo(tipoJ[0])">
                         <q-item-section>Inicio votación</q-item-section>
                        </q-item>
-                       <q-item class="my-item" dense clickable to="ronda1Page/EmailRecordatorioVotacion2"  @click="getJuradoTipo(tipoJ[0])">
+                       <q-item class="my-item" dense clickable to="/backoffice/ronda1Page/EmailRecordatorioVotacion2"  @click="getJuradoTipo(tipoJ[0])">
                         <q-item-section>Recordatorio votación</q-item-section>
                        </q-item>
                      </q-list>
@@ -47,10 +47,10 @@
                    </q-item-section>
                    <q-menu anchor="top right" self="top start">
                      <q-list>
-                       <q-item class="my-item" dense clickable to="ronda1Page/EmailInicioVotacion"   @click="getJuradoTipo(tipoJ[1])">
+                       <q-item class="my-item" dense clickable to="/backoffice/ronda1Page/EmailInicioVotacion"   @click="getJuradoTipo(tipoJ[1])">
                         <q-item-section>Inicio votación</q-item-section>
                        </q-item>
-                       <q-item class="my-item" dense clickable to="ronda1Page/EmailRecordatorioVotacion2"   @click="getJuradoTipo(tipoJ[1])">
+                       <q-item class="my-item" dense clickable to="/backoffice/ronda1Page/EmailRecordatorioVotacion2"   @click="getJuradoTipo(tipoJ[1])">
                         <q-item-section>Recordatorio votación</q-item-section>
                        </q-item>
                      </q-list>

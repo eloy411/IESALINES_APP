@@ -33,7 +33,7 @@
               <template v-slot:body-cell-premio="props">
                 <td :props="props">
                   <div v-if="props.value == '-'">
-                  <q-img class="selloAspid" src="../assets/Sellos/sello-aspid.png"></q-img>
+                  <q-img class="selloAspid" src="../../assets/Sellos/sello-aspid.png"></q-img>
                 </div>
                 </td>
               </template>

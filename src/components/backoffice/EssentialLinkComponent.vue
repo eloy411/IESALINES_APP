@@ -97,6 +97,9 @@ export default defineComponent({
       }
     };
   },
+  mounted() {
+    console.log(this.props)
+  }
 });
 </script>
 

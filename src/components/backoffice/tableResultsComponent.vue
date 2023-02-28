@@ -8,7 +8,7 @@
 
 
         <q-td :props="props" @click="getSubcategoria(props.row)">
-          <router-link class="linkCat" to="results/ResultTab"> {{ props.row.Categoria }}</router-link>
+          <router-link class="linkCat" to="/backoffice/results/ResultTab"> {{ props.row.Categoria }}</router-link>
           <q-chip class="chip" square color="red" text-color="white" label="Empate" />
         </q-td>
 
@@ -20,7 +20,7 @@
 
 
 <script>
-import router from "../router";
+import router from "../../router";
 const columns = [
   {
     name: 'Categoria',
