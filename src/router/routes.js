@@ -174,6 +174,16 @@ const routes = [
 
       },
       {
+        path: "loginv",
+        name: "loginv",
+        component: () => import("pages/LoginVotacionPage.vue"),
+      },
+      {
+        path: "configuracion",
+        name: "configuracion",
+        component: () => import("pages/ConfiguracionPage.vue"),
+      },
+    ],
         path: "votaciones",
         component: () => import("src/layouts/backofficeLayout.vue"),
         children: [
@@ -181,11 +191,8 @@ const routes = [
         ]
       }
     ]
-
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: "/:catchAll(.*)*",
     component: () => import("src/pages/backoffice/ErrorNotFound.vue"),
