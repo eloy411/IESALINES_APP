@@ -23,13 +23,15 @@
     </q-header>
 
     <q-drawer class="bg-black" v-model="leftDrawerOpen" show-if-above bordered>
-      <div class="q-mb-md q-pa-md row center-header self-end">
+      <div class=" q-pa-md row center-header self-end">
         <img src="~assets/logo.svg" style="height: 48px" />
-        <h4  class="text-secondary">{{ year }}</h4>
+        <h6  class="text-secondary">{{ layoutStore.year }}</h6>
       </div>
       <q-list>
+        <!-- <q-icon name="how_to_vote" /> -->
         <q-expansion-item
           class="white"
+          icon="how_to_vote"
           :content-inset-level="0.5"
           expand-separator
           label="Votación"
@@ -45,11 +47,7 @@
 
     <q-page-container>
       <div class="q-pa-md q-gutter-sm">
-        <q-breadcrumbs>
-        <q-breadcrumbs-el label="Home" />
-        <q-breadcrumbs-el label="Components" />
-        <q-breadcrumbs-el label="Breadcrumbs" />
-        </q-breadcrumbs>
+        <BreadcrumbsComponent></BreadcrumbsComponent>
       </div>
       <router-view />
     </q-page-container>
@@ -58,58 +56,74 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
-import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
+import { storeToRefs } from 'pinia'
+import EssentialLink from "src/components/backoffice/EssentialLinkComponent.vue";
+import MenuPerfilButton from "src/components/backoffice/MenuPerfilButtonComponent.vue";
 import { useAuthStore } from "src/stores/authStore";
-
-const linksList = [
-  {
-    title: "Jurado",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "/jurado",
-  },
-  {
-    title: "Ronda 1",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Resultados",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev/",
-  },
-  {
-    title: "Configuración",
-    caption: "forum.quasar.dev",
-    link: "/configuracion",
-  },
-];
+import { useLayoutStore } from "src/stores/layoutStore";
+import BreadcrumbsComponent from "src/components/backoffice/BreadcrumbsComponent.vue";
 export default defineComponent({
   name: "MainLayout",
 
   components: {
     EssentialLink,
     MenuPerfilButton,
+    BreadcrumbsComponent,
   },
 
   setup() {
+
     const authStore = useAuthStore();
+    const layoutStore = ref(useLayoutStore());
     const leftDrawerOpen = ref(false);
-    const year = ref('2022');
+
+
+    // const {year, linksList} = storeToRefs(layoutStore);
+    const essentialLinks = ref([
+    {
+        title: "Jurado",
+        // icon: "school",
+        link: "/backoffice/jurado",
+        exact: 'true',
+      },
+      {
+        title: "Ronda 1",
+        // icon: "code",
+        link: "/backoffice/ronda1Page",
+        exact: 'false',
+      },
+      {
+        title: "Resultados",
+        // icon: "chat",
+        link: "/backoffice/results",
+        exact: 'true',
+      },
+      {
+        title: "Configuración",
+        // icon: "record_voice_over",
+        link: "/backoffice/configuracion",
+        exact: 'false',
+      },
+    ])
+
 
     return {
       authStore,
-      essentialLinks: linksList,
+      layoutStore,
+      // year,
+      essentialLinks ,
       leftDrawerOpen,
-      year,
+      BreadcrumbsComponent,
+      // year,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
     };
   },
+  mounted() {
+    this.layoutStore.getYear();
+    console.log(this.layoutStore.linksList)
+  }
 });
 </script>
 
@@ -117,10 +131,9 @@ export default defineComponent({
 .white {
   color: white;
 }
-
 .center-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: baseline;
+  justify-content: space-evenly;
 }
 </style>

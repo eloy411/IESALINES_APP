@@ -1,20 +1,19 @@
 <template>
-  <ConfigurationComponent/>
+  <tableResults/>
 </template>
 
 <script>
 import { ref, defineComponent } from "vue";
-import  ConfigurationComponent   from "src/components/ConfigurationComponent.vue";
+import  tableResults  from "src/components/backoffice/tableResultsComponent.vue";
 
 export default defineComponent({
-  name: "ConfiguracionPage",
+  name: "ResultsPage",
 
   components: {
-    ConfigurationComponent
+    tableResults
   },
 
   setup () {
-
     return {
 
     }
