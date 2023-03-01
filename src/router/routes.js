@@ -168,29 +168,40 @@ const routes = [
           {
             path: "results/ResultTab",
             name: "results/ResultTab",
+            meta: {
+              breadCrumb: [
+                {
+                  text: 'InvitacionJurado'
+                }
+              ]
+            },
             component: () => import("src/components/backoffice/ResultTabComponent.vue"),
           },
         ],
-
       },
       {
-        path: "loginv",
-        name: "loginv",
-        component: () => import("pages/LoginVotacionPage.vue"),
-      },
-      {
-        path: "configuracion",
-        name: "configuracion",
-        component: () => import("pages/ConfiguracionPage.vue"),
-      },
-    ],
-        path: "votaciones",
-        component: () => import("src/layouts/backofficeLayout.vue"),
+        path: "login",
+        component: () => import("src/layouts/LoginLayout.vue"),
         children: [
-
+          {
+            path: "",
+            name: "index",
+            component: () => import("src/pages/votaciones/LoginVotacionPage.vue"),
+          },
+        ]
+      },
+      {
+        path: "votaciones",
+        component: () => import("src/layouts/VotacionesLayout.vue"),
+        children: [
+          {
+            path: "loginv",
+            name: "loginv",
+            component: () => import("src/pages/votaciones/votacionesPageTest.vue"),
+          },
         ]
       }
-    ]
+    ],
   },
 
   {

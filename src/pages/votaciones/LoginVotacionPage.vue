@@ -1,14 +1,14 @@
 <template>
   <q-page class="flex flex-center bg-pmf" data-cy="loginPageDesktop">
-      <LoginForm></LoginForm>
+      <LoginPage />
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import LoginForm from "src/components/auth/LoginPageComponent.vue";
+import LoginPage from "src/components/auth/LoginPageComponent.vue";
 export default defineComponent({
   name: "LoginVotacionPage",
-  components: { LoginForm },
+  components: { LoginPage },
 });
 </script>
