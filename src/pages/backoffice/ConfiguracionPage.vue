@@ -4,7 +4,7 @@
 
 <script>
 import { ref, defineComponent } from "vue";
-import  ConfigurationComponent   from "src/components/ConfigurationComponent.vue";
+import  ConfigurationComponent   from "src/components/backoffice/ConfigurationComponent.vue";
 
 export default defineComponent({
   name: "ConfiguracionPage",

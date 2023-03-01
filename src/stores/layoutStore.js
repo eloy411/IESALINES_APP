@@ -5,32 +5,6 @@ export const useLayoutStore = defineStore("layout", {
   state: () => ({
     year: '2022(XVIII)',
     id_edicion: 0,
-    linksList: [
-      {
-        title: "Jurado",
-        // icon: "school",
-        link: "/jurado",
-        exact: 'true',
-      },
-      {
-        title: "Ronda 1",
-        // icon: "code",
-        link: "/ronda1Page",
-        exact: 'false',
-      },
-      {
-        title: "Resultados",
-        // icon: "chat",
-        link: "/results",
-        exact: 'true',
-      },
-      {
-        title: "Configuración",
-        // icon: "record_voice_over",
-        link: "/configuracion",
-        exact: 'false',
-      },
-    ]
   }),
   actions: {
     async getYear() {

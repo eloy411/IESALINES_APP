@@ -16,7 +16,9 @@
         computed: {
         crumbs() {
             const matchedRoutes = this.$route.matched;
-            let myRoutesPath = this.$route.matched[1].path
+            const routesLength = matchedRoutes.length
+            let myRoutesPath = matchedRoutes[routesLength - 1].path
+            // console.log(this.$route.matched.length)
             let myRoutes = myRoutesPath.split('/');
 
 

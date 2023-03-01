@@ -1,22 +1,23 @@
 <template>
-  <NewJuradoStepperForm />
+  <tableResults/>
 </template>
-
 
 <script>
 import { ref, defineComponent } from "vue";
-import NewJuradoStepperForm from "src/components/NewJuradoStepperForm.vue";
-
+import  tableResults  from "src/components/backoffice/tableResultsComponent.vue";
 
 export default defineComponent({
-  name: "NuevoPage",
+  name: "ResultsPage",
 
   components: {
-    NewJuradoStepperForm
+    tableResults
   },
+
   setup () {
     return {
+
     }
   }
 })
+
 </script>

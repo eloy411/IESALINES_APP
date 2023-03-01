@@ -6,7 +6,7 @@
       <template v-slot:body-cell-buttons="props">
         <q-td :props="props">
           <q-btn disabled flat class="q-pa-xs" icon="mark_email_read" size="1em" ></q-btn>
-          <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em" to="/jurado/Nuevo/editar"></q-btn>
+          <q-btn flat @click="onRowClick(props.row)" class="q-pa-xs" icon="edit_square" size="1em" to="/backoffice/jurado/Nuevo/editar"></q-btn>
           <q-btn flat @click="juradoStore.deleteJurado(props.row)" class="q-pa-xs" icon="close" size="1em"></q-btn>
         </q-td>
       </template>
@@ -33,10 +33,11 @@
         <div class="q-pa-md q-gutter-sm">
           <q-btn class="my-btn q-pt-sm q-pb-sm q-pr-lg q-pl-lg radius" @click="juradoStore.descargaCSV" outline
             style="color: #de331d;" label="Descargar CSV" />
-          <q-btn to="/jurado/nuevo" class="bg-secondary q-pt-sm q-pb-sm q-pr-lg q-pl-lg" style="color: white"
+          <q-btn to="/backoffice/jurado/nuevo" class="bg-secondary q-pt-sm q-pb-sm q-pr-lg q-pl-lg" style="color: white"
             label="Nuevo Jurado" />
         </div>
       </template>
+    </q-table>
   </div>
 </template>
 
@@ -115,12 +116,13 @@ export default defineComponent({
         console.log(row)
         juradoStore.value.mailDestinatario = row.tipo;
         juradoStore.value.checker=true;
-           
+
 
       }
-
-
     }
+  },
+  mounted() {
+    this.juradoStore.getJurados();
   },
 
 })

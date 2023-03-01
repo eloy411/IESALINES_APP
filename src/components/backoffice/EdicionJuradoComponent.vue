@@ -7,7 +7,7 @@
     <div class="q-gutter-y-md column">
       <div>
         <div class=" q-pa-xs center">
-          <q-img src="../assets/user.jpg" style="border-radius: 50%; width: 15%;" />
+          <q-img src="../../assets/user.jpg" style="border-radius: 50%; width: 15%;" />
         </div>
         <div class="my-input q-pa-xs center">
           <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Nombre</div>

@@ -1,16 +1,17 @@
 <template>
-  <EdicionJurado />
+  <TableJurados />
 </template>
 
 <script>
 import { ref, defineComponent } from "vue";
-import  EdicionJurado  from "components/EdicionJurado.vue";
+import TableJurados from "src/components/backoffice/TableJuradosComponent.vue"
+// import  TableJurados  from "components/backoffice/TableJurados.vue";
 
 export default defineComponent({
   name: "JuradoPage",
 
   components: {
-    EdicionJurado
+    TableJurados
   },
 
   setup () {

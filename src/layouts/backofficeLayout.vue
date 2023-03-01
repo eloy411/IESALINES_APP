@@ -25,7 +25,7 @@
     <q-drawer class="bg-black" v-model="leftDrawerOpen" show-if-above bordered>
       <div class=" q-pa-md row center-header self-end">
         <img src="~assets/logo.svg" style="height: 48px" />
-        <h6  class="text-secondary">{{ year }}</h6>
+        <h6  class="text-secondary">{{ layoutStore.year }}</h6>
       </div>
       <q-list>
         <!-- <q-icon name="how_to_vote" /> -->
@@ -57,11 +57,11 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { storeToRefs } from 'pinia'
-import EssentialLink from "components/EssentialLink.vue";
-import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
+import EssentialLink from "src/components/backoffice/EssentialLinkComponent.vue";
+import MenuPerfilButton from "src/components/backoffice/MenuPerfilButtonComponent.vue";
 import { useAuthStore } from "src/stores/authStore";
 import { useLayoutStore } from "src/stores/layoutStore";
-import BreadcrumbsComponent from "src/components/BreadcrumbsComponent.vue";
+import BreadcrumbsComponent from "src/components/backoffice/BreadcrumbsComponent.vue";
 export default defineComponent({
   name: "MainLayout",
 
@@ -74,28 +74,44 @@ export default defineComponent({
   setup() {
 
     const authStore = useAuthStore();
-    const layoutStore = useLayoutStore();
+    const layoutStore = ref(useLayoutStore());
     const leftDrawerOpen = ref(false);
 
 
-    const {year, linksList} = storeToRefs(layoutStore);
+    // const {year, linksList} = storeToRefs(layoutStore);
+    const essentialLinks = ref([
+    {
+        title: "Jurado",
+        // icon: "school",
+        link: "/backoffice/jurado",
+        exact: 'true',
+      },
+      {
+        title: "Ronda 1",
+        // icon: "code",
+        link: "/backoffice/ronda1Page",
+        exact: 'false',
+      },
+      {
+        title: "Resultados",
+        // icon: "chat",
+        link: "/backoffice/results",
+        exact: 'true',
+      },
+      {
+        title: "Configuración",
+        // icon: "record_voice_over",
+        link: "/backoffice/configuracion",
+        exact: 'false',
+      },
+    ])
 
 
     return {
-      routes: [
-        {
-        name: 'jurado',
-        route: '/jurado'
-      },
-      {
-        name: 'MariCarmen',
-        route: '/ronda1Page'
-      },
-    ],
       authStore,
       layoutStore,
-      year,
-      essentialLinks: linksList ,
+      // year,
+      essentialLinks ,
       leftDrawerOpen,
       BreadcrumbsComponent,
       // year,
@@ -106,6 +122,7 @@ export default defineComponent({
   },
   mounted() {
     this.layoutStore.getYear();
+    console.log(this.layoutStore.linksList)
   }
 });
 </script>
