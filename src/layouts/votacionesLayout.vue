@@ -29,12 +29,12 @@
           {{ value }}%
         </q-circular-progress>
 
-        <MenuOldPerfilButton
+        <MenuPerfilButton
           :isAuth="authStore.isAuth"
           :authUserAvatar="'urlimagen'"
           class="q-ml-xl"
         >
-        </MenuOldPerfilButton>
+        </MenuPerfilButton>
 
       </q-toolbar>
     </q-header>
@@ -50,12 +50,12 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useAuthStore } from "src/stores/authStore";
-import MenuOldPerfilButton from "src/components/backoffice/MenuPerfilButtonComponent.vue";
+import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 
 export default defineComponent({
   name: "VotacionLayout",
   components: {
-    MenuOldPerfilButton,
+    MenuPerfilButton,
   },
   setup() {
     const authStore = useAuthStore();
