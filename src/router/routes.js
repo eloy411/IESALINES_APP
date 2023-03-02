@@ -192,7 +192,7 @@ const routes = [
       },
       {
         path: "votaciones",
-        component: () => import("src/layouts/votacionesLayout.vue"),
+        component: () => import("src/layouts/votacionLayout.vue"),
         children: [
           {
             path: "loginv",
