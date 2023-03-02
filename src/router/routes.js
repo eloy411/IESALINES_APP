@@ -204,6 +204,11 @@ const routes = [
             name: "main",
             component: () => import("src/pages/votaciones/MainDialogVotacionesPage.vue"),
           },
+          {
+            path: "card",
+            name: "card",
+            component: () => import("src/pages/votaciones/CategoryIndexPage.vue"),
+          },
         ]
       }
     ],
