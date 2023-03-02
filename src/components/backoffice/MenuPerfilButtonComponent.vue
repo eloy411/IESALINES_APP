@@ -28,7 +28,7 @@
 import { defineComponent } from "vue";
 import { useAuthStore } from "src/stores/authStore";
 export default defineComponent({
-  name: "MenuOldPerfilButton",
+  name: "MenuPerfilButton",
   props: {
     isAuth: {
       type: Boolean,

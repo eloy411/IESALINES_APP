@@ -1,7 +1,6 @@
 <template >
   <div class="backrooms">
     <div align="center">
-
       <!--TextHeader-->
       <div class="headertext" >
         <qt v-for="item in TitelDescArr" v-bind:key="item.name">
@@ -25,7 +24,7 @@
         <!--Trofee-->
         <div v-for="item in Trofee" v-bind:key="item.name" >
               <div v-if="Trofee == 1">
-                <img class="premiStyle" style="position:absolute;" src="../assets/sello_oro.svg">
+                <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
               </div>
         </div>
         <!--Image-->
@@ -51,7 +50,7 @@
         <!--Trofee-->
         <div v-for="item in Trofee" v-bind:key="item.name" >
               <div v-if="Trofee == 2">
-                <img class="premiStyle" style="position:absolute;" src="../assets/sello_oro.svg">
+                <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
               </div>
         </div>
         <!--Image-->
@@ -77,7 +76,7 @@
         <!--Trofee-->
         <div v-for="item in Trofee" v-bind:key="item.name" >
               <div v-if="Trofee == 3">
-                <img class="premiStyle" style="position:absolute;" src="../assets/sello_oro.svg">
+                <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
               </div>
         </div>
         <!--Image-->

@@ -4,7 +4,7 @@
 
 <script>
 import { ref, defineComponent } from "vue";
-import  DialogComponent  from "components/DialogComponent.vue";
+import  DialogComponent  from "src/components/votaciones/MainDialogVotacionesComponent.vue";
 
 export default defineComponent({
   name: "DialogPage",
