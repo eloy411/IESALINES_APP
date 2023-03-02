@@ -4,7 +4,7 @@
       <div class="text-body1 q-mb-md">
         Introduce la contraseña enviada a tu correo electronico.
       </div>
-      <q-form @submit="submitHandler()" class="full-width">
+      <q-form @submit="submitHandler($event)" class="full-width">
         <q-input
           class="q-mb-md"
           bg-color="grey-1"
@@ -50,9 +50,11 @@ export default defineComponent({
       email: "",
       password: "",
     });
-    const submitHandler = () => {
+    const submitHandler = (ev) => {
+      ev.preventDefault();
       //Logica para hacer login
       authStore.login(form);
+
     };
 
     return {
@@ -61,5 +63,8 @@ export default defineComponent({
       submitHandler,
     };
   },
+  mounted() {
+    // console.log(useAuthStore().isAuth);
+  }
 });
 </script>
