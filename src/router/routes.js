@@ -192,7 +192,7 @@ const routes = [
       },
       {
         path: "votaciones",
-        component: () => import("src/layouts/votacionesLayout.vue"),
+        component: () => import("src/layouts/votacionLayout.vue"),
         children: [
           {
             path: "loginv",
@@ -203,6 +203,11 @@ const routes = [
             path: "main",
             name: "main",
             component: () => import("src/pages/votaciones/MainDialogVotacionesPage.vue"),
+          },
+          {
+            path: "card",
+            name: "card",
+            component: () => import("src/pages/votaciones/CategoryIndexPage.vue"),
           },
         ]
       }
