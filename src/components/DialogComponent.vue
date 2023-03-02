@@ -156,6 +156,7 @@ export default defineComponent({
           //elimina el numero de el contador - boleano
             cont.pop()
           //elimina la ubicacion anterior del trofeo
+          //pop es importante
             Trofee.value.pop()
           //añade la nueva ubicación del trofeo
             Trofee.value = [...Trofee.value, 1]
