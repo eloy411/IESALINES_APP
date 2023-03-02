@@ -50,7 +50,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useAuthStore } from "src/stores/authStore";
-import MenuPerfilButton from "src/components/backoffice/MenuPerfilButtonComponent.vue";
+import MenuPerfilButton from "src/components/MenuPerfilButton.vue";
 
 export default defineComponent({
   name: "VotacionLayout",
