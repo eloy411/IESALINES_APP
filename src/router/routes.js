@@ -199,6 +199,11 @@ const routes = [
             name: "loginv",
             component: () => import("src/pages/votaciones/votacionesPageTest.vue"),
           },
+          {
+            path: "dialog",
+            name: "dialog",
+            component: () => import("pages/DialogPage.vue"),
+          },
         ]
       }
     ],
