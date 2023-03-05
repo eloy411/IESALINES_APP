@@ -5,7 +5,7 @@
         <!-- Tabs que representan los botones de seleccion de tabla. -->
         <q-tabs v-model="tab" dense active-color="red" indicator-color="red" align="justify" narrow-indicator>
           <q-tab name="ranking" label="RANKING" />
-          <q-tab name="votos_jurado" label="VOTOS JURADO" />
+          <q-tab name="votos_jurado" label="VOTOS JURADO" @click="categoriaStore.getVotosJuradoResult()" />
         </q-tabs>
 
         <q-tab-panels v-model="tab" animated>
@@ -41,8 +41,8 @@
               <!-- Boton otorgar premio -->
               <template v-slot:body-cell-action="boton">
 
+                <q-btn outline depressed label="Otorgar Premio" color="red" @click="prompt = true" />
                 <q-td v-if="OtorgarPremio() == true" :props="boton">
-                  <q-btn outline depressed label="Otorgar Premio" color="red" @click="prompt = true" />
                 </q-td>
 
               </template>
@@ -96,9 +96,9 @@
           </q-tab-panel>
 
           <!-- Tabla votos jurado -->
-          <q-tab-panel name="votos_jurado">
+          <q-tab-panel name="votos_jurado" >
             <q-table id="table" title-class="q-mt-lg"
-              :rows="resultJuradosStore.resultStore" :columns="voto" row-key="name" v-model:pagination="pagination"
+              :rows="categoriaStore.resultVotoJurado" :columns="voto" row-key="name" v-model:pagination="pagination"
               hide-bottom virtual-scroll :rows-per-page-options="[0]">
               <template v-slot:top>
                 <h5> <b>Votos por Jurado</b> {{categoriaStore.subCategorias}}</h5>
@@ -139,64 +139,28 @@
 <script>
 
 import { ref } from 'vue'
-import { useresultStore } from "src/stores/resultStore"
-import { useresultJuradosStore } from "src/stores/resultJuradosStore"
 import { useVotosStore } from "src/stores/categoriaStore";
 
 // Columnas jurado
 const ranking = [
-  {
-    name: 'obra',
-    align: 'left',
-    label: 'Obra',
-    field: 'name',
-  },
-  {
-    name: 'votos',
-    align: 'left',
-    label: 'Votos',
-    field: 'voto',
-  },
-  {
-    name: 'premio',
-    align: 'left',
-    label: 'Premio',
-    field: 'premio',
-  },
-  {
-    name: 'action',
-    align: 'right',
-    field: 'action',
-  },
-
+  { name: 'obra', align: 'left', label: 'Obra', field: 'name',},
+  { name: 'votos', align: 'left', label: 'Votos', field: 'voto',},
+  { name: 'premio', align: 'left', label: 'Premio',field: 'premio',},
+  { name: 'action', align: 'right', field: 'action',},
 ]
 
 // Columnas votos
 const voto = [
-  {
-    name: 'jurado',
-    align: 'left',
-    label: 'Jurado',
-    field: 'jurado',
-    sortable: true
-  },
-  {
-    name: 'voto',
-    align: 'left',
-    label: 'Voto',
-    field: 'voto',
-  },
-
+  { name: 'jurado', align: 'left', label: 'Jurado', field: 'jurado',sortable: true},
+  { name: 'voto', align: 'left', label: 'Voto', field: 'voto',},
 ]
 
 export default {
 
   setup() {
     // Cojer datos de la store de los resultados.
-    const resultStore = ref(useresultStore());
-    const rows = resultStore.value.resultStore;
-    const resultJuradosStore = ref(useresultJuradosStore());
     const categoriaStore = ref(useVotosStore());
+    const rows = categoriaStore.value.resultStore;
     // Esta funcion no funciona al 100%. Se utiliza para comparar los votos y que aparezca el boton de otorgar premio. Se puede prescindir de ella porque no termina de funcionar bien.
     const OtorgarPremio = () => {
       const pos1 = rows[0];
@@ -211,8 +175,6 @@ export default {
 
     return {
       OtorgarPremio,
-      resultStore,
-      resultJuradosStore,
       categoriaStore,
       model: ref(null),
       // Las opciones de seleccion del apartado tipo dentro del popup de otorgar premio.

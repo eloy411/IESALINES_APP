@@ -5,6 +5,7 @@ export const useLayoutStore = defineStore("layout", {
   state: () => ({
     year: '2022(XVIII)',
     id_edicion: 0,
+    activacionRonda: false,
   }),
   actions: {
     async getYear() {
@@ -32,17 +33,12 @@ export const useLayoutStore = defineStore("layout", {
         console.log(' ==== put switch ronda ====');
         const res = await api.put('http://127.0.0.1:8000/api/ronda/switch',
           {
-            id_edicion: this.id_edicion
+            id_edicion: this.id_edicion,
+            aceptacion_ronda: this.activacionRonda
           });
 
         if (res.status >= 200 && res.status <= 400) {
-          console.log(res.data)
-          if (res.data != 0) {
-            this.id_edicion = res.data
-
-
-            // change things I guess
-          }
+          console.log(res)
         }
       }catch(error) {
         console.log(error);

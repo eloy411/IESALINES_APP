@@ -70,16 +70,7 @@ export default defineComponent({
       juradoStore,
       rows,
       columns: [
-        {
-          name: 'nombre',
-          required: true,
-          label: 'nombre',
-          align: 'left',
-          field: row => row.name,  //field=prop
-          format: val => `${val}`,
-          sortable: true,
-          style: 'width:20px',
-        },
+        { name: 'nombre', required: true, label: 'nombre', align: 'left', field: row => row.name,  format: val => `${val}`, sortable: true, style: 'width:20px',},
         { name: 'tipo', label: 'tipo', field: 'tipo', align: 'left', sortable: true },
         { name: 'progreso', align: 'center', label: 'progreso', field: '' },
         { name: 'último_Acceso', align: 'left', label: 'Ültimo Acceso', field: '' },
@@ -105,7 +96,8 @@ export default defineComponent({
         }
     },
     mounted() {
-      this.juradoStore.getJuradosRonda();
+      // this.juradoStore.getJuradosRonda();
+      this.juradoStore.getJuradoPorcentaje();
     }
   })
 

@@ -10,6 +10,9 @@ export const useAuthStore = defineStore("auth", {
     user: null,
     tokenMail: '',
     urlTokenMail: '',
+    text: '',
+    asunto: '',
+    data: [],
   }),
   actions: {
     login(form) {
@@ -47,19 +50,42 @@ export const useAuthStore = defineStore("auth", {
       } catch (error) {
         console.log(error);
       }
-  },
+    },
 
-  async postJuradoFromEmailPARTE1() {
+    async postAceptacion() {
+      try {
+        console.log("este es el token -->",this.tokenMail);
+        // console.log(`http://127.0.0.1:8000/api/jurado/id`)
+        const response = await api.post('http://127.0.0.1:8000/api/jurado/id',{
+            id: this.tokenMail
+          }
+        );
+        console.log(this.tokenMail);
+
+        if (response.status >= 200 && response.status < 400) {
+          this.tokenMail = '';
+          this.urlTokenMail = '';
+          console.log("email", response.data);
+          this.data = response.data
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+  async postInivitacionJuradoFromEmail() {
     try {
       console.log("llego");
       const response = await api.post(
         `http://127.0.0.1:8000/api/email`,
         {
-          email: this.Email,
+          emailtomsg: this.Email,
           id: this.id,
           textomsg: this.text,
           asuntomsg: this.asunto,
-          emailtomsg: this.Destinatario
+          typemsg: 'Invitacion'
         }
       );
 

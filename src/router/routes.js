@@ -31,18 +31,6 @@ const routes = [
             component: () => import("src/pages/backoffice/LoginPage.vue"),
           },
           {
-            path: "login/:login",
-            name: "login/",
-            meta: {
-              breadCrumb: [
-                {
-                  text: 'login'
-                }
-              ]
-            },
-            component: () => import("src/pages/backoffice/authenticationPage.vue"),
-          },
-          {
             path: "results",
             name: "results",
             meta: {
@@ -52,7 +40,7 @@ const routes = [
                 }
               ]
             },
-            component: () => import("src/pages/backoffice/ResultsPage.vue"),
+            component: () => import("src/pages/backoffice/ResultMainPage.vue"),
           },
           {
             path: "configuracion",
@@ -178,6 +166,18 @@ const routes = [
             component: () => import("src/components/backoffice/ResultTabComponent.vue"),
           },
         ],
+      },
+      {
+        path: "authentication/:login",
+        name: "authentication",
+        meta: {
+          breadCrumb: [
+            {
+              text: 'login'
+            }
+          ]
+        },
+        component: () => import("src/pages/auth/AuthAceptacionJuradoPage.vue"),
       },
       {
         path: "login",

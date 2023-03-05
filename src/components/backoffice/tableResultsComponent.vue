@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name"
+    <q-table title="Resultados de la votación" :rows="categoriaStore.subCategoriasArr" :columns="columns" row-key="name"
       title-class="text-weight-bold" hide-bottom virtual-scroll v-model:pagination="pagination"
       :rows-per-page-options="[0]" class="row">
 
@@ -20,7 +20,6 @@
 
 
 <script>
-import router from "../../router";
 const columns = [
   {
     name: 'Categoria',
@@ -32,19 +31,16 @@ const columns = [
 
 
 import { ref } from 'vue'
-import { useresultStore } from "src/stores/resultStore";
 import { useVotosStore } from "src/stores/categoriaStore";
 export default {
   setup() {
 
-    const resultStore = ref(useresultStore());
-    const rows = resultStore.value.resultStore;
     const categoriaStore = ref(useVotosStore());
+    const rows = categoriaStore.value.resultStore;
 
     return {
       columns,
       rows,
-      resultStore,
       categoriaStore,
       inception: ref(false),
       secondDialog: ref(false),
@@ -53,16 +49,34 @@ export default {
         descending: true,
       },
       getSubcategoria(row) {
-        console.log(row)
+        console.log(row.id)
         categoriaStore.value.subCategorias = row.Categoria;
         categoriaStore.value.checker = true;
         console.log(categoriaStore.value.subCategorias)
+
+        row.information.forEach(item =>  {
+          let resultAuxObject = {
+            name: item.titulo,
+            voto: item.total,
+            premio: item.premio,
+            id: item.id,
+            id_cod_particip: item.id_cod_particip,
+            action: '',
+          }
+          categoriaStore.value.resultStore.push(resultAuxObject);
+        })
+
+        categoriaStore.value.id_subcategoria = row.id;
+
+        console.log(categoriaStore.value.id_subcategoria);
+
+
       }
 
     }
   },
   mounted() {
-    this.resultStore.getSubCategoriasIndependent();
+    this.categoriaStore.getSubCategoriasFromResult();
   }
 }
 </script>

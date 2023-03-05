@@ -60,7 +60,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.votosStore.getCategorias();
+    this.votosStore.getCategoriasPorcentaje();
   }
 
 })

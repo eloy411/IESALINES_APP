@@ -42,11 +42,10 @@
         </div>
       </div>
 
-        <div class="btn-group center">
-          <q-btn class="q-mr-lg" style="width: 37%;"  color="secondary" to="InvitacionJurado"  @click="showNotif" label="Añadir y Enviar invitación" />
-          <q-btn class="q-mr-lg" style="width: 37%;" outline color="secondary"  @click="juradoStore.postJurado , showNotif()" label="Solo añadir" />
-
-        </div>
+      <div class="btn-group center">
+        <q-btn class="q-mr-lg" style="width: 37%;"  color="secondary" @click="postJurado()" to="/backoffice/jurado/InvitacionJurado" label="Añadir y Enviar invitación" />
+        <q-btn class="q-mr-lg" style="width: 37%;" outline color="secondary"  @click="postJurado(), showNotif()" label="Solo añadir" />
+      </div>
 
       </q-step>
     </q-stepper>
@@ -58,13 +57,15 @@
 <script>
 import { ref, defineComponent } from "vue";
 import { useJuradoStore } from "src/stores/juradoStore";
+import { useLayoutStore } from "src/stores/layoutStore";
 import { useQuasar } from 'quasar'
 
 export default defineComponent( {
   name: "NewJuradoStepperForm",
   setup () {
     const juradoStore = ref(useJuradoStore());
-    const step = ref(1)
+    const step = ref(1);
+    const layoutStore = ref(useLayoutStore());
     const done1 = ref(false)
     const done2 = ref(false)
     const $q = useQuasar()
@@ -74,6 +75,12 @@ export default defineComponent( {
       done1,
       done2,
       juradoStore,
+      layoutStore,
+
+      postJurado() {
+        // console.log(layoutStore.value.id_edicion)
+        juradoStore.value.postJurado(layoutStore.value.id_edicion, true);
+      },
 
       reset () {
         done1.value = false

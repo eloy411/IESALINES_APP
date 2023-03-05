@@ -15,7 +15,6 @@ import TablaVotosComponent from 'src/components/backoffice/TablaVotosComponent.v
 import JuradosRondaComponent from 'src/components/backoffice/JuradosRondaComponent.vue'
 import ActivacionRondaComponent from 'src/components/backoffice/ActivacionRondaComponent.vue'
 // import MailVotacionComponent from 'src/components/MailVotacionComponent.vue'
-// import { useJuradosStore } from "src/stores/TablaJuradosStore";
 import { useJuradoStore } from 'src/stores/juradoStore'
 import { ref } from 'vue'
 
