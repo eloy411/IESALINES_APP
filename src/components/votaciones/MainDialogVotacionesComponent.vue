@@ -4,7 +4,7 @@
       <!--TextHeader-->
       <div class="headertext" >
         <qt v-for="item in TitelDescArr" v-bind:key="item.name">
-          {{ item.titulo }}
+          {{ indiceStore.subcategory }}
         </qt>
       </div>
 
@@ -109,7 +109,7 @@
 
 <script>
 import { ref, defineComponent } from 'vue'
-
+import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 export default defineComponent({
 
   name:"DialogComponent",
@@ -118,7 +118,8 @@ export default defineComponent({
     const position = ref('top')
     const cont = [0]
     const Trofee = ref([])
-
+    const indiceStore = ref(useIndiceStore());
+    // const categorias = indiceStore.value.categoriasArr;
     return {
       TitelDescArr: [
         {
@@ -140,7 +141,7 @@ export default defineComponent({
         },
       ],
       Trofee,
-
+      indiceStore,
 
       Awardrow1() {
           if (cont == 0) {
@@ -271,7 +272,7 @@ text-align: center;
 }
 .my-card{
     width: 100%;
-    max-width: 17.5rem;
+    max-width: 15rem;
     border-radius:  0.625rem;
     margin-top: 6.25rem;
 }

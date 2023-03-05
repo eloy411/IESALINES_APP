@@ -8,6 +8,8 @@ export const useIndiceStore = defineStore("categoria", {
 
   state: ()=> ({
 
+    subcategory:'A1. Campaña integral de proomción de productos.',
+    checker:false,
     // Contenido tablas de prueba.
     categoriasArr: [
       {
