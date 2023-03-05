@@ -254,6 +254,7 @@ export default defineComponent({
   width: auto;
   height: 51.875rem;
   align-self: center;
+  margin-top: -3em;
 }
 .headertext{
 font-family: Georgia, serif;
