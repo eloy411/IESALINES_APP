@@ -210,7 +210,7 @@ import { useQuasar } from 'quasar';
 import { useJuradoStore } from "src/stores/juradoStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
-
+import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 export default defineComponent({
   name: "ConfigurationComponent",
   setup() {
@@ -225,6 +225,9 @@ export default defineComponent({
     const $q = useQuasar();
     const status1 = ref([]);
     const status2 = ref([]);
+
+    const tipoStore = ref(useTipoJuradosStore());
+    const tipoJ = tipoStore.value.Tipo;
 
     const data = ref({
       idEdicion: layoutStore.value.id_edicion,
@@ -258,11 +261,15 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-
+      tipoJ,
       console(event) {
         // console.log(event)
       },
-
+      
+      getJuradoTipo(tipoJ){
+         tipoStore.value.mailDestinatario = tipoJ;
+         tipoStore.value.checker=true;
+      },
 
       moveToSelectedCategories() {
         console.log(element.value)
