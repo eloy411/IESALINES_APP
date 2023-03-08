@@ -2,7 +2,8 @@
   <div class="q-pa-md tableclass">
     <q-table
       title="Progreso de la votación por Categoría"
-      :rows="rowVotos"
+      :rows="categoriaStore.VotosTable"
+      :columns="columns"
       title-class="text-weight-bold q-mt-md"
       hide-bottom
       virtual-scroll
@@ -17,7 +18,7 @@
           {{ props.row.progreso }}
         </q-td>
         <q-td key="delete" :props="props">
-          <q-btn flat name="Delete" label='' icon='delete' @click="votosStore.deleteSubCategoriesVotaciones(props.row); deleteval(rowVotos.indexOf(props.row))"/>
+          <q-btn flat name="Delete" label='' icon='delete' @click="deleteVotacionesFromTable(props.row)"/>
         </q-td>
       </q-tr>
     </template>
@@ -27,15 +28,15 @@
 <script>
 import { ref, defineComponent } from 'vue'
 import {useVotosStore} from "src/stores/categoriaStore";
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'TablaVotosComponent',
   setup () {
-    const votosStore = ref(useVotosStore());
-    const rowVotos=votosStore.value.VotosTable;
+    const categoriaStore = ref(useVotosStore());
+    const $q = useQuasar()
     return {
-      rowVotos,  // si no se retornan no se visualizan,
-      votosStore,
+      categoriaStore,
       columns: [
         {
           name: 'categoria',
@@ -51,6 +52,36 @@ export default defineComponent({
         { name: 'delete', align: 'left', label: '', field: '' }
       ],
 
+      deleteVotacionesFromTable(row) {
+        $q.dialog({
+          title: '¿Seguro que quieres eliminar los votos de esta categoría?',
+          ok: {
+            label: 'Si',
+            push: true,
+            style: 'background-color: white!important; color: black!important;'
+          },
+          cancel: {
+            label: 'No',
+            push: true,
+            style: 'padding:5px; background-color: white!important; color: black!important;'
+          },
+          persistent: true,
+          class: 'my-dialog-class', // add a custom class
+          style: 'background-color: #d6d6d6; padding: 25px;' // add inline styles
+        }).onOk(() => {
+          console.log('Jurado Eliminado');
+          categoriaStore.value.deleteSubCategoriesVotaciones(row);
+          $q.notify({
+            message: 'Votos eliminado',
+            color: 'green'
+          })
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
+      },
+
       deleteval(index){
         console.log(index)
         this.rowVotos.splice(index, 1);
@@ -60,7 +91,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.votosStore.getCategoriasPorcentaje();
+    this.categoriaStore.getCategoriasPorcentaje();
   }
 
 })

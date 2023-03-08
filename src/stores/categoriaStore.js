@@ -5,38 +5,46 @@ import { api } from 'boot/axios'
 export const useVotosStore = defineStore("votos", {
 
   state:()=> ({
-    subCategorias:'',
+    subCategoriaResultTab:'',
+    idCategoriaResultTab: 0,
+    porcentaje_desiertoResultTab:'',
+    votos_desiertoResultTab:'',
     subCategoriasArr: [],
     subcategoriasMutationJuradoEnabled: [],
     subCategoriasArrAux: [],
     id_subcategoria : 0,
+    id_obraFromSubCategoria: 0,
     checker:false,
+    votaciones: ['Aspid', 'Aspid Plata', 'Aspid Oro', 'Aspid Platino'],
+    votacion: '',
+    nombreVotacion: '',
+    selloActivate: '', // activar el sello
     resultVotoJurado: [
-    {
-        jurado: 'Manuel Carrasco',
-        empresa: 'Apple Tree',
-        voto: 'Para prevenir el suicidio, hay que hablar de el',
-    },
-    {
-        jurado: 'Roger Bosch',
-        empresa: 'Xolomon Tree',
-        voto: '-',
-    },
-    {
-      jurado: 'Manuel Carrasco',
-      empresa: 'Apple Tree',
-      voto: 'Para prevenir el suicidio, hay que hablar de el',
-    },
-    {
-        jurado: 'Roger Bosch',
-        empresa: 'Univelver',
-        voto: 'FORO I+D',
-    },
-    {
-      jurado: 'Joaquin Fernández',
-      empresa: 'Univelver',
-      voto: 'Para prevenir el suicidio, hay que hablar de el',
-    },
+    // {
+    //     jurado: 'Manuel Carrasco',
+    //     empresa: 'Apple Tree',
+    //     voto: 'Para prevenir el suicidio, hay que hablar de el',
+    // },
+    // {
+    //     jurado: 'Roger Bosch',
+    //     empresa: 'Xolomon Tree',
+    //     voto: '-',
+    // },
+    // {
+    //   jurado: 'Manuel Carrasco',
+    //   empresa: 'Apple Tree',
+    //   voto: 'Para prevenir el suicidio, hay que hablar de el',
+    // },
+    // {
+    //     jurado: 'Roger Bosch',
+    //     empresa: 'Univelver',
+    //     voto: 'FORO I+D',
+    // },
+    // {
+    //   jurado: 'Joaquin Fernández',
+    //   empresa: 'Univelver',
+    //   voto: 'Para prevenir el suicidio, hay que hablar de el',
+    // },
     ],
     resultStore: [
     //   {
@@ -90,6 +98,7 @@ export const useVotosStore = defineStore("votos", {
                 categoria: `${categoria.area}${categoria.codigo} - ${categoria.descripcion}`,
                 progreso: Math.floor(categoria.calculo) + '%',
                 delete: '',
+                id_subcategoria: categoria.id_subcategoria,
               };
               this.VotosTable.push(auxObject);
             });
@@ -105,14 +114,15 @@ export const useVotosStore = defineStore("votos", {
     async deleteSubCategoriesVotaciones(rowToDelete){
       try {
         console.log(' ==== delete subcat-votaciones ====');
-        console.log(rowToDelete)
-        const res = await api.delete('http://127.0.0.1:8000/api/ronda/subcat-votaciones',{
-          id_cod_particip: ""
-        });
+        console.log(rowToDelete.id_subcategoria)
+        const res = await api.delete(`http://127.0.0.1:8000/api/ronda/subcat-votaciones/${rowToDelete.id_subcategoria}`)
         console.log(res);
 
-        if (res.status >= 200 && res.status <= 400) {
+        // console.log(this.VotosTable);
 
+        if (res.status >= 200 && res.status <= 400) {
+          // this.VotosTable = this.VotosTable.filter(item => item.id_subcategoria != rowToDelete.id_subcategoria)
+          console.log(this.VotosTable);
         }
       }catch(error) {
         console.log(error);
@@ -124,6 +134,7 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasIndependent(){
       try {
         console.log(' ==== get categorias independent ====');
+        this.this.subCategoriasArrAux = [];
         const res = await api.get('http://127.0.0.1:8000/api/subcategorias');
         console.log(res);
 
@@ -212,16 +223,25 @@ export const useVotosStore = defineStore("votos", {
         const res = await api.get(`http://127.0.0.1:8000/api/ronda/subcat-result`);
         console.log(res);
 
+        this.subCategoriasArrAux = [];
         if (res.status >= 200 && res.status <= 400) {
           res.data.forEach(categoria => {
             let auxObject = {
               Categoria: `${categoria.codigo} - ${categoria.titulo}`,
               id: categoria.id_subcategoria,
-              information: categoria.informacion
+              information: categoria.informacion,
+              desierto: categoria.desierto,
+              tipo_desierto: categoria.tipo_desierto,
+              empate: categoria.empate,
+              tipoEmpate: categoria.tipoEmpate,
+              porcentaje_desierto: categoria.porcentaje_desierto,
+              votos_desierto: categoria.votos_desierto
             }
             this.subCategoriasArrAux.push(auxObject);
           })
           this.subCategoriasArr = this.subCategoriasArrAux;
+
+          console.log(this.subCategoriasArr)
         }
       }catch(error) {
         console.log(error);
@@ -232,14 +252,17 @@ export const useVotosStore = defineStore("votos", {
      //
      async putOtorgarPremio() {
       try {
-        console.log(' ==== get subcategorieas from result ====');
+        console.log(' ==== put subcategorieas from result ====');
+        console.log(this.id_obraFromSubCategoria)
         const res = await api.put(`http://127.0.0.1:8000/api/rondas/premio`, {
-          id: "",
-          premio: "",
+          id: this.id_obraFromSubCategoria,
+          premio: this.votacion,
+          nombre_premio: this.nombreVotacion
         });
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {
+          this.selloActivate = res.data[0];
         }
       }catch(error) {
         console.log(error);
@@ -261,7 +284,7 @@ export const useVotosStore = defineStore("votos", {
 
 
           res.data.forEach(item => {
-            if (res.data.voto == 'od') {
+            if (res.data.voto == 'od'|| res.data.voto == 'dd' ) {
               let auxObject = {
                 jurado: item.nombre,
                 empresa: item.empresa,

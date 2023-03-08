@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :data="data" title-class="text-weight-bold q-mt-md">
+    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :columns="columns" :data="data" title-class="text-weight-bold q-mt-md">
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
@@ -73,7 +73,7 @@ export default defineComponent({
         { name: 'nombre', required: true, label: 'nombre', align: 'left', field: row => row.name,  format: val => `${val}`, sortable: true, style: 'width:20px',},
         { name: 'tipo', label: 'tipo', field: 'tipo', align: 'left', sortable: true },
         { name: 'progreso', align: 'center', label: 'progreso', field: '' },
-        { name: 'último_Acceso', align: 'left', label: 'Ültimo Acceso', field: '' },
+        { name: 'Ultimo_Acceso', align: 'left', label: 'Ultimo_Acceso', field: '' },
         { name: 'recordatorio', align: 'left', label: '', field: '' },
         { name: 'deleteVotos', align: 'left', label: '', field: '' },
       ],
@@ -97,6 +97,9 @@ export default defineComponent({
     },
     mounted() {
       // this.juradoStore.getJuradosRonda();
+      if (this.juradoStore.tipoJuradoChecker  == false) {
+        this.juradoStore.getJuradoTipo();
+      }
       this.juradoStore.getJuradoPorcentaje();
     }
   })

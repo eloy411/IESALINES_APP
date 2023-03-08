@@ -10,8 +10,8 @@
          <q-toggle v-model="layoutStore.activacionRonda" @click="layoutStore.switchRonda" class="q-ml-md" color="blue" label="Si" />
 
            <q-btn-dropdown
-             :disable-main-btn="!active"
-             :disable-dropdown="!active"
+             :disable-main-btn="!layoutStore.mailButton"
+             :disable-dropdown="!layoutStore.mailButton"
              split
              class="mailBtn"
              color="red"
@@ -94,6 +94,9 @@ export default defineComponent({
 
      }
 
+ },
+ mounted() {
+  this.layoutStore.switchRonda();
  }
 })
 

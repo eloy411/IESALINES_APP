@@ -23,7 +23,6 @@ export const useJuradoStore = defineStore("jurados", {
     asunto: '',
     checker:false,
     dataInvitacion: [],
-    juradosRonda: [],
     juradosTest: []
   }),
   getters: {
@@ -129,6 +128,21 @@ export const useJuradoStore = defineStore("jurados", {
         console.log(' === porcentaje ronda-jurado =====')
         if (res.status >= 200 && res.status < 400) {
           console.log(res.data);
+          this.juradosRonda = [];
+          res.data.forEach((item) => {
+            let auxObject = {
+              nombre: item.nombre,
+              tipo: this.optionsTipoJurado[item.id_tipojurado],
+              progreso: item.progreso,
+              Ultimo_Acceso: item.ultimoAcceso,
+              id: item.id,
+            }
+            this.juradosRonda.push(auxObject);
+
+          })
+
+          console.log(this.juradosRonda);
+
         }
       } catch (error) {
         console.log(error);
@@ -452,10 +466,7 @@ export const useJuradoStore = defineStore("jurados", {
     async deleteJuradoVotaciones(rowToDelete){
       try {
         console.log(' ==== delete jurado-votacionest ====');
-        const res = await api.delete('http://127.0.0.1:8000/api/ronda/jurado-votaciones',
-        {
-          id_jurado: rowToDelete.id
-        });
+        const res = await api.delete(`http://127.0.0.1:8000/api/ronda/jurado-votaciones/${rowToDelete.id}`);
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {

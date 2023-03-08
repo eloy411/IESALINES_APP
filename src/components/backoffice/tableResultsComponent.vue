@@ -9,7 +9,12 @@
 
         <q-td :props="props" @click="getSubcategoria(props.row)">
           <router-link class="linkCat" to="/backoffice/results/ResultTab"> {{ props.row.Categoria }}</router-link>
-          <q-chip class="chip" square color="red" text-color="white" label="Empate" />
+          <q-chip v-if="props.row.desierto == true && props.row.tipo_desierto == 'o'" class="chip" square color="warning" text-color="white" label="Desierto ORO" />
+          <q-chip v-else-if="props.row.desierto == true && props.row.tipo_desierto == 'd'" class="chip" square color="warning" text-color="white" label="Desierto" />
+          <q-chip v-else-if="props.row.empate == true && props.row.tipoEmpate == 'o'" class="chip" square color="red" text-color="white" label="Empate ORO" />
+          <q-chip v-else-if="props.row.empate == true && props.row.tipoEmpate == 'd'" class="chip" square color="red" text-color="white" label="Empate" />
+          <div v-else></div>
+
         </q-td>
 
       </template>
@@ -50,17 +55,31 @@ export default {
       },
       getSubcategoria(row) {
         console.log(row.id)
-        categoriaStore.value.subCategorias = row.Categoria;
+        categoriaStore.value.subCategoriaResultTab = row.Categoria;
+        categoriaStore.value.porcentaje_desiertoResultTab = row.porcentaje_desierto;
+        categoriaStore.value.votos_desiertoResultTab = row.votos_desierto;
+        categoriaStore.value.idCategoriaResultTab = row.id;
         categoriaStore.value.checker = true;
-        console.log(categoriaStore.value.subCategorias)
+        console.log(categoriaStore.value.subCategoriaResultTab);
+
+        categoriaStore.value.resultStore = [];
+
 
         row.information.forEach(item =>  {
+
+          console.log(item);
+          if (item.premio != null) {
+            categoriaStore.value.selloActivate = item.premio;
+          }
+
           let resultAuxObject = {
             name: item.titulo,
             voto: item.total,
             premio: item.premio,
             id: item.id,
             id_cod_particip: item.id_cod_particip,
+            procentaje_desierto : row.porcentaje_desierto,
+            votos_desierto : row.votos_desierto,
             action: '',
           }
           categoriaStore.value.resultStore.push(resultAuxObject);
@@ -68,9 +87,9 @@ export default {
 
         categoriaStore.value.id_subcategoria = row.id;
 
-        console.log(categoriaStore.value.id_subcategoria);
 
 
+        console.log(categoriaStore.value.resultStore);
       }
 
     }

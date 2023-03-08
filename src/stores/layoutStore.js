@@ -6,6 +6,7 @@ export const useLayoutStore = defineStore("layout", {
     year: '2022(XVIII)',
     id_edicion: 0,
     activacionRonda: false,
+    mailButton: false,
   }),
   actions: {
     async getYear() {
@@ -39,6 +40,12 @@ export const useLayoutStore = defineStore("layout", {
 
         if (res.status >= 200 && res.status <= 400) {
           console.log(res)
+          if (res.data == 1) {
+            this.mailButton = true;
+          } else {
+            this.mailButton = false;
+          }
+          console.log(this.mailButton)
         }
       }catch(error) {
         console.log(error);
