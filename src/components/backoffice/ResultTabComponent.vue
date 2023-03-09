@@ -11,7 +11,7 @@
         <q-tab-panels v-model="tab" animated>
           <!-- Tabla ranking -->
           <q-tab-panel name="ranking">
-            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="rows" :columns="ranking" row-key="jurado"
+            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="categoriaStore.resultStore" :columns="ranking" row-key="jurado"
               selection="single" v-model:selected="selected" v-model:pagination="pagination" hide-bottom virtual-scroll
               :rows-per-page-options="[0]">
               <template v-slot:top>
@@ -46,10 +46,26 @@
               <template v-slot:body-cell-premio="props">
                 <td :props="props">
                   <div>
-                    <q-img class="selloAspid" v-if="categoriaStore.selloActivate == 'Aspid' && props.row.premio != null" src="~assets/Sellos/sello-aspid.png"></q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Oro' && props.row.premio != null" src="~assets/Sellos/sello_oro.png"></q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Plata' && props.row.premio != null" src="~assets/Sellos/sello_plata.png"></q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Platino' && props.row.premio != null" src="~assets/Sellos/sello_platino.png"></q-img>
+                    <q-img class="selloAspid" v-if="categoriaStore.selloActivate == 'Aspid' && props.row.premio != null" src="~assets/Sellos/sello-aspid.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid de Oro' && props.row.premio != null" src="~assets/Sellos/sello_oro.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Plata' && props.row.premio != null" src="~assets/Sellos/sello_plata.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Platino' && props.row.premio != null" src="~assets/Sellos/sello_platino.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
                   </div>
                 </td>
               </template>

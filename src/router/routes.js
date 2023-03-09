@@ -19,6 +19,18 @@ const routes = [
             component: () => import("src/pages/backoffice/IndexPage.vue"),
           },
           {
+            path: " configuracion/EmailConfirmacionRondaComponent",
+            name: "EmailConfirmacionRondaComponent",
+            meta: {
+              breadCrumb: [
+                {
+                  text: 'EmailConfirmacionRondaComponent'
+                }
+              ]
+            },
+            component: () => import("src/components/backoffice/EmailConfirmacionRonda1.vue"),
+          },
+          {
             path: "login",
             name: "login",
             meta: {
@@ -164,6 +176,18 @@ const routes = [
               ]
             },
             component: () => import("src/components/backoffice/ResultTabComponent.vue"),
+          },
+          {
+            path: "configuracion/EmailConfirmacionRondaComponent",
+            name: "EmailConfirmacionRondaComponent",
+            meta: {
+              breadCrumb: [
+                {
+                  text: 'EmailConfirmacionRondaComponent'
+                }
+              ]
+            },
+            component: () => import("src/components/backoffice/EmailConfirmacionRonda1.vue"),
           },
         ],
       },

@@ -6,7 +6,7 @@
       <q-step :name="1" title="" prefix="1" :done="done1">
 
 
-        <q-input outlined standout v-model="juradoStore.Email" type="email" >
+        <q-input outlined standout v-model="juradoStore.Email" type="email"  >
           <template v-slot:prepend>
             <q-icon name="mail" />
           </template>
@@ -43,8 +43,8 @@
       </div>
 
       <div class="btn-group center">
-        <q-btn class="q-mr-lg" style="width: 37%;"  color="secondary" @click="postJurado()" to="/backoffice/jurado/InvitacionJurado" label="Añadir y Enviar invitación" />
-        <q-btn class="q-mr-lg" style="width: 37%;" outline color="secondary"  @click="postJurado(), showNotif()" label="Solo añadir" />
+        <q-btn class="q-mr-lg" style="width: 37%;"  color="secondary" @click="postJurado(true)" to="/backoffice/jurado/InvitacionJurado" label="Añadir y Enviar invitación" />
+        <q-btn class="q-mr-lg" style="width: 37%;" outline color="secondary"  @click="postJurado(false), showNotif()" label="Solo añadir" />
       </div>
 
       </q-step>
@@ -77,9 +77,9 @@ export default defineComponent( {
       juradoStore,
       layoutStore,
 
-      postJurado() {
+      postJurado(invitacion) {
         // console.log(layoutStore.value.id_edicion)
-        juradoStore.value.postJurado(layoutStore.value.id_edicion, true);
+        juradoStore.value.postJurado(layoutStore.value.id_edicion, invitacion);
       },
 
       reset () {

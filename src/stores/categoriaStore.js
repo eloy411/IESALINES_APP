@@ -89,7 +89,7 @@ export const useVotosStore = defineStore("votos", {
     async getCategoriasPorcentaje() {
       try {
         console.log('==== get categorias ====');
-        const res = await api.get("http://127.0.0.1:8000/api/ronda/subcat-porcentaje");
+        const res = await api.get("http://127.0.0.1:8000/api/admin/ronda/subcat-porcentajes");
         if (res.status >= 200 && res.status <= 400 ) {
           console.log(res);
           if (res.status >=200 && res.status <= 400) {
@@ -115,7 +115,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== delete subcat-votaciones ====');
         console.log(rowToDelete.id_subcategoria)
-        const res = await api.delete(`http://127.0.0.1:8000/api/ronda/subcat-votaciones/${rowToDelete.id_subcategoria}`)
+        const res = await api.delete(`http://127.0.0.1:8000/api/admin/ronda/subcat-votaciones/${rowToDelete.id_subcategoria}`)
         console.log(res);
 
         // console.log(this.VotosTable);
@@ -134,8 +134,8 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasIndependent(){
       try {
         console.log(' ==== get categorias independent ====');
-        this.this.subCategoriasArrAux = [];
-        const res = await api.get('http://127.0.0.1:8000/api/subcategorias');
+        this.subCategoriasArrAux = [];
+        const res = await api.get('http://127.0.0.1:8000/api/admin/subcategorias');
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {
@@ -159,9 +159,9 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasAuxFromSelect(tipoJurado){
       try {
         console.log(' ==== get aux subcategorieas mutation independent ====');
-        const res = await api.get(`http://127.0.0.1:8000/api/aux-subcategorias/${tipoJurado}`);
+        const res = await api.get(`http://127.0.0.1:8000/api/admin/aux-subcategorias/${tipoJurado}`);
         console.log(res);
-          console.log(this.subCategoriasArrAux);
+        console.log(this.subCategoriasArrAux);
 
 
         if (res.status >= 200 && res.status <= 400) {
@@ -200,7 +200,7 @@ export const useVotosStore = defineStore("votos", {
         let idArr = [];
         this.subcategoriasMutationJuradoEnabled.forEach(subcat => idArr.push(subcat.id))
         console.log(idArr);
-        const res = await api.put(`http://127.0.0.1:8000/api/aux-subcategorias/`, {
+        const res = await api.put(`http://127.0.0.1:8000/api/admin/aux-subcategorias`, {
           id_tipojurado: tipoJurado,
           id_edicion: idEdicion,
           id_subcategoria: idArr
@@ -220,7 +220,7 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasFromResult() {
       try {
         console.log(' ==== get subcategorieas from result ====');
-        const res = await api.get(`http://127.0.0.1:8000/api/ronda/subcat-result`);
+        const res = await api.get(`http://127.0.0.1:8000/api/admin/ronda/subcat-result`);
         console.log(res);
 
         this.subCategoriasArrAux = [];
@@ -254,7 +254,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== put subcategorieas from result ====');
         console.log(this.id_obraFromSubCategoria)
-        const res = await api.put(`http://127.0.0.1:8000/api/rondas/premio`, {
+        const res = await api.put(`http://127.0.0.1:8000/api/admin/ronda/premio`, {
           id: this.id_obraFromSubCategoria,
           premio: this.votacion,
           nombre_premio: this.nombreVotacion
@@ -262,6 +262,8 @@ export const useVotosStore = defineStore("votos", {
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {
+          this.votacion = '';
+          this.nombreVotacion = '';
           this.selloActivate = res.data[0];
         }
       }catch(error) {
@@ -275,7 +277,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== getVotosJuradoResult from result ====');
         console.log(this.id_subcategoria)
-        const res = await api.get(`http://127.0.0.1:8000/api/ronda/jurados-result/${this.id_subcategoria}`, {
+        const res = await api.get(`http://127.0.0.1:8000/api/admin/ronda/jurados-result/${this.id_subcategoria}`, {
           id: this.id_subcategoria,
         });
 
@@ -308,6 +310,48 @@ export const useVotosStore = defineStore("votos", {
       }catch(error) {
         console.log(error);
       }
+    },
+
+
+    async putDataInResultTab(row) {
+      this.subCategoriaResultTab = row.Categoria;
+      this.porcentaje_desiertoResultTab = row.porcentaje_desierto;
+      this.votos_desiertoResultTab = row.votos_desierto;
+      this.idCategoriaResultTab = row.id;
+      this.checker = true;
+      let iteratorChecker = true;
+
+      this.resultStore = [];
+
+      row.information.forEach(item =>  {
+
+        // console.log(item);
+        if (item.premio != null && iteratorChecker == true) {
+          console.log("premio", item.premio)
+          this.selloActivate = item.premio;
+          iteratorChecker = false;
+          console.log(this.selloActivate);
+        }
+
+        let resultAuxObject = {
+          name: item.titulo,
+          voto: item.total,
+          premio: item.premio,
+          id: item.id,
+          id_cod_particip: item.id_cod_particip,
+          procentaje_desierto : row.porcentaje_desierto,
+          votos_desierto : row.votos_desierto,
+          nombre_premio : item.nombre_premio,
+          action: '',
+        }
+        this.resultStore.push(resultAuxObject);
+      })
+
+      this.id_subcategoria = row.id;
+
+
+
+      console.log(this.resultStore);
     }
   }
 

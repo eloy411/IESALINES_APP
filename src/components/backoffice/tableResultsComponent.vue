@@ -53,43 +53,9 @@ export default {
         sortBy: 'name',
         descending: true,
       },
-      getSubcategoria(row) {
-        console.log(row.id)
-        categoriaStore.value.subCategoriaResultTab = row.Categoria;
-        categoriaStore.value.porcentaje_desiertoResultTab = row.porcentaje_desierto;
-        categoriaStore.value.votos_desiertoResultTab = row.votos_desierto;
-        categoriaStore.value.idCategoriaResultTab = row.id;
-        categoriaStore.value.checker = true;
-        console.log(categoriaStore.value.subCategoriaResultTab);
-
-        categoriaStore.value.resultStore = [];
-
-
-        row.information.forEach(item =>  {
-
-          console.log(item);
-          if (item.premio != null) {
-            categoriaStore.value.selloActivate = item.premio;
-          }
-
-          let resultAuxObject = {
-            name: item.titulo,
-            voto: item.total,
-            premio: item.premio,
-            id: item.id,
-            id_cod_particip: item.id_cod_particip,
-            procentaje_desierto : row.porcentaje_desierto,
-            votos_desierto : row.votos_desierto,
-            action: '',
-          }
-          categoriaStore.value.resultStore.push(resultAuxObject);
-        })
-
-        categoriaStore.value.id_subcategoria = row.id;
-
-
-
-        console.log(categoriaStore.value.resultStore);
+      async getSubcategoria(row) {
+        console.log(row);
+        await categoriaStore.value.putDataInResultTab(row);
       }
 
     }

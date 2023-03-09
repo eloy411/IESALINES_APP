@@ -103,6 +103,7 @@ export default defineComponent({
         juradoStore.value.Email = row.Email;
         juradoStore.value.id = row.id;
         juradoStore.value.Bio = row.Bio;
+        juradoStore.value.Cargo = row.Cargo;
       },
 
       juradoEdit() {

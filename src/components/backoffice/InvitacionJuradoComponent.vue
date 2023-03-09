@@ -2,7 +2,7 @@
   <div class="my-card">
     <q-card class="my-card" :rows="rows">
       <q-card-section>
-        <q-form class="q-gutter-md">
+        <q-form class="q-gutter-md" >
 
           <h5>Enviar invitación {{ juradoStore.Nombre }} </h5>
           <p>De: Premios Aspid &lt;sede@premiosaspid.es&gt; </p>
