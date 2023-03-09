@@ -210,7 +210,6 @@ import { useQuasar } from 'quasar';
 import { useJuradoStore } from "src/stores/juradoStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
-import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 
 export default defineComponent({
   name: "ConfigurationComponent",
@@ -262,17 +261,11 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-      tipoStore,
-      tipoJ,
 
       console(event) {
         // console.log(event)
       },
 
-      getJuradoTipo(tipoJ){
-         tipoStore.value.mailDestinatario = tipoJ;
-         tipoStore.value.checker=true;
-      },
 
       moveToSelectedCategories() {
         console.log(element.value)
