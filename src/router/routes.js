@@ -14,7 +14,9 @@ const routes = [
                 {
                   text: 'Home'
                 }
-              ]
+              ],
+              requiresAuth: true,
+              requireAdmin: true,
             },
             component: () => import("src/pages/backoffice/IndexPage.vue"),
           },
@@ -88,7 +90,6 @@ const routes = [
                   text: 'jurado'
                 }
               ],
-              requiresAuth: true
             },
             component: () => import("src/pages/backoffice/JuradoPage.vue"),
 
@@ -212,11 +213,25 @@ const routes = [
             name: "index",
             component: () => import("src/pages/votaciones/LoginVotacionPage.vue"),
           },
+          {
+            path: "init/:email/:param2",
+            name: "init",
+            component: () => import("src/pages/auth/LoginLogicPage.vue"),
+          },
         ]
       },
       {
         path: "votaciones",
         component: () => import("src/layouts/votacionLayout.vue"),
+        meta: {
+          breadCrumb: [
+            {
+              text: 'Home'
+            }
+          ],
+          requiresAuth: true,
+          requireJurado: true,
+        },
         children: [
           {
             path: "loginv",

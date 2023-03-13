@@ -5,6 +5,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: '',
     password: '',
+    admin: 0,
     isAuth: false,
     role: '',
     user: null,
@@ -12,6 +13,7 @@ export const useAuthStore = defineStore("auth", {
     urlTokenMail: '',
     text: '',
     asunto: '',
+    emailLogin: '',
     data: [],
   }),
   actions: {
@@ -30,14 +32,79 @@ export const useAuthStore = defineStore("auth", {
       this.router.push({ name: "home" });
       console.log("Login");
     },
+
+
+    async postLoginJurado() {
+      try {
+        console.log("llego");
+        console.log(`http://localhost:8000/api/email-login`)
+        const response = await api.post(
+          `http://localhost:8000/api/email-login`, {
+            textomsg: 'login',
+            asuntomsg: 'login',
+            emailtomsg: this.emailLogin,
+
+          }
+        );
+
+        if (response.status >= 200 && response.status < 400) {
+          console.log(response);
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+    async getTokenUser() {
+      try {
+
+        console.log("TOKEN USER");
+        console.log(`http://localhost:8000/sanctum/csrf-cookie`)
+        const response = await api.get(`http://localhost:8000/sanctum/csrf-cookie`,);
+
+        if (response.status >= 200 && response.status < 400) {
+          console.log(response);
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+    async getUrlUserData(url) {
+      try {
+
+        console.log("TOKEN USER");
+        console.log(url)
+        const response = await api.get(
+          `${url}`,
+        );
+
+        if (response.status >= 200 && response.status < 400) {
+          console.log(response);
+          this.admin = response.data.admin
+          console.log(this.admin)
+          // window.location.href = "http://localhost:9000/backoffice/jurado";
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
 ////////////////////////////////////////////////////////////////////////////
 
     async postJuradoFromEmail() {
       try {
         console.log("llego");
-        console.log(`http://127.0.0.1:8000/api/login/${this.urlTokenMail}`)
+        console.log(`http://localhost:8000/api/login/${this.urlTokenMail}`)
         const response = await api.get(
-          `http://127.0.0.1:8000/api/login/${this.urlTokenMail}`
+          `http://localhost:8000/api/login/${this.urlTokenMail}`
         );
 
         if (response.status >= 200 && response.status < 400) {
@@ -55,8 +122,8 @@ export const useAuthStore = defineStore("auth", {
     async postAceptacion() {
       try {
         console.log("este es el token -->",this.tokenMail);
-        // console.log(`http://127.0.0.1:8000/api/jurado/id`)
-        const response = await api.post('http://127.0.0.1:8000/api/jurado/id',{
+        // console.log(`http://localhost:8000/api/jurado/id`)
+        const response = await api.post('http://localhost:8000/api/jurado/id',{
             id: this.tokenMail
           }
         );
@@ -79,7 +146,7 @@ export const useAuthStore = defineStore("auth", {
     try {
       console.log("llego");
       const response = await api.post(
-        `http://127.0.0.1:8000/api/email`,
+        `http://localhost:8000/api/email`,
         {
           emailtomsg: this.Email,
           id: this.id,

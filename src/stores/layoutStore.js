@@ -12,7 +12,7 @@ export const useLayoutStore = defineStore("layout", {
     async getYear() {
       console.log('==== get dyear/edicion ====');
       try {
-        const response = await api.get(`http://127.0.0.1:8000/api/admin/edicion`)
+        const response = await api.get(`http://localhost:8000/api/admin/edicion`)
         console.log(response.data)
         if (response.status >= 200 && response.status < 400 ) {
           let auxYear = response.data.anio;
@@ -32,7 +32,7 @@ export const useLayoutStore = defineStore("layout", {
     async switchRonda() {
       try {
         console.log(' ==== put switch ronda ====');
-        const res = await api.put('http://127.0.0.1:8000/api/admin/ronda/switch',
+        const res = await api.put('http://localhost:8000/api/admin/ronda/switch',
           {
             id_edicion: this.id_edicion,
             aceptacion_ronda: this.activacionRonda

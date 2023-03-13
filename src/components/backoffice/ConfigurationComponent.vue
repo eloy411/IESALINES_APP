@@ -208,6 +208,7 @@
 import { ref, defineComponent, watch } from "vue";
 import { useQuasar } from 'quasar';
 import { useJuradoStore } from "src/stores/juradoStore";
+import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
 

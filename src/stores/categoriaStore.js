@@ -89,7 +89,7 @@ export const useVotosStore = defineStore("votos", {
     async getCategoriasPorcentaje() {
       try {
         console.log('==== get categorias ====');
-        const res = await api.get("http://127.0.0.1:8000/api/admin/ronda/subcat-porcentajes");
+        const res = await api.get("http://localhost:8000/api/admin/ronda/subcat-porcentajes");
         if (res.status >= 200 && res.status <= 400 ) {
           console.log(res);
           if (res.status >=200 && res.status <= 400) {
@@ -115,7 +115,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== delete subcat-votaciones ====');
         console.log(rowToDelete.id_subcategoria)
-        const res = await api.delete(`http://127.0.0.1:8000/api/admin/ronda/subcat-votaciones/${rowToDelete.id_subcategoria}`)
+        const res = await api.delete(`http://localhost:8000/api/admin/ronda/subcat-votaciones/${rowToDelete.id_subcategoria}`)
         console.log(res);
 
         // console.log(this.VotosTable);
@@ -135,7 +135,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== get categorias independent ====');
         this.subCategoriasArrAux = [];
-        const res = await api.get('http://127.0.0.1:8000/api/admin/subcategorias');
+        const res = await api.get('http://localhost:8000/api/admin/subcategorias');
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {
@@ -159,7 +159,7 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasAuxFromSelect(tipoJurado){
       try {
         console.log(' ==== get aux subcategorieas mutation independent ====');
-        const res = await api.get(`http://127.0.0.1:8000/api/admin/aux-subcategorias/${tipoJurado}`);
+        const res = await api.get(`http://localhost:8000/api/admin/aux-subcategorias/${tipoJurado}`);
         console.log(res);
         console.log(this.subCategoriasArrAux);
 
@@ -200,7 +200,7 @@ export const useVotosStore = defineStore("votos", {
         let idArr = [];
         this.subcategoriasMutationJuradoEnabled.forEach(subcat => idArr.push(subcat.id))
         console.log(idArr);
-        const res = await api.put(`http://127.0.0.1:8000/api/admin/aux-subcategorias`, {
+        const res = await api.put(`http://localhost:8000/api/admin/aux-subcategorias`, {
           id_tipojurado: tipoJurado,
           id_edicion: idEdicion,
           id_subcategoria: idArr
@@ -220,7 +220,7 @@ export const useVotosStore = defineStore("votos", {
     async getSubCategoriasFromResult() {
       try {
         console.log(' ==== get subcategorieas from result ====');
-        const res = await api.get(`http://127.0.0.1:8000/api/admin/ronda/subcat-result`);
+        const res = await api.get(`http://localhost:8000/api/admin/ronda/subcat-result`);
         console.log(res);
 
         this.subCategoriasArrAux = [];
@@ -254,7 +254,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== put subcategorieas from result ====');
         console.log(this.id_obraFromSubCategoria)
-        const res = await api.put(`http://127.0.0.1:8000/api/admin/ronda/premio`, {
+        const res = await api.put(`http://localhost:8000/api/admin/ronda/premio`, {
           id: this.id_obraFromSubCategoria,
           premio: this.votacion,
           nombre_premio: this.nombreVotacion
@@ -277,7 +277,7 @@ export const useVotosStore = defineStore("votos", {
       try {
         console.log(' ==== getVotosJuradoResult from result ====');
         console.log(this.id_subcategoria)
-        const res = await api.get(`http://127.0.0.1:8000/api/admin/ronda/jurados-result/${this.id_subcategoria}`, {
+        const res = await api.get(`http://localhost:8000/api/admin/ronda/jurados-result/${this.id_subcategoria}`, {
           id: this.id_subcategoria,
         });
 
