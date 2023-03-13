@@ -1,4 +1,64 @@
 <template>
+  <div class="indice">
+    <h4 class="titulo">Índice de categorías</h4>
+
+    <ul class="lista">
+      <li v-for="(categoria, index) in categorias" :key="categoria.Categoria">
+        <input type="checkbox" :id="`list_${index}`" name="list">
+        <label class="label_no_clicado" :for="`list_${index}`" @click="Clicked(categoria)" :props="props">
+          {{ categoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
+        </label>
+        <ul class="interior">
+          <li v-for="(subcategoria) in categoria.Subcategorias" :key="subcategoria">
+            <a href="#r" class="categoria_no_clicado" @click="getSubcategoria(subcategoria), Clicked2(e)">
+              {{ subcategoria }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</template>
+  
+<script>
+
+import { ref, defineComponent } from "vue";
+import { useIndiceStore } from "src/stores/indiceCategoriaStore";
+
+export default defineComponent({
+
+  name: "CategoryIndex",
+  methods: {
+    Clicked(e) {
+      console.log("CLICKED");
+      var elemento = document.getElementById("icono");
+      elemento.style.display = "inline";
+    },
+
+    Clicked2(e) {
+
+      e.currentTarget.classList.remove('categoria_no_clicado');
+      e.currentTarget.classList.add('categoria_clicado');
+
+    },
+
+
+  },
+  setup() {
+    const indiceStore = ref(useIndiceStore());
+    const categorias = indiceStore.value.categoriasArr;
+    console.log(categorias[1]);
+    return {
+      indiceStore,
+      categorias,
+
+      getSubcategoria(subcategoria) {
+        console.log('holaaaa');
+        // let auxArr=[row.nombre[0],row.nombre[1]];
+        indiceStore.value.subcategory = subcategoria;
+        console.log(indiceStore.value.subcategory);
+        indiceStore.value.checker = true;
+        // location.href= "ronda1Page/EmailInicioVotacion";
 
     <div class="indice">
       <h4  class="titulo">Índice de categorías</h4>
