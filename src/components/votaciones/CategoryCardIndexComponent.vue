@@ -1,126 +1,132 @@
 <template>
+  <div class="layout-padding row items-start">
+    <q-card class="card" inline>
+      <q-card-section class="icon">
+        <img v-if="votado" alt="check button" src="../../assets/Check_Red.png" />
+        <q-icon v-else size="2.25em" class="icon_background" name="circle"></q-icon>
+      </q-card-section>
 
-    <div class="layout-padding row items-start">
-        <q-card class="card" inline>
-            <q-card-section class="icon">
-                    <q-icon size="1.5em"  class="icon_background" name="circle"></q-icon>
-                    <q-icon size="1em" class="icon" name="check_circle_outline"></q-icon>
-                </q-card-section>
-            <q-card-title>
-                <div class="title"><a >A1</a><a class="text"><b>Campaña integral de promoción de producto</b></a></div>
-                <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
-            </q-card-title>
+      <div class="card__body">
+        <q-card-title>
+          <div class="myFlex">
+            <div class="title"><a>A1</a></div>
+            <div><a class="text"><b>Campaña integral de promoción de producto</b></a></div>
+          </div>
+          <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
+        </q-card-title>
 
+        <q-card-section class="vistas">
+          <div>
+            <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5" track-color="secondary"
+              class="q-ma-md" />
+            2/3 Obras vistas
+          </div>
+        </q-card-section>
+      </div>
+      <q-card-actions align="center" class="q-pa-md">
+        <q-btn no-caps class="boton" flat>Acceder</q-btn>
+      </q-card-actions>
 
-            <q-card-section class="vistas"> 
-                    <div><q-icon color="grey-4" size="3em" name="circle"></q-icon> 2/3 Obras vistas</div>
-            </q-card-section>
-
-            <q-card-actions align="center" >
-                <q-btn class="boton" flat>Acceder</q-btn>
-            </q-card-actions>
-        </q-card>
-    
-        <q-card class="card2" inline>
-            <q-card-section class="icon">
-                    <q-icon size="1.5em"  class="icon_background2" name="circle"></q-icon>
-                </q-card-section>
-            <q-card-title>
-                <div class="title"><a >A1</a><a class="text"><b>Campaña integral de promoción de producto</b></a></div>
-                <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
-            </q-card-title>
-
-
-            <q-card-section class="vistas"> 
-                    <div><q-icon color="grey-4" size="3em" name="circle"></q-icon> 2/3 Obras vistas</div>
-            </q-card-section>
-
-            <q-card-actions align="center" >
-                <q-btn class="boton" flat>Acceder</q-btn>
-            </q-card-actions>
-        </q-card>
-    </div>
-
+    </q-card>
+  </div>
 </template>
 
 <script>
 import { ref, defineComponent } from "vue";
 
-export default defineComponent ({
-    name: "CategoryCardIndex",
+export default defineComponent({
+  name: "CategoryCardIndex",
 
-    setup () {
-      return{
+  setup() {
 
-      }
-    },
+    const votado = ref(true)
+    return {
+      votado,
+      value: 80
+    }
+  },
 
 })
 </script>
 
 <style>
-
 .card {
-    background-color: #F0F0F0;
-    margin-left: 40em;
-    margin-top: 5em;
-
-    width: 20em;
+  background-color: #F0F0F0;
+  width: 20em;
+  border-radius: 10px;
 }
 
-.card2 {
-    background-color: #F0F0F0;
-    margin-left: 65em;
-    margin-top: -14.5em;
+.card__body {
+  padding: 0em 2.25em 0 1.25em;
 
-    width: 20em;
 }
 
-.icon_background2 {
-    color: #FFFFFF;
-    position: absolute;
-    margin-top: -0.07em;
-    margin-left: -0.8em;
+
+.myFlex {
+  display: flex;
+  flex-direction: row;
+  gap: .5em
 }
+
 
 .icon_background {
-    color: red;
-    position: absolute;
-    margin-top: -0.07em;
-    margin-left: -0.13em;
+  color: white;
 }
 
 .icon {
-    margin-top: -0.3em;
-    text-align: right;
-    color: white;
+  text-align: right;
 }
 
-.text{
-    margin-left: 0.5em;;
-    text-align: left;
-    font-size: 0.8em;
+.text {
+  text-align: left;
+  font-size: 0.8em;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 21px;
 }
 
 .title {
-    margin-left: 1em;
+  margin-left: 1em;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
 
 }
 
 .subtitulo {
-    font-size: small;
-    margin-left: 3em;
+  /* font-size: small; */
+  margin-left: 3em;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .vistas {
-    text-align: center;
+  text-align: center;
 }
 
 
 .boton {
-    border: 1px solid red;
-    border-radius: 15em;
-    font-size: 0.8em;
+  border: 1px solid #E22C38 !important;
+  border-radius: 15em;
+  font-size: 0.8em;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height, or 143% */
+
+  text-align: center;
+  letter-spacing: 0.25px;
+  padding: 0 1.5em 0 1.5em !important;
+  background-color: white;
 
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table title="Resultados de la votación" :rows="resultStore.subcategoriesArr" :columns="columns" row-key="name"
+    <q-table title="Resultados de la votación" :rows="categoriaStore.subCategoriasArr" :columns="columns" row-key="name"
       title-class="text-weight-bold" hide-bottom virtual-scroll v-model:pagination="pagination"
       :rows-per-page-options="[0]" class="row">
 
@@ -9,7 +9,12 @@
 
         <q-td :props="props" @click="getSubcategoria(props.row)">
           <router-link class="linkCat" to="/backoffice/results/ResultTab"> {{ props.row.Categoria }}</router-link>
-          <q-chip class="chip" square color="red" text-color="white" label="Empate" />
+          <q-chip v-if="props.row.desierto == true && props.row.tipo_desierto == 'o'" class="chip" square color="warning" text-color="white" label="Desierto ORO" />
+          <q-chip v-else-if="props.row.desierto == true && props.row.tipo_desierto == 'd'" class="chip" square color="warning" text-color="white" label="Desierto" />
+          <q-chip v-else-if="props.row.empate == true && props.row.tipoEmpate == 'o'" class="chip" square color="red" text-color="white" label="Empate ORO" />
+          <q-chip v-else-if="props.row.empate == true && props.row.tipoEmpate == 'd'" class="chip" square color="red" text-color="white" label="Empate" />
+          <div v-else></div>
+
         </q-td>
 
       </template>
@@ -20,7 +25,6 @@
 
 
 <script>
-import router from "../../router";
 const columns = [
   {
     name: 'Categoria',
@@ -32,19 +36,16 @@ const columns = [
 
 
 import { ref } from 'vue'
-import { useresultStore } from "src/stores/resultStore";
 import { useVotosStore } from "src/stores/categoriaStore";
 export default {
   setup() {
 
-    const resultStore = ref(useresultStore());
-    const rows = resultStore.value.resultStore;
     const categoriaStore = ref(useVotosStore());
+    const rows = categoriaStore.value.resultStore;
 
     return {
       columns,
       rows,
-      resultStore,
       categoriaStore,
       inception: ref(false),
       secondDialog: ref(false),
@@ -52,17 +53,15 @@ export default {
         sortBy: 'name',
         descending: true,
       },
-      getSubcategoria(row) {
-        console.log(row)
-        categoriaStore.value.subCategorias = row.Categoria;
-        categoriaStore.value.checker = true;
-        console.log(categoriaStore.value.subCategorias)
+      async getSubcategoria(row) {
+        console.log(row);
+        await categoriaStore.value.putDataInResultTab(row);
       }
 
     }
   },
   mounted() {
-    this.resultStore.getSubCategoriasIndependent();
+    this.categoriaStore.getSubCategoriasFromResult();
   }
 }
 </script>

@@ -2,20 +2,20 @@
   <div class="my-card">
     <q-card class="my-card" :rows="rows">
       <q-card-section>
-        <q-form class="q-gutter-md">
+        <q-form class="q-gutter-md" >
 
           <h5>Enviar invitación {{ juradoStore.Nombre }} </h5>
           <p>De: Premios Aspid &lt;sede@premiosaspid.es&gt; </p>
           <p>Para: {{ juradoStore.Nombre }} &lt;{{ juradoStore.Email }}&gt; , con votaciones pendientes</p>
           <!-- mailDestinatario -->
           <div class="asunto">
-            <label>Asunto:</label><q-input square outlined filled v-model="AsuntoText" style="width:100% " />
+            <label>Asunto:</label><q-input square outlined filled v-model="juradoStore.asunto" style="width:100% " />
           </div>
 
-          <q-input filled v-model="MensajeText" outlined type="textarea" min-height:400px>
+          <q-input filled v-model="juradoStore.text" outlined type="textarea" min-height:400px>
           </q-input>
           <q-btn label="Enviar" type="submit" color="red" :to="juradoPage"
-            @click="juradoStore.postJuradoFromEmail(), showNotif()"
+            @click="juradoStore.postJuradoGetTokenUrlAceptacionInvitacion(), showNotif()"
             style="align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
         </q-form>
       </q-card-section>
@@ -25,15 +25,17 @@
 </template>
 <script>
 import { ref, defineComponent } from 'vue'
-import { useJuradosStore } from "src/stores/TablaJuradosStore";
 import { computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayoutStore } from "src/stores/layoutStore";
+import { useAuthStore } from 'src/stores/authStore';
+import { useJuradoStore } from 'src/stores/juradoStore';
 export default defineComponent({
   name: 'InvitacionJurado',
   setup() {
     const layoutStore = useLayoutStore();
-    const juradoStore = ref(useJuradosStore());
+    const authStore = ref(useAuthStore());
+    const juradoStore = ref(useJuradoStore());
     const $q = useQuasar();
     const year = layoutStore.year;
     const juradoPage = "../jurado";
@@ -44,8 +46,9 @@ export default defineComponent({
       return juradoStore.value.Tipo;
     });
     return {
-      juradoStore,
       JuradoNombre,
+      juradoStore,
+      authStore,
       juradoPage,
       text: ref(''),
       tipoJurado,

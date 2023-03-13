@@ -5,17 +5,30 @@
         <!-- Tabs que representan los botones de seleccion de tabla. -->
         <q-tabs v-model="tab" dense active-color="red" indicator-color="red" align="justify" narrow-indicator>
           <q-tab name="ranking" label="RANKING" />
-          <q-tab name="votos_jurado" label="VOTOS JURADO" />
+          <q-tab name="votos_jurado" label="VOTOS JURADO" @click="categoriaStore.getVotosJuradoResult()" />
         </q-tabs>
 
         <q-tab-panels v-model="tab" animated>
           <!-- Tabla ranking -->
           <q-tab-panel name="ranking">
-            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="rows" :columns="ranking" row-key="jurado"
+            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="categoriaStore.resultStore" :columns="ranking" row-key="jurado"
               selection="single" v-model:selected="selected" v-model:pagination="pagination" hide-bottom virtual-scroll
               :rows-per-page-options="[0]">
               <template v-slot:top>
-                <h5> <b>Ranking</b> {{categoriaStore.subCategorias}}</h5>
+                <h5> <b>Ranking</b> {{ categoriaStore.subCategoriaResultTab }}</h5>
+
+                <div class="flex" style="padding: 1em ;gap:1em;align-items:center">
+                  <h5 style="font-size: 18px;font-weight: 300;">
+                    Desierto :
+                    <q-badge class="numVotos q-pa-xs" color="black"
+                      :label="categoriaStore.votos_desiertoResultTab"></q-badge>
+                  </h5>
+                  <h6><b>{{ categoriaStore.porcentaje_desiertoResultTab }}%</b></h6>
+                  <q-chip v-if="categoriaStore.porcentaje_desiertoResultTab > 50" class="chip"
+                    style="padding: 1em;font-size: 12px; background-color: #ffe1b8;color:#ffebd1" square color="chip"
+                    text-color="white" label="Desierto" />
+
+                </div>
               </template>
               <!-- Casilla de seleccion de cada fila -->
               <div class="q-mt-md">
@@ -32,32 +45,41 @@
 
               <template v-slot:body-cell-premio="props">
                 <td :props="props">
-                  <div v-if="props.value == '-'">
-                  <q-img class="selloAspid" src="../../assets/Sellos/sello-aspid.png"></q-img>
-                </div>
+                  <div>
+                    <q-img class="selloAspid" v-if="categoriaStore.selloActivate == 'Aspid' && props.row.premio != null" src="~assets/Sellos/sello-aspid.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid de Oro' && props.row.premio != null" src="~assets/Sellos/sello_oro.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Plata' && props.row.premio != null" src="~assets/Sellos/sello_plata.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Platino' && props.row.premio != null" src="~assets/Sellos/sello_platino.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                  </div>
                 </td>
               </template>
 
               <!-- Boton otorgar premio -->
-              <template v-slot:body-cell-action="boton">
+              <template v-slot:body-cell-action="props">
 
-                <q-td v-if="OtorgarPremio() == true" :props="boton">
-                  <q-btn outline depressed label="Otorgar Premio" color="red" @click="prompt = true" />
+                <q-td>
+                  <q-btn outline depressed label="Otorgar Premio" color="red" @click="otorgarPremio = true;categoriaStore.id_obraFromSubCategoria = props.row.id" />
                 </q-td>
 
               </template>
 
-
               <template v-slot:top-right>
-                <div style="display: inline-flex; align-items: center;">
-                  <div>Desierto:</div>
-                  <div class="q-ml-sm"><q-badge color="black">2</q-badge></div>
-                  <div class="q-ml-sm text-weight-bold">22%</div>
-                  <q-chip disable class="chip" square color="orange" text-color="white" label="Desierto" />
-
-                </div>
-
-
 
                 <!-- Popup otorgar premio -->
                 <q-dialog v-model="prompt" persistent>
@@ -97,16 +119,15 @@
 
           <!-- Tabla votos jurado -->
           <q-tab-panel name="votos_jurado">
-            <q-table id="table" title-class="q-mt-lg"
-              :rows="resultJuradosStore.resultStore" :columns="voto" row-key="name" v-model:pagination="pagination"
-              hide-bottom virtual-scroll :rows-per-page-options="[0]">
+            <q-table id="table" title-class="q-mt-lg" :rows="categoriaStore.resultVotoJurado" :columns="voto"
+              row-key="name" v-model:pagination="pagination" hide-bottom virtual-scroll :rows-per-page-options="[0]">
               <template v-slot:top>
-                <h5> <b>Votos por Jurado</b> {{categoriaStore.subCategorias}}</h5>
+                <h5> <b>Votos por Jurado</b> {{ categoriaStore.subCategoriaResultTab }}</h5>
               </template>
               <template v-slot:body-cell-voto="props">
                 <q-td :props="props">
-                  <div v-if="props.value == '-'">
-                    <q-chip class="chip" square color="orange" text-color="white" label="Desierto" />
+                  <div v-if="props.row.voto == '-'">
+                    <q-chip class="chip" square color="warning" text-color="white" label="Desierto" />
                   </div>
                   <div v-else>
                     {{ props.row.voto }}
@@ -134,86 +155,72 @@
       </q-card>
     </div>
   </div>
+
+
+  <q-dialog v-model="otorgarPremio" >
+    <q-card style="padding: 2em;">
+      <q-card-section class="flex" style="align-items:center;justify-content: space-between;">
+        <div class="text-h6">NUEVO PREMIO</div>
+        <q-icon name="close" v-close-popup class="close"></q-icon>
+      </q-card-section>
+
+      <q-card-section class="q-pa-md">
+        <div class="q-gutter-y-md column">
+          <div class="q-gutter-y-md column">
+            <div>
+              <div class="my-input q-pa-xs center">
+                <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Tipo</div>
+                <q-select :options="categoriaStore.votaciones" v-model="categoriaStore.votacion" style="grid-column: 2 / 4;" outlined label="" />
+              </div>
+              <div class="my-input q-pa-xs center">
+                <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Nombre del premio</div>
+                <q-input style="grid-column: 2 / 4;"  v-model="categoriaStore.nombreVotacion" outlined label=""></q-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-card-section>
+
+      <q-card-actions align="center" class="q-pt-xl">
+        <q-btn class="q-mr-lg" style="width: 37%;" color="secondary" @click="categoriaStore.putOtorgarPremio()" label="Añadir" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
 
 import { ref } from 'vue'
-import { useresultStore } from "src/stores/resultStore"
-import { useresultJuradosStore } from "src/stores/resultJuradosStore"
+import { useQuasar } from 'quasar'
 import { useVotosStore } from "src/stores/categoriaStore";
 
 // Columnas jurado
 const ranking = [
-  {
-    name: 'obra',
-    align: 'left',
-    label: 'Obra',
-    field: 'name',
-  },
-  {
-    name: 'votos',
-    align: 'left',
-    label: 'Votos',
-    field: 'voto',
-  },
-  {
-    name: 'premio',
-    align: 'left',
-    label: 'Premio',
-    field: 'premio',
-  },
-  {
-    name: 'action',
-    align: 'right',
-    field: 'action',
-  },
-
+  { name: 'obra', align: 'left', label: 'Obra', field: 'name', },
+  { name: 'votos', align: 'left', label: 'Votos', field: 'voto', },
+  { name: 'premio', align: 'left', label: 'Premio', field: 'premio', },
+  { name: 'action', align: 'right', field: 'action', },
 ]
 
 // Columnas votos
 const voto = [
-  {
-    name: 'jurado',
-    align: 'left',
-    label: 'Jurado',
-    field: 'jurado',
-    sortable: true
-  },
-  {
-    name: 'voto',
-    align: 'left',
-    label: 'Voto',
-    field: 'voto',
-  },
-
+  { name: 'jurado', align: 'left', label: 'Jurado', field: 'jurado', sortable: true },
+  { name: 'voto', align: 'left', label: 'Voto', field: 'voto', },
 ]
 
 export default {
 
   setup() {
     // Cojer datos de la store de los resultados.
-    const resultStore = ref(useresultStore());
-    const rows = resultStore.value.resultStore;
-    const resultJuradosStore = ref(useresultJuradosStore());
     const categoriaStore = ref(useVotosStore());
+    const rows = categoriaStore.value.resultStore;
+    const $q = useQuasar()
+    const otorgarPremio = ref(false);
     // Esta funcion no funciona al 100%. Se utiliza para comparar los votos y que aparezca el boton de otorgar premio. Se puede prescindir de ella porque no termina de funcionar bien.
-    const OtorgarPremio = () => {
-      const pos1 = rows[0];
-      const pos2 = rows[1];
-
-      if (pos1.voto.valueOf() > pos2.voto.valueOf()) {
-        return true;
-      }
-    };
-
-
 
     return {
-      OtorgarPremio,
-      resultStore,
-      resultJuradosStore,
       categoriaStore,
+      otorgarPremio,
       model: ref(null),
       // Las opciones de seleccion del apartado tipo dentro del popup de otorgar premio.
       options: [
@@ -236,9 +243,6 @@ export default {
       ranking,
       voto,
       rows,
-
-
-
     }
   },
 }
@@ -246,11 +250,35 @@ export default {
 
 
 <style>
+.close:hover {
+  cursor:pointer;
+}
+
+.q-card {
+  width: 100%!important;
+}
+
+.btn-group {
+    padding: 1em;
+    flex-direction: column;
+    gap: 1em;
+  }
+.my-input {
+    display: grid;
+    /* grid-template-columns: repeat(4, minmax(10em, 1fr)); */
+    grid-template-columns: repeat(3, 1fr);
+  }
 /* --------- Estilo de las dos tablas de datos --------- */
 
 #table {
   margin: -2em -1.14em -1.14em -1.2em;
   border-radius: 0px 0px;
+}
+
+.q-table__top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 .selloAspid {
@@ -302,7 +330,7 @@ export default {
 }
 
 /* Estilo cuadrado Votos */
-.numVotos{
+.numVotos {
   width: 1.5rem;
   height: 1.5rem;
   font-size: 1rem;

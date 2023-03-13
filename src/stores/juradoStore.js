@@ -4,6 +4,8 @@ import { api } from "boot/axios";
 export const useJuradoStore = defineStore("jurados", {
   state: () => ({
     Nombre: "",
+    juradoDataLoaded: false,
+    deleteDataConfig: false,
     Tipo: "",
     Email: "",
     Aceptacion: "",
@@ -11,74 +13,18 @@ export const useJuradoStore = defineStore("jurados", {
     Cargo: "not cargo",
     Bio: "",
     id: 0,
+    token: '',
     tipoJuradoChecker: false, // variable for the conditions in "EdicionJurado". To prevent two request at getJuradoTipo()
     notification: "",
     optionsTipoJurado: [],
     juradosRonda: [],
     mailDestinatario:"",
+    text: '',
+    asunto: '',
     checker:false,
-    juradosRonda: [
-      {
-        nombre:['Manuel Carrasco' ,'Apple Tree'],
-        tipo: 'Jurado de Creatividad',
-        progreso: '100%',
-        último_Acceso: '12/5/2002 12:45h',
-        recordatorio:'',
-        deleteVotos:'',
-      },
-      {
-        nombre:['Manuel Carrasco' ,'Apple Tree'],
-        tipo: 'Jurado de Formación',
-        progreso: '-',
-        último_Acceso: '12/5/2002 12:45h',
-        recordatorio:'',
-        deleteVotos:'',
-      },
-      {
-        nombre:['Manuel Carrasco' ,'Apple Tree'],
-        empresa: 'Apple Tree',
-        tipo: 'Jurado de Creatividad',
-        progreso: '20%',
-        último_Acceso: '12/5/2002 12:45h',
-        recordatorio:'',
-        deleteVotos:'',
-      },
-      {
-        nombre:['Manuel Carrasco' ,'Apple Tree'],
-        empresa: 'Apple Tree',
-        tipo: 'Jurado de eSalud',
-        progreso: '10%',
-        último_Acceso: '12/5/2002 12:45h',
-        recordatorio:'',
-        deleteVotos:'',
-      },
-    ],
-    juradosTest: [
-      {
-        nombre: 'Manuel Carrasco',
-        Tipo: 'Jurado de creatividad',
-        Email: 'email@dominio.com',
-        Aceptación: '12/5/2002 12:45h',
-      },
-      {
-        nombre: 'Manuel Carrasco',
-        Tipo: 'Jurado de creatividad',
-        Email: 'email@dominio.com',
-        Aceptación: '12/5/2002 12:45h',
-      },
-      {
-        nombre: 'Manuel Carrasco',
-        Tipo: 'Jurado de creatividad',
-        Email: 'email@dominio.com',
-        Aceptación: '12/5/2002 12:45h',
-      },
-      {
-        nombre: 'Manuel Carrasco',
-        Tipo: 'Jurado de creatividad',
-        Email: 'email@dominio.com',
-        Aceptación: '12/5/2002 12:45h',
-      },
-    ]
+    dataInvitacion: [],
+    $router: null,
+    juradosTest: []
   }),
   getters: {
     getJuradosTest: (state) => state.juradosTest,
@@ -88,7 +34,7 @@ export const useJuradoStore = defineStore("jurados", {
     async getJurados() {
       try {
         console.log('==== get jurados ====');
-        const res = await api.get("http://127.0.0.1:8000/api/jurado");
+        const res = await api.get("http://localhost:8000/api/admin/jurados");
         if (res.status >= 200 && res.status <= 400) {
           console.log(res);
           this.juradosTest = [];
@@ -99,13 +45,16 @@ export const useJuradoStore = defineStore("jurados", {
               Empresa: jurado.Empresa,
               Tipo: jurado.tipo_jurado,
               Email: jurado.Email,
-              Aceptación: "12/5/2002 12:45h",
+              Aceptación: jurado.aceptacion,
+              Cargo: jurado.cargo,
               id: jurado.id,
-              biografia: jurado.biografia,
+              Bio: jurado.biografia,
               aceptacion: jurado.aceptacion,
             };
             this.juradosTest.push(auxObject);
           });
+          this.juradoDataLoaded = true;
+
         }
       } catch (error) {
         console.log(error);
@@ -119,7 +68,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log('==== get descarga csv ====');
         await api({
-          url: "http://127.0.0.1:8000/api/jurado/descarga-csv",
+          url: "http://localhost:8000/api/admin/jurados/descarga-csv",
           method: "GET",
           responseType: "blob", // Important
         }).then((response) => {
@@ -140,7 +89,7 @@ export const useJuradoStore = defineStore("jurados", {
             console.log("Status is not 200 -->", response.status);
           }
         });
-        // const res = await api.get("http://127.0.0.1:8000/api/descarga-csv");
+        // const res = await api.get("http://localhost:8000/api/descarga-csv");
         if (res.status >= 200 && res.status <= 400) {
           console.log(res);
         }
@@ -153,15 +102,15 @@ export const useJuradoStore = defineStore("jurados", {
      // done
     async getJuradosRonda() {
       try {
-        const res = await api.get("http://127.0.0.1:8000/api/jurado");
-        console.log('ronda-jurado')
+        const res = await api.get("http://localhost:8000/api/admin/jurados");
+        console.log(' === ronda-jurado =====')
         if (res.status >= 200 && res.status < 400) {
           this.juradosRonda = [];
           console.log(res.data);
           res.data.forEach((jurado) => {
             let auxObject = {
               nombre: [jurado.Nombre, jurado.Empresa],
-              tipo: jurado.Tipo_jurado,
+              tipo: jurado.tipo_jurado,
               progreso: "100%",
               último_Acceso: "12/5/2002 12:45h",
               recordatorio: "",
@@ -175,13 +124,39 @@ export const useJuradoStore = defineStore("jurados", {
       }
     },
 
-    ////////////////////////////////////////////////////////////////////////////
+    async getJuradoPorcentaje() {
+      try {
+        const res = await api.get("http://localhost:8000/api/admin/ronda/jurados-porcentajes");
+        console.log(' === porcentaje ronda-jurado =====')
+        if (res.status >= 200 && res.status < 400) {
+          console.log(res.data);
+          this.juradosRonda = [];
+          res.data.forEach((item) => {
+            let auxObject = {
+              nombre: item.nombre,
+              tipo: this.optionsTipoJurado[item.id_tipojurado],
+              progreso: item.progreso,
+              empresa: item.empresa,
+              Ultimo_Acceso: item.ultimoAcceso,
+              id: item.id,
+            }
+            this.juradosRonda.push(auxObject);
+          })
 
+          console.log("dasdadadasdasdas",this.juradosRonda);
+
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
     // done
     async postSteperJurado() {
       try {
         console.log(' === steeperJurado ===')
-        const res = await api.post("http://127.0.0.1:8000/api/jurado/email",{
+        const res = await api.post("http://localhost:8000/api/admin/jurados/email",{
           email: this.Email
         });
         if (res.status >= 200 && res.status < 400) {
@@ -189,7 +164,7 @@ export const useJuradoStore = defineStore("jurados", {
           this.Nombre = res.data.nombre;
           this.Tipo = this.optionsTipoJurado[res.data.id_tipojurado];
           this.Cargo = res.data.cargo;
-          this.Empresa = res.data.empresa ;
+          this.Empresa = res.data.empresa;
         }
       } catch (error) {
         console.log(error);
@@ -199,19 +174,28 @@ export const useJuradoStore = defineStore("jurados", {
 
     ////////////////////////////////////////////////////////////////////////////
     // done
-    async postJurado() {
+    async postJurado(id_edicion, invitacion=false) {
       try {
+
+        for (let i = 0; i < this.optionsTipoJurado.length; i++)  {
+          if (this.optionsTipoJurado[i] == this.Tipo) {
+            this.Tipo = i + 1
+          }
+        }
+
+        console.log(this.Tipo, id_edicion);
         console.log('==== post jurado ====');
-        const response = await api.post(`http://127.0.0.1:8000/api/jurado`, {
+        const response = await api.post(`http://localhost:8000/api/admin/jurados`, {
           email: this.Email,
-          id_tipojurado: 2,
-          id_edicion: 25,
+          id_tipojurado: this.Tipo,
+          id_edicion: id_edicion,
           nombre: this.Nombre,
           cargo: this.Cargo,
           empresa: this.Empresa,
         });
 
         if (response.status >= 200 && response.status < 400) {
+          console.log(response)
           this.id = response.data.id;
           this.notification = true;
           this.juradosTest.push({
@@ -224,12 +208,13 @@ export const useJuradoStore = defineStore("jurados", {
         } else {
           this.notification = false;
         }
-
-        this.Nombre = "";
-        this.Tipo = "";
-        this.Email = "";
-        this.Cargo = "";
-        this.Empresa = "";
+        if (invitacion == false) {
+          this.Nombre = "";
+          this.Tipo = "";
+          this.Email = "";
+          this.Cargo = "";
+          this.Empresa = "";
+        }
       } catch (error) {
         console.log(error);
       }
@@ -243,7 +228,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log()
         const response = await api.delete(
-          `http://127.0.0.1:8000/api/jurado/${rowToDelete.id}`,
+          `http://localhost:8000/api/admin/jurados/${rowToDelete.id}`,
           {
             id: rowToDelete.id,
           }
@@ -261,7 +246,102 @@ export const useJuradoStore = defineStore("jurados", {
     },
 
     ////////////////////////////////////////////////////////////////////////////
-    // done (could fixed because we have id_tipojurado in getJurados)
+
+    async recordatorioVotacionMail() {
+      try {
+        console.log(" == post Jurado Aceptacion URL invitacion ==");
+        console.log(this.Tipo, this.asunto, this.text);
+
+        for (let i = 0; i < this.optionsTipoJurado.length; i++)  {
+          if (this.optionsTipoJurado[i] == this.Tipo) {
+            this.Tipo = i + 1
+          }
+        }
+
+        const response = await api.post(
+          `http://localhost:8000/api/admin/email-recordatorio`, {
+            id_tipojurado: this.Tipo,
+            asuntomsg:this.asunto,
+            textomsg:this.text,
+          }
+        );
+
+        if (response.status >= 200 && response.status < 400) {
+          this.Nombre = "";
+          this.Tipo = "";
+          this.Email = "";
+          this.Cargo = "";
+          this.Empresa = "";
+          console.log(response);
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+
+    // done
+    async postJuradoGetTokenUrlAceptacionInvitacion() {
+      try {
+        console.log(" == post Jurado Aceptacion URL invitacion ==");
+        console.log(this.id, this.Email, this.asunto, this.text);
+        const response = await api.post(
+          `http://localhost:8000/api/admin/email-invitacion`, {
+            emailtomsg:this.Email,
+            id:this.id,
+            asuntomsg:this.asunto,
+            textomsg:this.text,
+            typemsg:"invitacion"
+          }
+        );
+
+        if (response.status >= 200 && response.status < 400) {
+          this.Nombre = "";
+          this.Tipo = "";
+          this.Email = "";
+          this.Cargo = "";
+          this.Empresa = "";
+          console.log(response);
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+
+    // done
+    async putJuradoAceptacionmEmail() {
+      try {
+        console.log(" == post Jurado Aceptacion invitacion ==");
+        const response = await api.put(
+          `http://localhost:8000/api/admin/jurados/aceptacion/${this.token}`, {
+            nombre: this.Nombre,
+            nom_imagen: "imagenruat",
+            cargo: this.Cargo,
+            empresa: this.Empresa,
+            biografia: this.Bio
+          }
+        );
+
+        if (response.status >= 200 && response.status < 400) {
+          console.log(response);
+          this.tokenMail = '';
+          this.urlTokenMail = '';
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
+    // done
     async putJurado() {
       console.log('==== put jurado ====');
       for (let i = 0; i < this.optionsTipoJurado.length; i++)  {
@@ -270,8 +350,9 @@ export const useJuradoStore = defineStore("jurados", {
         }
       }
       try {
+        console.log(this.Cargo);
         const response = await api.put(
-          `http://127.0.0.1:8000/api/jurado/${this.id}`,
+          `http://localhost:8000/api/admin/jurados/${this.id}`,
           {
             id: this.id,
             nombre: this.Nombre,
@@ -286,27 +367,8 @@ export const useJuradoStore = defineStore("jurados", {
 
         console.log(response);
         if (response.status >= 200 && response.status < 400) {
-          window.location.href = "http://127.0.0.1:9000/jurado/"
-          this.notification = true;
-        } else {
-          this.notification = false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    ////////////////////////////////////////////////////////////////////////////
-
-    async putAceptación() {
-      try {
-        const response = await api.put(
-          `http://127.0.0.1:8000/api/jurado/${this.id}`,
-          {
-            id: this.id,
-          }
-        );
-        if (response.status >= 200 && response.status < 400) {
+          // this.$router.push('backoffice/jurado')
+          // window.location.href = "http://localhost:9000/backoffice/jurado"
           this.notification = true;
         } else {
           this.notification = false;
@@ -320,9 +382,10 @@ export const useJuradoStore = defineStore("jurados", {
     // done
     async getJuradoTipo() {
       try {
-        const response = await api.get(`http://127.0.0.1:8000/api/jurado/tipo`);
-        console.log(response);
+        console.log('=== getJurados tipos ===')
+        const response = await api.get(`http://localhost:8000/api/admin/jurados/tipos`);
         if (response.status >= 200 && response.status < 400) {
+          console.log(response);
           let arrAux = [];
           response.data.forEach(item => {
             arrAux.push(item.nombre)
@@ -342,29 +405,11 @@ export const useJuradoStore = defineStore("jurados", {
     },
 
     ////////////////////////////////////////////////////////////////////////////
-
+    // done
     async putConfigSubcategorias() {
       try {
         const response = await api.get(
-          `http://127.0.0.1:8000/api/config/popup`
-        );
-        if (response.status >= 200 && response.status < 400) {
-          this.options = response.data;
-          this.notification = true;
-        } else {
-          this.notification = false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    ////////////////////////////////////////////////////////////////////////////
-
-    async putConfigLimitVotaciones() {
-      try {
-        const response = await api.get(
-          `http://127.0.0.1:8000/api//config/limit-votacion`
+          `http://localhost:8000/api/admin/config/popups`
         );
         if (response.status >= 200 && response.status < 400) {
           this.options = response.data;
@@ -379,11 +424,36 @@ export const useJuradoStore = defineStore("jurados", {
 
     ////////////////////////////////////////////////////////////////////////////
     // done
+    async putConfigLimitVotaciones(data) {
+      try {
+        for (let i = 0; i < this.optionsTipoJurado.length; i++)  {
+          if (this.optionsTipoJurado[i] == data.tipo) {
+            this.Tipo = i + 1
+          }
+        }
+        const response = await api.put(
+          `http://localhost:8000/api/admin/config/limit-votacion`, {
+            id: this.Tipo,
+            limit_date: data.fechaReunion
+          }
+        );
+        if (response.status >= 200 && response.status < 400) {
+          console.log(response)
+          this.options = response.data;
+          this.notification = true;
+        } else {
+          this.notification = false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
 
+    ////////////////////////////////////////////////////////////////////////////
+    // done
     async putConfigPopUp(data) {
       try {
         console.log('==== put config pop Up ====');
-        console.log(data.tipo)
         for (let i = 0; i < this.optionsTipoJurado.length; i++)  {
           if (this.optionsTipoJurado[i] == data.tipo) {
             this.Tipo = i +1;
@@ -392,9 +462,10 @@ export const useJuradoStore = defineStore("jurados", {
             this.Tipo = 0
           }
         }
-        console.log(this.optionsTipoJurado[1])
-        const res = await api.put("http://127.0.0.1:8000/api/config/popup", {
-          tipo: data.tipo,
+        console.log(data)
+        console.log(this.Tipo)
+        const res = await api.put("http://localhost:8000/api/admin/config/popups", {
+          tipo: data.tipoPopUp,
           id_tipojurado: this.Tipo,
           id_edicion: data.idEdicion,
           titulo: data.titulo,
@@ -405,6 +476,7 @@ export const useJuradoStore = defineStore("jurados", {
         });
         if (res.status >= 200 && res.status <= 400 ) {
           console.log(res);
+          this.deleteDataConfig = true;
           if (res.status >=200 && res.status <= 400) {
 
           }
@@ -419,7 +491,7 @@ export const useJuradoStore = defineStore("jurados", {
     async deleteSubCategoriesVotaciones(rowToDelete){
       try {
         console.log(' ==== delete subcat-votaciones ====');
-        const res = await api.delete('http://127.0.0.1:8000/api/ronda/subcat-votaciones',{
+        const res = await api.delete('http://localhost:8000/api/admin/ronda/subcat-votaciones',{
           id_cod_particip: ""
         });
         console.log(res);
@@ -437,10 +509,7 @@ export const useJuradoStore = defineStore("jurados", {
     async deleteJuradoVotaciones(rowToDelete){
       try {
         console.log(' ==== delete jurado-votacionest ====');
-        const res = await api.delete('http://127.0.0.1:8000/api/ronda/jurado-votaciones',
-        {
-          id_jurado: rowToDelete.id
-        });
+        const res = await api.delete(`http://localhost:8000/api/admin/ronda/jurado-votaciones/${rowToDelete.id}`);
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {

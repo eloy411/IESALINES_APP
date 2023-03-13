@@ -6,11 +6,11 @@
           <h5>¡Bienvenida/o!<br>Premios Aspid {{year}}</h5>
         </div>
         <div>
-          <q-input outlined v-model="ph" placeholder="Dirección de correo electrónico" :dense="dense" class="inputEmail" />
+          <q-input outlined v-model="authStore.emailLogin" placeholder="Dirección de correo electrónico" :dense="dense" class="inputEmail" />
           <p class="subtitulo">A continuacón te enviaremos un link de acceso mágico</p>
         </div>
         <div class="botonC">
-          <q-btn class="boton q-mt-lg" id="botonazo" v-on:click="changeMessage()" label="Enviar" />
+          <q-btn class="boton q-mt-lg" id="botonazo" v-on:click="authStore.postLoginJurado()" label="Enviar" />
         </div>
       </div>
     </div>
@@ -24,8 +24,10 @@ export default defineComponent({
   setup() {
     const today = new Date();
     const year = ref(today.getFullYear())
+    const authStore = ref(useAuthStore());
     return {
       year,
+      authStore,
     };
   },
   methods: {

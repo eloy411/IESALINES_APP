@@ -1,6 +1,18 @@
 <template>
-    <CategoryIndex />
-    <CategoryCardIndex />
+
+  <div class="myGrid">
+    <CategoryIndex class="border myGrid__index" />
+    <div class="border myGrid__card">
+      <div class="flex center myPadding">
+        <CategoryCardIndex />
+        <CategoryCardIndex />
+        <CategoryCardIndex />
+        <CategoryCardIndex />
+        <CategoryCardIndex />
+        <CategoryCardIndex />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -19,7 +31,7 @@ export default defineComponent({
 
     setup () {
         return {
-            
+
         }
     }
 })
@@ -28,7 +40,44 @@ export default defineComponent({
 
 <style lang="scss">
 body {
-    background-color: #2F353B;;
+  background-color: #2F353B;;
 }
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.border {
+  // border: 1px solid red;
+}
+
+.myGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin-left: 5em;
+}
+
+
+.myGrid__index {
+  grid-column: 1/3;
+}
+
+.myGrid__card {
+  grid-column: 3/8;
+  padding: 2em;
+  align-self: center;
+
+}
+
+.flex  {
+  gap: 3em;
+}
+
+.myPadding {
+  padding-top: 13%;
+}
+
 
 </style>

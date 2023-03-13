@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :data="data" title-class="text-weight-bold q-mt-md">
+    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :columns="columns" :data="data" title-class="text-weight-bold q-mt-md">
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
@@ -18,8 +18,9 @@
             </q-avatar>
 
             <div class="empresa">
-              {{ props.row.nombre[0] }} <br>
-              {{ props.row.nombre[1] }}
+              {{ props.row.nombre }}
+              <br>
+              {{ props.row.empresa }}
             </div>
           </div>
           </q-td>
@@ -27,20 +28,18 @@
             {{ props.row.tipo }}
           </q-td>
           <q-td key="progreso" :props="props" id="progreso"
-            v-bind:style="[props.row.progreso == '100%' ? 'color: green;font-weight:600' : 'color: red;']">
+            v-bind:style="[props.row.progreso == '100' ? 'color: green;font-weight:600' : 'color: red;']">
             {{ props.row.progreso }}
           </q-td>
-          <q-td key="último_Acceso" :props="props">
+          <q-td key="Ultimo_Acceso" :props="props">
             {{ props.row.último_Acceso }}
           </q-td>
-          <q-td key="recordatorio" :props="props">
-            <q-btn disabled v-if="props.row.progreso == '100%'" flat name="" label='' icon='mail' />
-            <q-btn v-else flat name="" label='' icon='mail' to="backoffice/ronda1Page/EmailRecordatorioVotacion"
-              @click="getJuradoName(props.row)" />
-          </q-td>
-          <q-td key="deleteVotos" :props="props">
-            <q-btn flat name="" label='' icon='delete' @click="juradoStore.deleteJuradoVotaciones(props.row); deleteval(props.row)" />
-          </q-td>
+
+          <q-td key="buttons" :props="props">
+          <q-btn disabled v-if="props.row.progreso == '100'" flat name="" label='' icon='mail' />
+          <q-btn v-else flat name="" label='' icon='mail' to="backoffice/ronda1Page/EmailRecordatorioVotacion" @click="getJuradoName(props.row)" />
+          <q-btn flat name="" label='' icon='delete' @click="deleteVotacionesFromTable(props.row); deleteval(props.row)" />
+        </q-td>
         </q-tr>
       </template>
 
@@ -54,6 +53,7 @@ import { ref, defineComponent } from "vue";
 // import { useJuradosStore } from "src/stores/TablaJuradoStore";
 import { useJuradoStore } from "src/stores/juradoStore";
 import { data } from "browserslist";
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: "JuradosRondaComponent",
@@ -61,6 +61,7 @@ export default defineComponent({
     const juradoStore = ref(useJuradoStore());
     const rows = juradoStore.value.juradosRonda;
     const loading = ref(false);
+    const $q = useQuasar()
 
     return {
       inception: ref(false),
@@ -70,21 +71,11 @@ export default defineComponent({
       juradoStore,
       rows,
       columns: [
-        {
-          name: 'nombre',
-          required: true,
-          label: 'nombre',
-          align: 'left',
-          field: row => row.name,  //field=prop
-          format: val => `${val}`,
-          sortable: true,
-          style: 'width:20px',
-        },
+        { name: 'nombre', required: true, label: 'nombre', align: 'left', field: row => row.name,  format: val => `${val}`, sortable: true, style: 'width:20px',},
         { name: 'tipo', label: 'tipo', field: 'tipo', align: 'left', sortable: true },
         { name: 'progreso', align: 'center', label: 'progreso', field: '' },
-        { name: 'último_Acceso', align: 'left', label: 'Ültimo Acceso', field: '' },
-        { name: 'recordatorio', align: 'left', label: '', field: '' },
-        { name: 'deleteVotos', align: 'left', label: '', field: '' },
+        { name: 'Ultimo_Acceso', align: 'left', label: 'Ultimo_Acceso', field: '' },
+        { name: 'buttons', align: 'left', label: '', field: 'buttons' },
       ],
 
       // juradoStore,
@@ -100,12 +91,45 @@ export default defineComponent({
         juradoStore.value.checker = true;
         // location.href= "ronda1Page/EmailInicioVotacion";
 
-      }
+      },
+      deleteVotacionesFromTable(row) {
+        $q.dialog({
+          title: '¿Seguro que quieres eliminar los votos de esta categoría?',
+          ok: {
+            label: 'Si',
+            push: true,
+            style: 'background-color: white!important; color: black!important;'
+          },
+          cancel: {
+            label: 'No',
+            push: true,
+            style: 'padding:5px; background-color: white!important; color: black!important;'
+          },
+          persistent: true,
+          class: 'my-dialog-class', // add a custom class
+          style: 'background-color: #d6d6d6; padding: 25px;' // add inline styles
+        }).onOk(() => {
+          console.log('Jurado Eliminado');
+          juradoStore.value.deleteJuradoVotaciones(row);
+          $q.notify({
+            message: 'Votos eliminado',
+            color: 'green'
+          })
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
+      },
 
-        }
+      }
     },
     mounted() {
-      this.juradoStore.getJuradosRonda();
+      // this.juradoStore.getJuradosRonda();
+      if (this.juradoStore.tipoJuradoChecker  == false) {
+        this.juradoStore.getJuradoTipo();
+      }
+      this.juradoStore.getJuradoPorcentaje();
     }
   })
 

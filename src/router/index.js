@@ -28,9 +28,9 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next)=> {
-    console.log('guards vue', useAuthStore().isAuth)
+    console.log('guards vue', useAuthStore().admin)
     if (to.matched.some(route => route.meta.requiresAuth)) {
-      if (useAuthStore().isAuth) {
+      if (useAuthStore().admin == 1) {
         next()
         // useAuthStore().isAuth = false;
       } else {

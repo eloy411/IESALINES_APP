@@ -7,11 +7,11 @@
          <div class="infoDiv">
            <q-icon class="infoIcon" name="info" size="27px" /><p icon='info' class="infoText">La activación de la ronda 1 permite al jurado el acceso a <br>  la aplicación de votación y emitir los votos Oro y Aspid</p>
          </div>
-         <q-toggle v-model="active" @click="layoutStore.switchRonda" class="q-ml-md" color="blue" label="Si" />
+         <q-toggle v-model="layoutStore.activacionRonda" @click="layoutStore.switchRonda" class="q-ml-md" color="blue" label="Si" />
 
            <q-btn-dropdown
-             :disable-main-btn="!active"
-             :disable-dropdown="!active"
+             :disable-main-btn="!layoutStore.mailButton"
+             :disable-dropdown="!layoutStore.mailButton"
              split
              class="mailBtn"
              color="red"
@@ -94,6 +94,9 @@ export default defineComponent({
 
      }
 
+ },
+ mounted() {
+  this.layoutStore.switchRonda();
  }
 })
 
