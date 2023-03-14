@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table class="tableclass" title="Progreso de la votación por Jurado (64%)" :rows="juradoStore.juradosRonda" :columns="columns" :data="data" title-class="text-weight-bold q-mt-md">
+    <q-table class="tableclass" :title="`Progreso de la votación por Jurado (${juradoStore.totalRondaJuradosVotos}%)`" :rows="juradoStore.juradosRonda" :columns="columns" :data="data" title-class="text-weight-bold q-mt-md">
       <template v-slot:header-cell-deleteVotos="props">
         <q-th :props="props">
         </q-th>
