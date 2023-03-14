@@ -24,7 +24,8 @@ export const useJuradoStore = defineStore("jurados", {
     checker:false,
     dataInvitacion: [],
     $router: null,
-    juradosTest: []
+    juradosTest: [],
+    totalRondaJuradosVotos: 0
   }),
   getters: {
     getJuradosTest: (state) => state.juradosTest,
@@ -131,7 +132,8 @@ export const useJuradoStore = defineStore("jurados", {
         if (res.status >= 200 && res.status < 400) {
           console.log(res.data);
           this.juradosRonda = [];
-          res.data.forEach((item) => {
+          this.totalRondaJuradosVotos = Math.floor(res.data[0].calculo_total)
+          res.data[1].forEach((item) => {
             let auxObject = {
               nombre: item.nombre,
               tipo: this.optionsTipoJurado[item.id_tipojurado],
@@ -319,7 +321,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log(" == post Jurado Aceptacion invitacion ==");
         const response = await api.put(
-          `http://localhost:8000/api/admin/jurados/aceptacion/${this.token}`, {
+          `http://localhost:8000/api/jurados/aceptacion/${this.token}`, {
             nombre: this.Nombre,
             nom_imagen: "imagenruat",
             cargo: this.Cargo,

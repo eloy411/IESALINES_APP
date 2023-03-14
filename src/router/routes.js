@@ -5,6 +5,10 @@ const routes = [
       {
         path: "backoffice",
         component: () => import("src/layouts/backofficeLayout.vue"),
+        meta: {
+          requiresAuth: true,
+          requireAdmin: true,
+        },
         children:  [
           {
             path: "",
@@ -15,8 +19,7 @@ const routes = [
                   text: 'Home'
                 }
               ],
-              requiresAuth: true,
-              requireAdmin: true,
+
             },
             component: () => import("src/pages/backoffice/IndexPage.vue"),
           },
@@ -224,13 +227,8 @@ const routes = [
         path: "votaciones",
         component: () => import("src/layouts/votacionLayout.vue"),
         meta: {
-          breadCrumb: [
-            {
-              text: 'Home'
-            }
-          ],
           requiresAuth: true,
-          requireJurado: true,
+          requireAdmin: true,
         },
         children: [
           {

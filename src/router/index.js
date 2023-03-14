@@ -28,11 +28,12 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next)=> {
-    console.log('guards vue', useAuthStore().admin)
+    // useAuthStore().isAuth = false;
+    // useAuthStore().admin = 0;
+    console.log('guards vue', useAuthStore().admin, useAuthStore().isAuth)
     if (to.matched.some(route => route.meta.requiresAuth)) {
-      if (useAuthStore().admin == 1) {
+      if (useAuthStore().isAuth == true) {
         next()
-        // useAuthStore().isAuth = false;
       } else {
         next('/login')
       }

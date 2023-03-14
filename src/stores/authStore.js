@@ -21,14 +21,6 @@ export const useAuthStore = defineStore("auth", {
       //logica de login
       this.user = form.value.email;
       this.password = form.value.password;
-
-      if (this.user != '' && this.password !='') {
-        this.isAuth = true;
-        this.user = '';
-        this.password = '';
-      }else {
-        this.isAuth = false;
-      }
       this.router.push({ name: "home" });
       console.log("Login");
     },
@@ -87,8 +79,15 @@ export const useAuthStore = defineStore("auth", {
 
         if (response.status >= 200 && response.status < 400) {
           console.log(response);
+          this.isAuth = true;
           this.admin = response.data.admin
           console.log(this.admin)
+
+          if (this.admin) {
+            this.router.push({ name: "jurado" });
+          }else {
+            this.router.push({name: "card"});
+          }
           // window.location.href = "http://localhost:9000/backoffice/jurado";
         } else {
           this.notification = false;

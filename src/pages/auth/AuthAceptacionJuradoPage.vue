@@ -152,6 +152,8 @@ export default defineComponent({
         // let myToken = mysubToken[1].split('&')
 
         let param = myUrl.split('/');
+
+        console.log(param[4])
         let token = param[4].split('?')
         // let data = '';
         // console.log(token[0]);
@@ -159,8 +161,12 @@ export default defineComponent({
         this.authStore.urlTokenMail = param[4]; //param[1]
         this.authStore.tokenMail = token[0]; //myToken[0]
 
+        console.log(this.authStore.tokenMail)
+
         await this.authStore.postAceptacion();
         // console.log(this.authStore.data[0].nombre);
+
+        console.log(this.authStore.data)
 
         this.juradoStore.token = param[4];
         this.juradoStore.Nombre = this.authStore.data[0].nombre;
