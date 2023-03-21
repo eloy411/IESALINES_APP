@@ -26,7 +26,7 @@ export default defineComponent({
         const postAuthParam = param[6].split("?");
         const finalParams = param[5] + "?" + postAuthParam[1]
 
-        const url = "http://localhost:8000/api/login/" + finalParams;
+        const url = "http://localhost:8001/api/login/" + finalParams;
 
         await this.authStore.getUrlUserData(url);
 

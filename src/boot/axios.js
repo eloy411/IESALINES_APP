@@ -9,7 +9,7 @@ import axios from 'axios'
 // for each client)
 
 axios.defaults.withCredentials = true;
-const api = axios.create({ baseURL: 'http://localhost:8000', withCredentials: true})
+const api = axios.create({ baseURL: 'http://localhost:8001', withCredentials: true})
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
