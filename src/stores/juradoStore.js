@@ -113,7 +113,7 @@ export const useJuradoStore = defineStore("jurados", {
               nombre: [jurado.Nombre, jurado.Empresa],
               tipo: jurado.tipo_jurado,
               progreso: "100%",
-              último_Acceso: "12/5/2002 12:45h",
+              ultimo_acceso: "12/5/2002 12:45h",
               recordatorio: "",
               deleteVotos: "",
             };
@@ -139,7 +139,7 @@ export const useJuradoStore = defineStore("jurados", {
               tipo: this.optionsTipoJurado[item.id_tipojurado],
               progreso: item.progreso,
               empresa: item.empresa,
-              Ultimo_Acceso: item.ultimoAcceso,
+              ultimo_acceso: item.ultimo_acceso,
               id: item.id,
             }
             this.juradosRonda.push(auxObject);
