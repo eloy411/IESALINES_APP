@@ -32,7 +32,7 @@
 
 
                   <div id="q-app">
-                    <div class="q-ml-md md" style="max-width: 30rem">
+                    <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
                       <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
                         <template v-slot:append>
                           <q-icon name="event" class="cursor-pointer">
@@ -76,7 +76,7 @@
               <p class="q-ml-md q-mt-md"><b>Fecha y hora límite</b></p>
 
               <div id="q-app">
-                <div class="q-ml-md md" style="max-width: 30rem">
+                <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
                   <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
