@@ -272,6 +272,30 @@ export const useVotosStore = defineStore("votos", {
     },
 
     ////////////////////////////////////////////////////////////////////////////
+     //
+     async deletePremio() {
+      try {
+        console.log(' ==== Delete Premio====');
+        console.log(this.id_obraFromSubCategoria)
+        const res = await api.delete(`http://localhost:8001/api/admin/ronda/premio/${response.data.id}`, {
+          id: this.id_obraFromSubCategoria,
+          premio: this.votacion,
+          nombre_premio: this.nombreVotacion
+        });
+        console.log(res);
+
+        if (res.status >= 200 && res.status <= 400) {
+          this.votacion = '';
+          this.nombreVotacion = '';
+          this.selloActivate = res.data[0];
+        }
+      }catch(error) {
+        console.log(error);
+      }
+    },
+
+
+    ////////////////////////////////////////////////////////////////////////////
      // done
      async getVotosJuradoResult () {
       try {

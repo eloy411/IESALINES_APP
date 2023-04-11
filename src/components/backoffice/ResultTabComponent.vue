@@ -45,7 +45,8 @@
 
               <template v-slot:body-cell-premio="props">
                 <td :props="props">
-                  <div>
+                  
+                  <q-btn flat name="Delete" label='' icon='close' class="cerrarIcon"/>
                     <q-img class="selloAspid" v-if="categoriaStore.selloActivate == 'Aspid' && props.row.premio != null" src="~assets/Sellos/sello-aspid.png">
                       <q-tooltip :offset="[10, 10]">
                         {{ props.row.nombre_premio }}
@@ -66,7 +67,7 @@
                         {{ props.row.nombre_premio }}
                       </q-tooltip>
                     </q-img>
-                  </div>
+                  
                 </td>
               </template>
 
@@ -250,6 +251,12 @@ export default {
 
 
 <style>
+.cerrarIcon{
+  margin-top: -15px;
+margin-left: 22px;
+position: absolute;
+cursor: pointer;
+}
 .close:hover {
   cursor:pointer;
 }
