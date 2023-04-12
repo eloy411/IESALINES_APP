@@ -18,6 +18,7 @@
             <p class="diasRes q-mt-md">Te quedan <b>{{ dias }}</b> dias para emitir tus votos</p>
           </div>
 
+          <!-- test -->
           <div class="flex" style="align-items: center;">
             <p class="text q-ml-xl q-mt-md">Ronda 1: Tu progreso </p>
             <q-circular-progress show-value :value="value" size="2.2rem" color="red" center-color="grey-8" class="q-ml-md textPorcen">

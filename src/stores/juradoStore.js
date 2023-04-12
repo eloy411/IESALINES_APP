@@ -35,7 +35,7 @@ export const useJuradoStore = defineStore("jurados", {
     async getJurados() {
       try {
         console.log('==== get jurados ====');
-        const res = await api.get("http://localhost:8000/api/admin/jurados");
+        const res = await api.get("http://localhost:8001/api/admin/jurados");
         if (res.status >= 200 && res.status <= 400) {
           console.log(res);
           this.juradosTest = [];
@@ -69,7 +69,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log('==== get descarga csv ====');
         await api({
-          url: "http://localhost:8000/api/admin/jurados/descarga-csv",
+          url: "http://localhost:8001/api/admin/jurados/descarga-csv",
           method: "GET",
           responseType: "blob", // Important
         }).then((response) => {
@@ -103,7 +103,7 @@ export const useJuradoStore = defineStore("jurados", {
      // done
     async getJuradosRonda() {
       try {
-        const res = await api.get("http://localhost:8000/api/admin/jurados");
+        const res = await api.get("http://localhost:8001/api/admin/jurados");
         console.log(' === ronda-jurado =====')
         if (res.status >= 200 && res.status < 400) {
           this.juradosRonda = [];
@@ -113,7 +113,7 @@ export const useJuradoStore = defineStore("jurados", {
               nombre: [jurado.Nombre, jurado.Empresa],
               tipo: jurado.tipo_jurado,
               progreso: "100%",
-              último_Acceso: "12/5/2002 12:45h",
+              ultimo_acceso: "12/5/2002 12:45h",
               recordatorio: "",
               deleteVotos: "",
             };
@@ -127,7 +127,7 @@ export const useJuradoStore = defineStore("jurados", {
 
     async getJuradoPorcentaje() {
       try {
-        const res = await api.get("http://localhost:8000/api/admin/ronda/jurados-porcentajes");
+        const res = await api.get("http://localhost:8001/api/admin/ronda/jurados-porcentajes");
         console.log(' === porcentaje ronda-jurado =====')
         if (res.status >= 200 && res.status < 400) {
           console.log(res.data);
@@ -139,7 +139,7 @@ export const useJuradoStore = defineStore("jurados", {
               tipo: this.optionsTipoJurado[item.id_tipojurado],
               progreso: item.progreso,
               empresa: item.empresa,
-              Ultimo_Acceso: item.ultimoAcceso,
+              ultimo_acceso: item.ultimo_acceso,
               id: item.id,
             }
             this.juradosRonda.push(auxObject);
@@ -158,7 +158,7 @@ export const useJuradoStore = defineStore("jurados", {
     async postSteperJurado() {
       try {
         console.log(' === steeperJurado ===')
-        const res = await api.post("http://localhost:8000/api/admin/jurados/email",{
+        const res = await api.post("http://localhost:8001/api/admin/jurados/email",{
           email: this.Email
         });
         if (res.status >= 200 && res.status < 400) {
@@ -187,7 +187,7 @@ export const useJuradoStore = defineStore("jurados", {
 
         console.log(this.Tipo, id_edicion);
         console.log('==== post jurado ====');
-        const response = await api.post(`http://localhost:8000/api/admin/jurados`, {
+        const response = await api.post(`http://localhost:8001/api/admin/jurados`, {
           email: this.Email,
           id_tipojurado: this.Tipo,
           id_edicion: id_edicion,
@@ -230,7 +230,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log()
         const response = await api.delete(
-          `http://localhost:8000/api/admin/jurados/${rowToDelete.id}`,
+          `http://localhost:8001/api/admin/jurados/${rowToDelete.id}`,
           {
             id: rowToDelete.id,
           }
@@ -261,7 +261,7 @@ export const useJuradoStore = defineStore("jurados", {
         }
 
         const response = await api.post(
-          `http://localhost:8000/api/admin/email-recordatorio`, {
+          `http://localhost:8001/api/admin/email-recordatorio`, {
             id_tipojurado: this.Tipo,
             asuntomsg:this.asunto,
             textomsg:this.text,
@@ -291,7 +291,7 @@ export const useJuradoStore = defineStore("jurados", {
         console.log(" == post Jurado Aceptacion URL invitacion ==");
         console.log(this.id, this.Email, this.asunto, this.text);
         const response = await api.post(
-          `http://localhost:8000/api/admin/email-invitacion`, {
+          `http://localhost:8001/api/admin/email-invitacion`, {
             emailtomsg:this.Email,
             id:this.id,
             asuntomsg:this.asunto,
@@ -321,7 +321,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log(" == post Jurado Aceptacion invitacion ==");
         const response = await api.put(
-          `http://localhost:8000/api/jurados/aceptacion/${this.token}`, {
+          `http://localhost:8001/api/jurados/aceptacion/${this.token}`, {
             nombre: this.Nombre,
             nom_imagen: "imagenruat",
             cargo: this.Cargo,
@@ -354,7 +354,7 @@ export const useJuradoStore = defineStore("jurados", {
       try {
         console.log(this.Cargo);
         const response = await api.put(
-          `http://localhost:8000/api/admin/jurados/${this.id}`,
+          `http://localhost:8001/api/admin/jurados/${this.id}`,
           {
             id: this.id,
             nombre: this.Nombre,
@@ -385,7 +385,7 @@ export const useJuradoStore = defineStore("jurados", {
     async getJuradoTipo() {
       try {
         console.log('=== getJurados tipos ===')
-        const response = await api.get(`http://localhost:8000/api/admin/jurados/tipos`);
+        const response = await api.get(`http://localhost:8001/api/admin/jurados/tipos`);
         if (response.status >= 200 && response.status < 400) {
           console.log(response);
           let arrAux = [];
@@ -411,7 +411,7 @@ export const useJuradoStore = defineStore("jurados", {
     async putConfigSubcategorias() {
       try {
         const response = await api.get(
-          `http://localhost:8000/api/admin/config/popups`
+          `http://localhost:8001/api/admin/config/popups`
         );
         if (response.status >= 200 && response.status < 400) {
           this.options = response.data;
@@ -434,7 +434,7 @@ export const useJuradoStore = defineStore("jurados", {
           }
         }
         const response = await api.put(
-          `http://localhost:8000/api/admin/config/limit-votacion`, {
+          `http://localhost:8001/api/admin/config/limit-votacion`, {
             id: this.Tipo,
             limit_date: data.fechaReunion
           }
@@ -466,7 +466,7 @@ export const useJuradoStore = defineStore("jurados", {
         }
         console.log(data)
         console.log(this.Tipo)
-        const res = await api.put("http://localhost:8000/api/admin/config/popups", {
+        const res = await api.put("http://localhost:8001/api/admin/config/popups", {
           tipo: data.tipoPopUp,
           id_tipojurado: this.Tipo,
           id_edicion: data.idEdicion,
@@ -493,7 +493,7 @@ export const useJuradoStore = defineStore("jurados", {
     async deleteSubCategoriesVotaciones(rowToDelete){
       try {
         console.log(' ==== delete subcat-votaciones ====');
-        const res = await api.delete('http://localhost:8000/api/admin/ronda/subcat-votaciones',{
+        const res = await api.delete('http://localhost:8001/api/admin/ronda/subcat-votaciones',{
           id_cod_particip: ""
         });
         console.log(res);
@@ -511,7 +511,7 @@ export const useJuradoStore = defineStore("jurados", {
     async deleteJuradoVotaciones(rowToDelete){
       try {
         console.log(' ==== delete jurado-votacionest ====');
-        const res = await api.delete(`http://localhost:8000/api/admin/ronda/jurado-votaciones/${rowToDelete.id}`);
+        const res = await api.delete(`http://localhost:8001/api/admin/ronda/jurado-votaciones/${rowToDelete.id}`);
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {

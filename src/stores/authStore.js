@@ -29,9 +29,9 @@ export const useAuthStore = defineStore("auth", {
     async postLoginJurado() {
       try {
         console.log("llego");
-        console.log(`http://localhost:8000/api/email-login`)
+        console.log(`http://localhost:8001/api/email-login`)
         const response = await api.post(
-          `http://localhost:8000/api/email-login`, {
+          `http://localhost:8001/api/email-login`, {
             textomsg: 'login',
             asuntomsg: 'login',
             emailtomsg: this.emailLogin,
@@ -54,8 +54,8 @@ export const useAuthStore = defineStore("auth", {
       try {
 
         console.log("TOKEN USER");
-        console.log(`http://localhost:8000/sanctum/csrf-cookie`)
-        const response = await api.get(`http://localhost:8000/sanctum/csrf-cookie`,);
+        console.log(`http://localhost:8001/sanctum/csrf-cookie`)
+        const response = await api.get(`http://localhost:8001/sanctum/csrf-cookie`,);
 
         if (response.status >= 200 && response.status < 400) {
           console.log(response);
@@ -78,11 +78,14 @@ export const useAuthStore = defineStore("auth", {
         );
 
         if (response.status >= 200 && response.status < 400) {
+          console.log('holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
           console.log(response);
           this.isAuth = true;
           this.admin = response.data.admin
-          console.log(this.admin)
 
+          console.log("Admin"+this.admin)
+          let respuesta = await api.get(`http://localhost:8001/api/jurado/acces/${response.data.id}`);
+          console.log(respuesta)
           if (this.admin) {
             this.router.push({ name: "jurado" });
           }else {
@@ -101,9 +104,9 @@ export const useAuthStore = defineStore("auth", {
     async postJuradoFromEmail() {
       try {
         console.log("llego");
-        console.log(`http://localhost:8000/api/login/${this.urlTokenMail}`)
+        console.log(`http://localhost:8001/api/login/${this.urlTokenMail}`)
         const response = await api.get(
-          `http://localhost:8000/api/login/${this.urlTokenMail}`
+          `http://localhost:8001/api/login/${this.urlTokenMail}`
         );
 
         if (response.status >= 200 && response.status < 400) {
@@ -122,7 +125,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         console.log("este es el token -->",this.tokenMail);
         // console.log(`http://localhost:8000/api/jurado/id`)
-        const response = await api.post('http://localhost:8000/api/jurado/id',{
+        const response = await api.post('http://localhost:8001/api/jurado/id',{
             id: this.tokenMail
           }
         );
@@ -145,7 +148,7 @@ export const useAuthStore = defineStore("auth", {
     try {
       console.log("llego");
       const response = await api.post(
-        `http://localhost:8000/api/email`,
+        `http://localhost:8001/api/email`,
         {
           emailtomsg: this.Email,
           id: this.id,
