@@ -11,9 +11,9 @@
         <q-tab-panels v-model="tab" animated>
           <!-- Tabla ranking -->
           <q-tab-panel name="ranking">
-            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="categoriaStore.resultStore" :columns="ranking" row-key="jurado"
-              selection="single" v-model:selected="selected" v-model:pagination="pagination" hide-bottom virtual-scroll
-              :rows-per-page-options="[0]">
+            <q-table title-class="q-mt-lg" id="table" :data="tableData" :rows="categoriaStore.resultStore"
+              :columns="ranking" row-key="jurado" selection="single" v-model:selected="selected"
+              v-model:pagination="pagination" hide-bottom virtual-scroll :rows-per-page-options="[0]">
               <template v-slot:top>
                 <h5> <b>Ranking</b> {{ categoriaStore.subCategoriaResultTab }}</h5>
 
@@ -43,39 +43,78 @@
                 </td>
               </template>
 
-              <!-- <template v-slot:body-cell-premio="props">
+              <template v-slot:body-cell-premio="props">
                 <td :props="props">
-                  
-                  <q-btn flat name="Delete" label='' icon='close' class="cerrarIcon" @click="categoriaStore.id_obraFromSubCategoria = props.row.id;categoriaStore.deletePremio()"/>
-                    <q-img class="selloAspid" v-if="categoriaStore.selloActivate == 'Aspid' && props.row.premio != null" src="~assets/Sellos/sello-aspid.png">
+                  <q-btn flat name="Delete" label='' icon='close' class="cerrarIcon"
+                    @click="deletePremioObra(props.row);categoriaStore.getSubCategoriasFromResult()" />
+                  <div v-if="props.row.premio != null">
+
+                    <q-img class="selloAspid" v-if="props.row.premio == 'Aspid'" src="~assets/Sellos/sello-aspid.png">
                       <q-tooltip :offset="[10, 10]">
                         {{ props.row.nombre_premio }}
                       </q-tooltip>
                     </q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid de Oro' && props.row.premio != null" src="~assets/Sellos/sello_oro.png">
+                    <q-img class="selloAspid" v-else-if="props.row.premio == 'Aspid de Oro'"
+                      src="~assets/Sellos/sello_oro.png">
                       <q-tooltip :offset="[10, 10]">
                         {{ props.row.nombre_premio }}
                       </q-tooltip>
                     </q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Plata' && props.row.premio != null" src="~assets/Sellos/sello_plata.png">
+                    <q-img class="selloAspid" v-else-if="props.row.premio == 'Aspid Plata'"
+                      src="~assets/Sellos/sello_plata.png">
                       <q-tooltip :offset="[10, 10]">
                         {{ props.row.nombre_premio }}
                       </q-tooltip>
                     </q-img>
-                    <q-img class="selloAspid" v-else-if="categoriaStore.selloActivate == 'Aspid Platino' && props.row.premio != null" src="~assets/Sellos/sello_platino.png">
+                    <q-img class="selloAspid" v-else-if="props.row.premio == 'Aspid Platino'"
+                      src="~assets/Sellos/sello_platino.png">
                       <q-tooltip :offset="[10, 10]">
                         {{ props.row.nombre_premio }}
                       </q-tooltip>
                     </q-img>
-                  
+                  </div>
+
+                  <div v-else-if="categoriaStore.selloActivate != undefined">
+                    <q-img class="selloAspid"
+                      v-if="categoriaStore.selloActivate == 'Aspid' && props.row.id == categoriaStore.id_obraFromSubCategoria"
+                      src="~assets/Sellos/sello-aspid.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.premio = categoriaStore.selloActivate }}
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid"
+                      v-else-if="categoriaStore.selloActivate == 'Aspid de Oro' && props.row.id == categoriaStore.id_obraFromSubCategoria"
+                      src="~assets/Sellos/sello_oro.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid"
+                      v-else-if="categoriaStore.selloActivate == 'Aspid Plata' && props.row.id == categoriaStore.id_obraFromSubCategoria"
+                      src="~assets/Sellos/sello_plata.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+                    <q-img class="selloAspid"
+                      v-else-if="categoriaStore.selloActivate == 'Aspid Platino' && props.row.id == categoriaStore.id_obraFromSubCategoria"
+                      src="~assets/Sellos/sello_platino.png">
+                      <q-tooltip :offset="[10, 10]">
+                        {{ props.row.nombre_premio }}
+                      </q-tooltip>
+                    </q-img>
+
+                  </div>
                 </td>
-              </template> -->
+              </template>
 
               <!-- Boton otorgar premio -->
               <template v-slot:body-cell-action="props">
 
                 <q-td>
-                  <q-btn outline depressed label="Otorgar Premio" color="red" @click="otorgarPremio = true;categoriaStore.id_obraFromSubCategoria = props.row.id" />
+                  <q-btn outline depressed label="Otorgar Premio" color="red"
+                    @click="otorgarPremio = true; categoriaStore.open = true; categoriaStore.id_obraFromSubCategoria = props.row.id" />
                 </q-td>
 
               </template>
@@ -158,7 +197,7 @@
   </div>
 
 
-  <q-dialog v-model="otorgarPremio" >
+  <q-dialog v-model="otorgarPremio">
     <q-card style="padding: 2em;">
       <q-card-section class="flex" style="align-items:center;justify-content: space-between;">
         <div class="text-h6">NUEVO PREMIO</div>
@@ -171,11 +210,12 @@
             <div>
               <div class="my-input q-pa-xs center">
                 <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Tipo</div>
-                <q-select :options="categoriaStore.votaciones" v-model="categoriaStore.votacion" style="grid-column: 2 / 4;" outlined label="" />
+                <q-select :options="categoriaStore.votaciones" v-model="categoriaStore.votacion"
+                  style="grid-column: 2 / 4;" outlined label="" />
               </div>
               <div class="my-input q-pa-xs center">
                 <div class="text-right q-pa-md" style="grid-column: 1 / 1;">Nombre del premio</div>
-                <q-input style="grid-column: 2 / 4;"  v-model="categoriaStore.nombreVotacion" outlined label=""></q-input>
+                <q-input style="grid-column: 2 / 4;" v-model="categoriaStore.nombreVotacion" outlined label=""></q-input>
               </div>
             </div>
           </div>
@@ -183,7 +223,8 @@
       </q-card-section>
 
       <q-card-actions align="center" class="q-pt-xl">
-        <q-btn class="q-mr-lg" style="width: 37%;" color="secondary" @click="categoriaStore.putOtorgarPremio()" label="Añadir" v-close-popup />
+        <q-btn class="q-mr-lg" style="width: 37%;" color="secondary" @click="categoriaStore.putOtorgarPremio()"
+          label="Añadir" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -219,6 +260,10 @@ export default {
     const otorgarPremio = ref(false);
     // Esta funcion no funciona al 100%. Se utiliza para comparar los votos y que aparezca el boton de otorgar premio. Se puede prescindir de ella porque no termina de funcionar bien.
 
+
+
+
+
     return {
       categoriaStore,
       otorgarPremio,
@@ -245,44 +290,42 @@ export default {
       voto,
       rows,
 
-
       deletePremioObra(row) {
-        $q.dialog({
-          title: '¿Seguro que quieres eliminar los votos de esta categoría?',
-          ok: {
-            label: 'Si',
-            push: true,
-            style: 'background-color: white!important; color: black!important;'
-          },
-          cancel: {
-            label: 'No',
-            push: true,
-            style: 'padding:5px; background-color: white!important; color: black!important;'
-          },
-          persistent: true,
-          class: 'my-dialog-class', // add a custom class
-          style: 'background-color: #d6d6d6; padding: 25px;' // add inline styles
-        }).onOk(() => {
-          // console.log('Jurado Eliminado');
-          categoriaStore.value.deletePremio(row);
-          $q.notify({
-            message: 'Premio eliminado',
-            color: 'green'
-          })
-        }).onCancel(() => {
-          // console.log('Cancel')
-        }).onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        })
+        categoriaStore.value.id_obraFromSubCategoria = row.id;
+        categoriaStore.value.deletePremio();
+        location.reload();
       },
 
-      deleteval(index){
-        console.log(index)
-        this.rowVotos.splice(index, 1);
+      // deletePremioObra(row) {
+      //   $q.dialog({
+      //     title: '¿Seguro que quieres eliminar los votos de esta categoría?',
+      //     ok: {
+      //       label: 'Si',
+      //       push: true,
+      //       style: 'background-color: white!important; color: black!important;'
+      //     },
+      //     cancel: {
+      //       label: 'No',
+      //       push: true,
+      //       style: 'padding:5px; background-color: white!important; color: black!important;'
+      //     },
+      //     persistent: true,
+      //     class: 'my-dialog-class', // add a custom class
+      //     style: 'background-color: #d6d6d6; padding: 25px;' // add inline styles
+      //   }).onOk(() => {
+      //     // console.log('Jurado Eliminado');
+      //     categoriaStore.value.deletePremio(row);
+      //     $q.notify({
+      //       message: 'Premio eliminado',
+      //       color: 'green'
+      //     })
+      //   }).onCancel(() => {
+      //     // console.log('Cancel')
+      //   }).onDismiss(() => {
+      //     // console.log('I am triggered on both OK and Cancel')
+      //   })
+      // },
 
-        console.log(this.rows)
-      }
-    
     }
   },
 }
@@ -290,30 +333,33 @@ export default {
 
 
 <style>
-.cerrarIcon{
+.cerrarIcon {
   margin-top: -15px;
-margin-left: 22px;
-position: absolute;
-cursor: pointer;
+  margin-left: 22px;
+  position: absolute;
+  cursor: pointer;
 }
+
 .close:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .q-card {
-  width: 100%!important;
+  width: 100% !important;
 }
 
 .btn-group {
-    padding: 1em;
-    flex-direction: column;
-    gap: 1em;
-  }
+  padding: 1em;
+  flex-direction: column;
+  gap: 1em;
+}
+
 .my-input {
-    display: grid;
-    /* grid-template-columns: repeat(4, minmax(10em, 1fr)); */
-    grid-template-columns: repeat(3, 1fr);
-  }
+  display: grid;
+  /* grid-template-columns: repeat(4, minmax(10em, 1fr)); */
+  grid-template-columns: repeat(3, 1fr);
+}
+
 /* --------- Estilo de las dos tablas de datos --------- */
 
 #table {

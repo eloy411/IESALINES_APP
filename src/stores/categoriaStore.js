@@ -251,7 +251,7 @@ export const useVotosStore = defineStore("votos", {
     ////////////////////////////////////////////////////////////////////////////
      //
      async putOtorgarPremio() {
-      try {
+       try {
         console.log(' ==== put subcategorieas from result ====');
         console.log(this.id_obraFromSubCategoria)
         const res = await api.put(`http://localhost:8001/api/admin/ronda/premio`, {
@@ -265,6 +265,9 @@ export const useVotosStore = defineStore("votos", {
           this.votacion = '';
           this.nombreVotacion = '';
           this.selloActivate = res.data[0];
+        
+          // location.reload();
+        
         }
       }catch(error) {
         console.log(error);
@@ -274,15 +277,15 @@ export const useVotosStore = defineStore("votos", {
     ////////////////////////////////////////////////////////////////////////////
      //
      async deletePremio() {
-      try {
-        console.log(' ==== Delete Premio====');
+       try {
+         console.log(' ==== Delete Premiooo====');
+        //  console.log(deleteRow.id_obraFromSubCategoria)
         console.log(this.id_obraFromSubCategoria)
-        const res = await api.delete(`http://localhost:8001/api/admin/ronda/premio/`, {
-          id: this.id_obraFromSubCategoria
-        });
+        const res = await api.delete(`http://localhost:8001/api/admin/ronda/premio/${this.id_obraFromSubCategoria}`);
         console.log(res);
 
         if (res.status >= 200 && res.status <= 400) {
+          // location.reload();
         }
       }catch(error) {
         // console.log(this.id_obraFromSubCategoria)
