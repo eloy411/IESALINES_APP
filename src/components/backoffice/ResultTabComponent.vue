@@ -43,7 +43,7 @@
                 </td>
               </template>
 
-              <template v-slot:body-cell-premio="props">
+              <!-- <template v-slot:body-cell-premio="props">
                 <td :props="props">
                   
                   <q-btn flat name="Delete" label='' icon='close' class="cerrarIcon" @click="categoriaStore.id_obraFromSubCategoria = props.row.id;categoriaStore.deletePremio()"/>
@@ -69,7 +69,7 @@
                     </q-img>
                   
                 </td>
-              </template>
+              </template> -->
 
               <!-- Boton otorgar premio -->
               <template v-slot:body-cell-action="props">
