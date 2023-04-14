@@ -211,6 +211,7 @@ import { useJuradoStore } from "src/stores/juradoStore";
 import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
+import { google } from 'googleapis';
 
 export default defineComponent({
   name: "ConfigurationComponent",
@@ -262,7 +263,7 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-
+      calendarLink: null,
       console(event) {
         // console.log(event)
       },
@@ -349,6 +350,46 @@ export default defineComponent({
           color: 'positive'
         })
       },
+
+
+      ////////Google Calendar ////////////////////////////////////////
+
+      
+    async generateLink() {
+      const link = await this.generateCalendarLink();
+
+      this.calendarLink = link;
+    },
+    async generateCalendarLink() {
+     //crear nueva instancia usando la api key
+      const apiKey = 'YOUR_API_KEY';
+      const calendar = google.calendar({ version: 'v3', apiKey });
+
+      // Creamos el evento
+      const event = {
+        summary: 'Example Event',
+        start: {
+          dateTime: '2023-04-15T09:00:00-07:00',
+          timeZone: 'America/Los_Angeles',
+        },
+
+   
+      };
+
+      // Insertar evento en el calendar del user
+      const { data } = await calendar.events.insert({
+        calendarId: 'primary',
+        resource: event,
+      });
+
+      // ID del evento para response
+      const eventId = data.id;
+      //Link Evento:
+        const link = `https://calendar.google.com/calendar/r/eventedit/${eventId}`;
+        // "http://www.google.com/calendar/event?action=TEMPLATE&text=$titulo&dates=$dates&details=$descripcion&trp=false&sprop=$url&sprop=name:$name";
+
+      return link;
+    }
 
     }
   },
