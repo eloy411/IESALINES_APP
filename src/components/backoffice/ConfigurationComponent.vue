@@ -13,7 +13,7 @@
                     jurado cuando éste termina su votación en la ronda 1.</p>
 
                   <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="data.tipo"
-                    :options="juradoStore.optionsTipoJurado"  @click="getJuradoTipo(tipoJ)" />
+                    :options="juradoStore.optionsTipoJurado" @click="getJuradoTipo(tipoJ)" />
 
 
                   <q-separator inset class="q-mt-lg" size="1px" />
@@ -33,11 +33,12 @@
 
                   <div id="q-app">
                     <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
-                      <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
+                      <q-input outlined v-model="data.formattedDate">
                         <template v-slot:append>
                           <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy>
-                              <q-date v-model="data.fechaReunion"></q-date>
+                              <q-date v-model="data.fechaReunion" />
+                              <q-time v-model="data.horaReunion" />
                             </q-popup-proxy>
                           </q-icon>
                         </template>
@@ -47,14 +48,18 @@
                   <div>
                     <p class="q-ml-md"><b>Email de confirmación que se le envía al Jurado</b></p>
 
-                    <a class="q-ml-md" href="/backoffice/configuracion/EmailConfirmacionRondaComponent">Personalizar email</a>
+                    <q-btn @click="generateLink()">Generar Link</q-btn>
+                    <!-- <router-link class="q-ml-md"
+                      :to="{ name: 'EmailConfirmacionRondaComponent', params: { link: calendarLink } }">
+                      Personalizar email
+                    </router-link> -->
                   </div>
                 </div>
                 <div class="column">
                   <q-img src="../../assets/Frame1.png" class="imagen1" style="height: 340px; max-width: 350px" />
                 </div>
               </div>
-              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="putConfig(data); showNotif()" />
+              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="putConfig(data); showNotif();" />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -88,7 +93,8 @@
                   </q-input>
                 </div>
               </div>
-              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="juradoStore.putConfigLimitVotaciones(data); showNotif()" />
+              <q-btn class="botonG q-mt-md" color="red" label="Guardar"
+                @click="juradoStore.putConfigLimitVotaciones(data); showNotif()" />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -115,7 +121,7 @@
                     <q-list>
                       <q-item tag="label" v-ripple v-for="(subcat, key) in categoriaStore.subCategoriasArr" :key="key">
                         <q-item-section avatar>
-                          <q-checkbox v-model="element" :val="subcat" color="" @click="console($event)"  />
+                          <q-checkbox v-model="element" :val="subcat" color="" @click="console($event)" />
                         </q-item-section>
                         <q-item-section>
                           <q-item-label>{{ subcat.Categoria }}</q-item-label>
@@ -140,9 +146,10 @@
 
                   <div class="drop-target rounded-borders">
                     <q-list>
-                      <q-item tag="label" v-ripple v-for="(subcatselect, key) in categoriaStore.subcategoriasMutationJuradoEnabled" :key="key">
+                      <q-item tag="label" v-ripple
+                        v-for="(subcatselect, key) in categoriaStore.subcategoriasMutationJuradoEnabled" :key="key">
                         <q-item-section avatar>
-                          <q-checkbox v-model="elementSelected" :val="subcatselect" color=""  @click="console($event)" />
+                          <q-checkbox v-model="elementSelected" :val="subcatselect" color="" @click="console($event)" />
                         </q-item-section>
                         <q-item-section>
                           <q-item-label>{{ subcatselect.Categoria }}</q-item-label>
@@ -205,20 +212,48 @@
 </template>
 
 <script>
-import { ref, defineComponent, watch } from "vue";
+import { ref, defineComponent, watch, watchEffect } from "vue";
 import { useQuasar } from 'quasar';
 import { useJuradoStore } from "src/stores/juradoStore";
 import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
-import { google } from 'googleapis';
+import { useRouter } from 'vue-router';
+import VueGapi from 'vue-gapi'
+// import { auth } from 'google-auth-library'
 
 export default defineComponent({
   name: "ConfigurationComponent",
-  setup() {
+
+  props: {
+    eventName: {
+      type: String,
+      required: true,
+    },
+    eventDate: {
+      type: Date,
+      required: true,
+    },
+    eventDuration: {
+      type: Number,
+      required: true,
+    },
+    eventLocation: {
+      type: String,
+      required: true,
+    },
+    eventDescription: {
+      type: String,
+      required: true,
+    },
+  },
+
+  setup(props) {
     // title = ref('');
     const element = ref([]);
     const elementSelected = ref([]);
+    const router = useRouter();
+    const calendarLink = ref('');
 
     const juradoStore = ref(useJuradoStore());
     const layoutStore = ref(useLayoutStore());
@@ -238,8 +273,18 @@ export default defineComponent({
       titulo: "",
       subtitulo: "",
       mensaje: "",
+      formattedDate: "",
       fechaReunion: "",
+      horaReunion: "",
       rutaVideo: ""
+    })
+    watchEffect(() => {
+      if (data.value.fechaReunion && data.value.horaReunion) {
+        const date = new Date(`${data.value.fechaReunion} ${data.value.horaReunion}`)
+        const fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        const hora = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+        data.value.formattedDate = `${fecha} ${hora}`
+      }
     })
 
     watch(data.value.tipo, (newValue, oldValue) => {
@@ -253,6 +298,20 @@ export default defineComponent({
       categoriaStore.value.putSubCategoriasAux(tipoId)
     })
 
+    /////////////////////////////////////////////////
+    const generateLink = () => {
+      const date = new Date(data.value.formattedDate);
+      const start = date.toISOString().replace(/-|:|\.\d+/g, '');
+      console.log("fecha" + start);
+      calendarLink.value = encodeURI(
+        `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${props.eventName
+        }&dates=${start}`
+      );
+      console.log("calendarlink" + calendarLink.value);
+
+      router.push({ name: 'EmailConfirmacionRondaComponent', params: {link: calendarLink.value } });
+    };
+
 
     return {
       // title,
@@ -263,7 +322,8 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-      calendarLink: null,
+      calendarLink,
+      generateLink,
       console(event) {
         // console.log(event)
       },
@@ -288,7 +348,7 @@ export default defineComponent({
           console.log(item)
 
           categoriaStore.value.subcategoriasMutationJuradoEnabled = categoriaStore.value.subcategoriasMutationJuradoEnabled.filter(subcat => subcat.Categoria != item.Categoria);
-          categoriaStore.value.subCategoriasArr.push(item );
+          categoriaStore.value.subCategoriasArr.push(item);
         })
         categoriaStore.value.subCategoriasArr.sort();
         elementSelected.value = [];
@@ -352,44 +412,9 @@ export default defineComponent({
       },
 
 
-      ////////Google Calendar ////////////////////////////////////////
 
-      
-    async generateLink() {
-      const link = await this.generateCalendarLink();
 
-      this.calendarLink = link;
-    },
-    async generateCalendarLink() {
-     //crear nueva instancia usando la api key
-      const apiKey = 'YOUR_API_KEY';
-      const calendar = google.calendar({ version: 'v3', apiKey });
 
-      // Creamos el evento
-      const event = {
-        summary: 'Example Event',
-        start: {
-          dateTime: '2023-04-15T09:00:00-07:00',
-          timeZone: 'America/Los_Angeles',
-        },
-
-   
-      };
-
-      // Insertar evento en el calendar del user
-      const { data } = await calendar.events.insert({
-        calendarId: 'primary',
-        resource: event,
-      });
-
-      // ID del evento para response
-      const eventId = data.id;
-      //Link Evento:
-        const link = `https://calendar.google.com/calendar/r/eventedit/${eventId}`;
-        // "http://www.google.com/calendar/event?action=TEMPLATE&text=$titulo&dates=$dates&details=$descripcion&trp=false&sprop=$url&sprop=name:$name";
-
-      return link;
-    }
 
     }
   },

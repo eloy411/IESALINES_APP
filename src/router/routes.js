@@ -24,8 +24,9 @@ const routes = [
             component: () => import("src/pages/backoffice/IndexPage.vue"),
           },
           {
-            path: " configuracion/EmailConfirmacionRondaComponent",
+            path: " configuracion/EmailConfirmacionRondaComponent/:link",
             name: "EmailConfirmacionRondaComponent",
+            props:true,
             meta: {
               breadCrumb: [
                 {
