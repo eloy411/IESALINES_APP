@@ -251,6 +251,11 @@ const routes = [
             name: "main-content",
             component: () => import("src/pages/votaciones/ContentMainDialogVotacionesPage.vue"),
           },
+          {
+            path: "ayuda",
+            name: "ayuda",
+            component: () => import("src/pages/votaciones/AyudaPage.vue"),
+          },
         ]
       }
     ],
