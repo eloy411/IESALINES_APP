@@ -33,11 +33,11 @@
 
                   <div id="q-app">
                     <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
-                      <q-input outlined v-model="data.formattedDate">
+                      <q-input outlined v-model="data.fechaReunion">
                         <template v-slot:append>
                           <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy>
-                              <q-date v-model="data.fechaReunion" />
+                              <q-date v-model="data.fechaR" />
                               <q-time v-model="data.horaReunion" />
                             </q-popup-proxy>
                           </q-icon>
@@ -48,11 +48,10 @@
                   <div>
                     <p class="q-ml-md"><b>Email de confirmación que se le envía al Jurado</b></p>
 
-                    <q-btn @click="generateLink()">Generar Link</q-btn>
-                    <!-- <router-link class="q-ml-md"
-                      :to="{ name: 'EmailConfirmacionRondaComponent', params: { link: calendarLink } }">
+                    <router-link class="q-ml-md"
+                      :to="{ name: 'EmailConfirmacionRondaComponent'}">
                       Personalizar email
-                    </router-link> -->
+                    </router-link>
                   </div>
                 </div>
                 <div class="column">
@@ -81,18 +80,19 @@
               <p class="q-ml-md q-mt-md"><b>Fecha y hora límite</b></p>
 
               <div id="q-app">
-                <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
-                  <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy>
-                          <q-date v-model="data.fechaReunion"></q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                </div>
-              </div>
+                    <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
+                      <q-input outlined v-model="data.formattedDate2">
+                        <template v-slot:append>
+                          <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy>
+                              <q-date v-model="data.fechaLimite" />
+                              <q-time v-model="data.horaLimite" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
+                  </div>
               <q-btn class="botonG q-mt-md" color="red" label="Guardar"
                 @click="juradoStore.putConfigLimitVotaciones(data); showNotif()" />
             </q-card-section>
@@ -219,41 +219,14 @@ import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
 import { useRouter } from 'vue-router';
-import VueGapi from 'vue-gapi'
-// import { auth } from 'google-auth-library'
 
 export default defineComponent({
   name: "ConfigurationComponent",
 
-  props: {
-    eventName: {
-      type: String,
-      required: true,
-    },
-    eventDate: {
-      type: Date,
-      required: true,
-    },
-    eventDuration: {
-      type: Number,
-      required: true,
-    },
-    eventLocation: {
-      type: String,
-      required: true,
-    },
-    eventDescription: {
-      type: String,
-      required: true,
-    },
-  },
-
-  setup(props) {
+  setup() {
     // title = ref('');
     const element = ref([]);
     const elementSelected = ref([]);
-    const router = useRouter();
-    const calendarLink = ref('');
 
     const juradoStore = ref(useJuradoStore());
     const layoutStore = ref(useLayoutStore());
@@ -273,17 +246,28 @@ export default defineComponent({
       titulo: "",
       subtitulo: "",
       mensaje: "",
-      formattedDate: "",
+      fechaR: "",
       fechaReunion: "",
       horaReunion: "",
+      formattedDate2: "",
+      fechaLimite: "",
+      horaLimite: "",
       rutaVideo: ""
     })
     watchEffect(() => {
-      if (data.value.fechaReunion && data.value.horaReunion) {
-        const date = new Date(`${data.value.fechaReunion} ${data.value.horaReunion}`)
+      if (data.value.fechaR && data.value.horaReunion) {
+        const date = new Date(`${data.value.fechaR} ${data.value.horaReunion}`)
         const fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
         const hora = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
-        data.value.formattedDate = `${fecha} ${hora}`
+        data.value.fechaReunion = `${fecha} ${hora}`
+      }
+    })
+    watchEffect(() => {
+      if (data.value.fechaLimite && data.value.horaLimite) {
+        const date = new Date(`${data.value.fechaLimite} ${data.value.horaLimite}`)
+        data.value.fechaLimite = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        data.value.horaLimite = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+        data.value.formattedDate2 = `${data.value.fechaLimite} ${data.value.horaLimite}`
       }
     })
 
@@ -298,21 +282,6 @@ export default defineComponent({
       categoriaStore.value.putSubCategoriasAux(tipoId)
     })
 
-    /////////////////////////////////////////////////
-    const generateLink = () => {
-      const date = new Date(data.value.formattedDate);
-      const start = date.toISOString().replace(/-|:|\.\d+/g, '');
-      console.log("fecha" + start);
-      calendarLink.value = encodeURI(
-        `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${props.eventName
-        }&dates=${start}`
-      );
-      console.log("calendarlink" + calendarLink.value);
-
-      router.push({ name: 'EmailConfirmacionRondaComponent', params: {link: calendarLink.value } });
-    };
-
-
     return {
       // title,
       data,
@@ -322,8 +291,6 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-      calendarLink,
-      generateLink,
       console(event) {
         // console.log(event)
       },

@@ -12,8 +12,7 @@
           </div>
 
 
-          <q-input v-model=" props.link" outlined type="textarea"></q-input>
-          <p>Calendar: {{  props.link }}</p>
+          <q-input v-model="text" outlined type="textarea"></q-input>
           <q-btn label="Enviar" type="submit" color="red" @click="showNotif()"
             style="display:flex;align-items:center;justify-content: center;margin-left: 50%;"></q-btn>
         </q-form>
@@ -29,26 +28,18 @@ import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useQuasar } from 'quasar';
 export default defineComponent({
   name: 'EmailConfirmacionRondaComponent',
-  props: {
-    link: {
-      type: String,
-      required: true,
-      default:''
-    }
-  },
-  setup(props) {
+  setup() {
     const juradoStore = ref(useJuradoStore());
     const tipoStore = ref(useTipoJuradosStore());
     const rows = juradoStore.value.juradosRonda;
     const $q = useQuasar();
-    const localLink = ref(props.link);
     return {
       rows,
       juradoStore,
       tipoStore,
       text: ref(''),
       AsuntoText: 'Enhorabuena! Has sido seleccionado como Jurado a los Premios Aspid',
-      localLink,
+
       showNotif() {
         $q.notify({
           message: 'Email Enviado',
