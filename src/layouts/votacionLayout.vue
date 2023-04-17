@@ -62,7 +62,6 @@ export default defineComponent({
   },
 });
 </script>
-
 <style>
 .textPorcen {
   font-family: 'Roboto';

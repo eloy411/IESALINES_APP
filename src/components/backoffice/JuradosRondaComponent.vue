@@ -32,7 +32,7 @@
             {{ props.row.progreso }}
           </q-td>
           <q-td key="Ultimo_Acceso" :props="props">
-            {{ props.row.último_Acceso }}
+            {{ props.row.ultimo_acceso }}
           </q-td>
 
           <q-td key="buttons" :props="props">

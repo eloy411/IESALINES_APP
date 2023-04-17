@@ -82,8 +82,10 @@ export const useAuthStore = defineStore("auth", {
           console.log(response);
           this.isAuth = true;
           this.admin = response.data.admin
-          console.log(this.admin)
 
+          console.log("Admin"+this.admin)
+          let respuesta = await api.get(`http://localhost:8001/api/jurado/acces/${response.data.id}`);
+          console.log(respuesta)
           if (this.admin) {
             this.router.push({ name: "jurado" });
           }else {
