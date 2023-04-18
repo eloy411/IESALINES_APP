@@ -81,7 +81,7 @@
 
               <div id="q-app">
                     <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
-                      <q-input outlined v-model="data.formattedDate2">
+                      <q-input outlined v-model="data.formattedDate">
                         <template v-slot:append>
                           <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy>
@@ -249,7 +249,7 @@ export default defineComponent({
       fechaR: "",
       fechaReunion: "",
       horaReunion: "",
-      formattedDate2: "",
+      formattedDate: "",
       fechaLimite: "",
       horaLimite: "",
       rutaVideo: ""
@@ -267,7 +267,7 @@ export default defineComponent({
         const date = new Date(`${data.value.fechaLimite} ${data.value.horaLimite}`)
         data.value.fechaLimite = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
         data.value.horaLimite = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
-        data.value.formattedDate2 = `${data.value.fechaLimite} ${data.value.horaLimite}`
+        data.value.formattedDate = `${data.value.fechaLimite} ${data.value.horaLimite}`
       }
     })
 

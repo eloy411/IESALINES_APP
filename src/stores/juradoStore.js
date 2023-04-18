@@ -436,7 +436,7 @@ export const useJuradoStore = defineStore("jurados", {
         const response = await api.put(
           `http://localhost:8001/api/admin/config/limit-votacion`, {
             id: this.Tipo,
-            limit_date: data.formattedDate2,
+            limit_date: data.formattedDate,
           }
         );
         if (response.status >= 200 && response.status < 400) {
