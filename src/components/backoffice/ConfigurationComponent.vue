@@ -13,7 +13,7 @@
                     jurado cuando éste termina su votación en la ronda 1.</p>
 
                   <q-select class="jurado-input q-mt-lg q-ml-md" outlined v-model="data.tipo"
-                    :options="juradoStore.optionsTipoJurado"  @click="getJuradoTipo(tipoJ)" />
+                    :options="juradoStore.optionsTipoJurado" @click="getJuradoTipo(tipoJ)" />
 
 
                   <q-separator inset class="q-mt-lg" size="1px" />
@@ -32,12 +32,13 @@
 
 
                   <div id="q-app">
-                    <div class="q-ml-md md" style="max-width: 30rem">
-                      <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
+                    <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
+                      <q-input outlined v-model="data.fechaReunion">
                         <template v-slot:append>
                           <q-icon name="event" class="cursor-pointer">
                             <q-popup-proxy>
-                              <q-date v-model="data.fechaReunion"></q-date>
+                              <q-date v-model="data.fechaR" />
+                              <q-time v-model="data.horaReunion" />
                             </q-popup-proxy>
                           </q-icon>
                         </template>
@@ -47,14 +48,17 @@
                   <div>
                     <p class="q-ml-md"><b>Email de confirmación que se le envía al Jurado</b></p>
 
-                    <a class="q-ml-md" href="/backoffice/configuracion/EmailConfirmacionRondaComponent">Personalizar email</a>
+                    <router-link class="q-ml-md"
+                      :to="{ name: 'EmailConfirmacionRondaComponent'}">
+                      Personalizar email
+                    </router-link>
                   </div>
                 </div>
                 <div class="column">
                   <q-img src="../../assets/Frame1.png" class="imagen1" style="height: 340px; max-width: 350px" />
                 </div>
               </div>
-              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="putConfig(data); showNotif()" />
+              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="putConfig(data); showNotif();" />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -76,19 +80,21 @@
               <p class="q-ml-md q-mt-md"><b>Fecha y hora límite</b></p>
 
               <div id="q-app">
-                <div class="q-ml-md md" style="max-width: 30rem">
-                  <q-input outlined v-model="data.fechaReunion" mask="date" :rules="['date']">
-                    <template v-slot:append>
-                      <q-icon name="event" class="cursor-pointer">
-                        <q-popup-proxy>
-                          <q-date v-model="data.fechaReunion"></q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
-                </div>
-              </div>
-              <q-btn class="botonG q-mt-md" color="red" label="Guardar" @click="juradoStore.putConfigLimitVotaciones(data); showNotif()" />
+                    <div class="q-mt-lg q-ml-md" style="max-width: 30rem">
+                      <q-input outlined v-model="data.formattedDate">
+                        <template v-slot:append>
+                          <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy>
+                              <q-date v-model="data.fechaLimite" />
+                              <q-time v-model="data.horaLimite" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
+                  </div>
+              <q-btn class="botonG q-mt-md" color="red" label="Guardar"
+                @click="juradoStore.putConfigLimitVotaciones(data); showNotif()" />
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -115,7 +121,7 @@
                     <q-list>
                       <q-item tag="label" v-ripple v-for="(subcat, key) in categoriaStore.subCategoriasArr" :key="key">
                         <q-item-section avatar>
-                          <q-checkbox v-model="element" :val="subcat" color="" @click="console($event)"  />
+                          <q-checkbox v-model="element" :val="subcat" color="" @click="console($event)" />
                         </q-item-section>
                         <q-item-section>
                           <q-item-label>{{ subcat.Categoria }}</q-item-label>
@@ -140,9 +146,10 @@
 
                   <div class="drop-target rounded-borders">
                     <q-list>
-                      <q-item tag="label" v-ripple v-for="(subcatselect, key) in categoriaStore.subcategoriasMutationJuradoEnabled" :key="key">
+                      <q-item tag="label" v-ripple
+                        v-for="(subcatselect, key) in categoriaStore.subcategoriasMutationJuradoEnabled" :key="key">
                         <q-item-section avatar>
-                          <q-checkbox v-model="elementSelected" :val="subcatselect" color=""  @click="console($event)" />
+                          <q-checkbox v-model="elementSelected" :val="subcatselect" color="" @click="console($event)" />
                         </q-item-section>
                         <q-item-section>
                           <q-item-label>{{ subcatselect.Categoria }}</q-item-label>
@@ -205,15 +212,17 @@
 </template>
 
 <script>
-import { ref, defineComponent, watch } from "vue";
+import { ref, defineComponent, watch, watchEffect } from "vue";
 import { useQuasar } from 'quasar';
 import { useJuradoStore } from "src/stores/juradoStore";
 import { useTipoJuradosStore } from "src/stores/TipoJuradosStore";
 import { useLayoutStore } from "src/stores/layoutStore";
 import { useVotosStore } from "src/stores/categoriaStore";
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: "ConfigurationComponent",
+
   setup() {
     // title = ref('');
     const element = ref([]);
@@ -237,8 +246,29 @@ export default defineComponent({
       titulo: "",
       subtitulo: "",
       mensaje: "",
+      fechaR: "",
       fechaReunion: "",
+      horaReunion: "",
+      formattedDate: "",
+      fechaLimite: "",
+      horaLimite: "",
       rutaVideo: ""
+    })
+    watchEffect(() => {
+      if (data.value.fechaR && data.value.horaReunion) {
+        const date = new Date(`${data.value.fechaR} ${data.value.horaReunion}`)
+        const fecha = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        const hora = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+        data.value.fechaReunion = `${fecha} ${hora}`
+      }
+    })
+    watchEffect(() => {
+      if (data.value.fechaLimite && data.value.horaLimite) {
+        const date = new Date(`${data.value.fechaLimite} ${data.value.horaLimite}`)
+        data.value.fechaLimite = date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        data.value.horaLimite = date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+        data.value.formattedDate = `${data.value.fechaLimite} ${data.value.horaLimite}`
+      }
     })
 
     watch(data.value.tipo, (newValue, oldValue) => {
@@ -252,7 +282,6 @@ export default defineComponent({
       categoriaStore.value.putSubCategoriasAux(tipoId)
     })
 
-
     return {
       // title,
       data,
@@ -262,7 +291,6 @@ export default defineComponent({
       categoriaStore,
       status1,
       status2,
-
       console(event) {
         // console.log(event)
       },
@@ -287,7 +315,7 @@ export default defineComponent({
           console.log(item)
 
           categoriaStore.value.subcategoriasMutationJuradoEnabled = categoriaStore.value.subcategoriasMutationJuradoEnabled.filter(subcat => subcat.Categoria != item.Categoria);
-          categoriaStore.value.subCategoriasArr.push(item );
+          categoriaStore.value.subCategoriasArr.push(item);
         })
         categoriaStore.value.subCategoriasArr.sort();
         elementSelected.value = [];
@@ -349,6 +377,11 @@ export default defineComponent({
           color: 'positive'
         })
       },
+
+
+
+
+
 
     }
   },
