@@ -33,6 +33,15 @@ export default defineComponent({
       var elemento = document.getElementById("icono");
       elemento.style.display = "inline";
     },
+    getSubcategoria(subcategoria) {
+        console.log('holaaaa');
+        // let auxArr=[row.nombre[0],row.nombre[1]];
+        indiceStore.value.subcategory = subcategoria;
+        console.log(indiceStore.value.subcategory);
+        indiceStore.value.checker = true;
+        // location.href= "ronda1Page/EmailInicioVotacion";
+      
+    },
 
     Clicked2(e) {
 
@@ -49,18 +58,12 @@ export default defineComponent({
     console.log(categorias[1]);
     return {
       indiceStore,
-      categorias,
-
-      getSubcategoria(subcategoria) {
-        console.log('holaaaa');
-        // let auxArr=[row.nombre[0],row.nombre[1]];
-        indiceStore.value.subcategory = subcategoria;
-        console.log(indiceStore.value.subcategory);
-        indiceStore.value.checker = true;
-        // location.href= "ronda1Page/EmailInicioVotacion";
-      }
+      categorias
     }
-  }
+  },
+  mounted() {
+    this.indiceStore.getSubcategorias();
+  },
 })
 
 </script>

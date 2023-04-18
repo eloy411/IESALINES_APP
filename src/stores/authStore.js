@@ -4,6 +4,7 @@ import { api } from 'boot/axios'
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: '',
+    userId:null,
     password: '',
     admin: 0,
     isAuth: false,
@@ -79,7 +80,8 @@ export const useAuthStore = defineStore("auth", {
 
         if (response.status >= 200 && response.status < 400) {
           console.log('holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-          console.log(response);
+          this.userId=response.data.id;
+          console.log(this.userId);
           this.isAuth = true;
           this.admin = response.data.admin
 
@@ -194,3 +196,4 @@ export const useAuthStore = defineStore("auth", {
   },
   persist: true,
 });
+export default useAuthStore;
