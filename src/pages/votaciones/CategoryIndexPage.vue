@@ -5,11 +5,6 @@
     <div class="border myGrid__card">
       <div class="flex center myPadding">
         <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
       </div>
     </div>
   </div>

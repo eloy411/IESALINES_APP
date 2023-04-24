@@ -13,7 +13,7 @@ export const useIndiceStore = defineStore("categoria", {
     categoriasArr: [
       {
         Categoria: '',
-        Subcategorias:[]
+        Subcategorias:[{Subcategoria:''}]
       }
 
     ]
@@ -30,15 +30,16 @@ export const useIndiceStore = defineStore("categoria", {
 
         if (res.status >= 200 && res.status <= 400) {
           res.data.forEach(categoria => {
-            // categoria.subcategorias.forEach(subcategoria => {
-            //   let auxObject2 = {
-            //     Subcategorias: `${subcategoria.id_area}${subcategoria.id} - ${subcategoria.descrip}`,
-            //   }
-            //   this.Subcategorias.push(auxObject2);
-            // })
             let auxObject = {
               Categoria: `${categoria.id} - ${categoria.descrip}`,
+              Subcategorias:[]
             }
+            categoria.subcategorias.forEach(subcategoria => {
+              let auxObject2 = {
+                Subcategoria: `${subcategoria.id_area}${subcategoria.codigo} - ${subcategoria.descrip}`,
+              }
+              auxObject.Subcategorias.push(auxObject2);
+            })
             this.categoriasArr.push(auxObject);
           })
         }
