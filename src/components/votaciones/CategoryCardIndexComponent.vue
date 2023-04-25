@@ -11,7 +11,7 @@
           <q-card-title>
             <div class="myFlex">
               <!-- <div class="title"><a>A1</a></div> -->
-              <div><a class="text"><b>{{ subcategoria.subcategoria.Subcategoria }}</b></a></div>
+              <div><a class="text"><b>{{ subcategoria }}</b></a></div>
             </div>
             <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
           </q-card-title>
@@ -62,9 +62,6 @@ export default defineComponent({
       subcategorias,
     }
   },
-  mounted() {
-    console.log("CARD COMP" + this.subcategorias)
-  }
 
 })
 </script>

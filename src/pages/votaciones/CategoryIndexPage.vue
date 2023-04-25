@@ -2,11 +2,11 @@
   <div class="myGrid">
     <CategoryIndex class="border myGrid__index" />
     <div class="border myGrid__card">
-      <div v-for="(categoria) in categorias" :key="categoria.Categoria">
+      <!-- <div v-for="(categoria) in categorias" :key="categoria"> -->
 
           <CategoryCardIndex/>
 
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default defineComponent({
 
   setup() {
     const indiceStore = ref(useIndiceStore());
-    const categorias = indiceStore.value.categoriasArr;
+    const categorias = indiceStore.value.categoriasAux;
     return {
       indiceStore,
       categorias

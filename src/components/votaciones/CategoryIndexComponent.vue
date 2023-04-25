@@ -3,7 +3,7 @@
     <h4 class="titulo">Índice de categorías</h4>
 
     <ul class="lista">
-      <li v-for="(pCategoria, index) in indiceStore.categoriasArr" :key="pCategoria.Categoria">
+      <li v-for="(pCategoria, index) in categorias" :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
         <label class="label_no_clicado" :for="`list_${index}`" @click="Clicked(pCategoria), getCategory(pCategoria)">
           {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
@@ -11,7 +11,7 @@
         <ul class="interior">
           <li v-for="(subcategoria) in pCategoria.Subcategorias" :key="subcategoria">
             <a href="main" class="categoria_no_clicado" @click="Clicked2(e)">
-              {{ subcategoria.Subcategoria }}
+              {{ subcategoria }}
             </a>
           </li>
         </ul>
@@ -24,24 +24,11 @@
 
 import { ref, defineComponent, computed } from "vue";
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
-// import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
+
 export default defineComponent({
   name: "CategoryIndex",
-  components: {
-    // CategoryCardIndex
-  },
-  setup() {
-    const props = {
-      categoria: {
-        type: Object,
-        required: true
-      },
-      subcategoria: {
-        type: Object,
-        required: true
-      }
-    };
 
+  setup() {
     const indiceStore = ref(useIndiceStore());
     const categorias = indiceStore.value.categoriasArr;
     // const cards = [];
@@ -75,6 +62,9 @@ export default defineComponent({
       console.log('holaaaa ' +  dataAuxArr[1]);
       this.indiceStore.categoriasAux = dataAuxArr;
       console.log(this.indiceStore.categoriasAux)
+      setTimeout(() => {
+        this.indiceStore.categoriasAux='';
+      }, 5000); // Set variable to empty string after 1 second
       // for (let i= 0; i <.length; i++) {
       //   const auxObj = [];
       //   auxObj.push(categoria.Subcategorias[i].Subcategoria);
