@@ -24,7 +24,7 @@
         </q-card-section>
       </div>
       <q-card-actions align="center" class="q-pa-md">
-        <q-btn no-caps class="boton" flat :to="main - content">Acceder</q-btn>
+        <q-btn no-caps class="boton" flat :to="main-content">Acceder</q-btn>
       </q-card-actions>
 
     </q-card>

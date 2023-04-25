@@ -10,7 +10,7 @@
         </label>
         <ul class="interior">
           <li v-for="(subcategoria) in categoria.Subcategorias" :key="subcategoria">
-            <a href="#r" class="categoria_no_clicado" @click="getSubcategoria(subcategoria), Clicked2(e)">
+            <a href="main-content" class="categoria_no_clicado" @click="getSubcategory(subcategoria), Clicked2(e)">
               {{ subcategoria.Subcategoria}}
             </a>
           </li>
@@ -33,7 +33,7 @@ export default defineComponent({
       var elemento = document.getElementById("icono");
       elemento.style.display = "inline";
     },
-    getSubcategoria(subcategoria) {
+    getSubcategory(subcategoria) {
       console.log('holaaaa');
       // let auxArr=[row.nombre[0],row.nombre[1]];
       indiceStore.value.subcategory = subcategoria;
