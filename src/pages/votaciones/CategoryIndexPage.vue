@@ -3,9 +3,9 @@
     <CategoryIndex class="border myGrid__index" />
     <div class="border myGrid__card">
       <div v-for="(categoria) in categorias" :key="categoria.Categoria">
-        
-        <CategoryCardIndex :categoria="categoria"/>
-      
+
+          <CategoryCardIndex/>
+
       </div>
     </div>
   </div>

@@ -3,15 +3,15 @@
     <h4 class="titulo">Índice de categorías</h4>
 
     <ul class="lista">
-      <li v-for="(categoria, index) in categorias" :key="categoria.Categoria">
+      <li v-for="(pCategoria, index) in indiceStore.categoriasArr" :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
-        <label class="label_no_clicado" :for="`list_${index}`" @click="Clicked(categoria)" :props="props">
-          {{ categoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
+        <label class="label_no_clicado" :for="`list_${index}`" @click="Clicked(pCategoria), getCategory(pCategoria)">
+          {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
         </label>
         <ul class="interior">
-          <li v-for="(subcategoria) in categoria.Subcategorias" :key="subcategoria">
-            <a href="main" class="categoria_no_clicado" @click="getSubcategory(subcategoria), Clicked2(e)">
-              {{ subcategoria.Subcategoria}}
+          <li v-for="(subcategoria) in pCategoria.Subcategorias" :key="subcategoria">
+            <a href="main" class="categoria_no_clicado" @click="Clicked2(e)">
+              {{ subcategoria.Subcategoria }}
             </a>
           </li>
         </ul>
@@ -61,13 +61,6 @@ export default defineComponent({
     }
   },
   methods: {
-  //   selectCategoria(categoria) {
-  //   this.selectedCat = categoria;
-  //   this.subcategoriasFiltradas = categoria.Subcategorias;
-  //   this.filteredCards = this.cards.filter(card => {
-  //     return this.subcategoriasFiltradas.includes(card.Subcategoria);
-  //   });
-  // },
 
 
     Clicked(e) {
@@ -75,13 +68,21 @@ export default defineComponent({
       var elemento = document.getElementById("icono");
       elemento.style.display = "inline";
     },
-    getSubcategory(subcategoria) {
-      console.log('holaaaa');
-      // let auxArr=[row.nombre[0],row.nombre[1]];
-      indiceStore.value.subcategory = subcategoria;
-      console.log(indiceStore.value.subcategory);
-      indiceStore.value.checker = true;
-      // location.href= "ronda1Page/EmailInicioVotacion";
+    getCategory(categoria) {
+     
+      const dataAuxString = JSON.stringify(categoria.Subcategorias)
+      const dataAuxArr = dataAuxString.split("[")[1].split("]")[0].split(",")
+      console.log('holaaaa ' +  dataAuxArr[1]);
+      this.indiceStore.categoriasAux = dataAuxArr;
+      console.log(this.indiceStore.categoriasAux)
+      // for (let i= 0; i <.length; i++) {
+      //   const auxObj = [];
+      //   auxObj.push(categoria.Subcategorias[i].Subcategoria);
+      // }
+
+      // this.indiceStore.subcategory = categoria.Subcategorias;
+      // console.log('holuuuu' + this.indiceStore.subcategory);
+      // this.indiceStore.checker = true;
 
     },
 

@@ -16,19 +16,19 @@
             <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
           </q-card-title>
 
-        <q-card-section class="vistas">
-          <div>
-            <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5" track-color="secondary"
-              class="q-ma-md" />
-            2/3 Obras vistas
-          </div>
-        </q-card-section>
-      </div>
-      <q-card-actions align="center" class="q-pa-md">
+          <q-card-section class="vistas">
+            <div>
+              <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5"
+                track-color="secondary" class="q-ma-md" />
+              2/3 Obras vistas
+            </div>
+          </q-card-section>
+        </div>
+        <q-card-actions align="center" class="q-pa-md">
 
-        <q-btn no-caps class="boton" flat :to="main">Acceder</q-btn>
+          <q-btn no-caps class="boton" flat :to="main">Acceder</q-btn>
 
-      </q-card-actions>
+        </q-card-actions>
 
       </q-card>
     </div>
@@ -41,33 +41,30 @@ import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 export default defineComponent({
   name: "CategoryCardIndex",
 
-  props: {
-    categoria: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  setup(props) {
+  setup() {
     const indiceStore = useIndiceStore();
-    const categorias = ref(indiceStore.categoriasArr);
-    const subcategorias = ref([]);
-    if (props.categoria && props.categoria.Subcategorias) {
-      subcategorias.value = props.categoria.Subcategorias.map((subcategoria) => ({
-        subcategoria,
-        categoria: props.categoria.nombre,
-      }));
-    }
+    // const categorias = ref(indiceStore.categoriasArr);
+    const subcategorias = ref(indiceStore.categoriasAux);
+
+    // if (props.categoria && props.categoria.Subcategorias) {
+    //   subcategorias.value = props.categoria.Subcategorias.map((subcategoria) => ({
+    //     subcategoria,
+    //     categoria: props.categoria.nombre,
+    //   }));
+    // }
 
     const votado = ref(true)
     return {
       votado,
       value: 80,
       indiceStore,
-      categorias,
+      // categorias,
       subcategorias,
     }
   },
+  mounted() {
+    console.log("CARD COMP" + this.subcategorias)
+  }
 
 })
 </script>
