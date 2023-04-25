@@ -20,7 +20,7 @@
       <div  class="q-pa-md row items-center q-gutter-xl" style="justify-content: center">
         <!--Card 1-->
         <!--clicableCard-->
-        <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1" >
+        <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1" :to="main-content" >
         <!--Trofee-->
         <div v-for="item in Trofee" v-bind:key="item.name" >
               <div v-if="Trofee == 1">

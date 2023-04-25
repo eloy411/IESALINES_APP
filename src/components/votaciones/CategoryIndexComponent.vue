@@ -10,7 +10,7 @@
         </label>
         <ul class="interior">
           <li v-for="(subcategoria) in categoria.Subcategorias" :key="subcategoria">
-            <a href="main-content" class="categoria_no_clicado" @click="getSubcategory(subcategoria), Clicked2(e)">
+            <a href="main" class="categoria_no_clicado" @click="getSubcategory(subcategoria), Clicked2(e)">
               {{ subcategoria.Subcategoria}}
             </a>
           </li>
