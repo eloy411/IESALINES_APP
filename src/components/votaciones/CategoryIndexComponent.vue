@@ -10,13 +10,8 @@
         </label>
         <ul class="interior">
           <li v-for="(subcategoria) in categoria.Subcategorias" :key="subcategoria">
-<<<<<<< HEAD
             <a href="main" class="categoria_no_clicado" @click="getSubcategory(subcategoria), Clicked2(e)">
               {{ subcategoria.Subcategoria}}
-=======
-            <a href="#r" class="categoria_no_clicado" @click="Clicked2(e)">
-              {{ subcategoria.Subcategoria }}
->>>>>>> c887bb52728054b985078e7c898776332e3f025e
             </a>
           </li>
         </ul>
@@ -80,7 +75,6 @@ export default defineComponent({
       var elemento = document.getElementById("icono");
       elemento.style.display = "inline";
     },
-<<<<<<< HEAD
     getSubcategory(subcategoria) {
       console.log('holaaaa');
       // let auxArr=[row.nombre[0],row.nombre[1]];
@@ -88,18 +82,8 @@ export default defineComponent({
       console.log(indiceStore.value.subcategory);
       indiceStore.value.checker = true;
       // location.href= "ronda1Page/EmailInicioVotacion";
-=======
-    // getSubcategoria(subcategoria) {
-    //   const indiceStore = ref(useIndiceStore());
-    //   console.log('holaaaa');
-    //   // let auxArr=[row.nombre[0],row.nombre[1]];
-    //   indiceStore.value.subcategory = subcategoria;
-    //   console.log(indiceStore.value.subcategory);
-    //   indiceStore.value.checker = true;
-    //   // location.href= "ronda1Page/EmailInicioVotacion";
->>>>>>> c887bb52728054b985078e7c898776332e3f025e
 
-    // },
+    },
 
     Clicked2(e) {
 
