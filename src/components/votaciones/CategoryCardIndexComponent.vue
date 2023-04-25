@@ -16,17 +16,17 @@
             <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
           </q-card-title>
 
-          <q-card-section class="vistas">
-            <div>
-              <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5"
-                track-color="secondary" class="q-ma-md" />
-              2/3 Obras vistas
-            </div>
-          </q-card-section>
-        </div>
-        <q-card-actions align="center" class="q-pa-md">
-          <q-btn no-caps class="boton" flat>Acceder</q-btn>
-        </q-card-actions>
+        <q-card-section class="vistas">
+          <div>
+            <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5" track-color="secondary"
+              class="q-ma-md" />
+            2/3 Obras vistas
+          </div>
+        </q-card-section>
+      </div>
+      <q-card-actions align="center" class="q-pa-md">
+        <q-btn no-caps class="boton" flat>Acceder</q-btn>
+      </q-card-actions>
 
       </q-card>
     </div>
