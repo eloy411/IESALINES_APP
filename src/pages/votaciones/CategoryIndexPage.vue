@@ -1,15 +1,11 @@
 <template>
-
   <div class="myGrid">
     <CategoryIndex class="border myGrid__index" />
     <div class="border myGrid__card">
-      <div class="flex center myPadding">
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
-        <CategoryCardIndex />
+      <div v-for="(categoria) in categorias" :key="categoria.Categoria">
+        
+        <CategoryCardIndex :categoria="categoria"/>
+      
       </div>
     </div>
   </div>
@@ -19,28 +15,33 @@
 import { ref, defineComponent } from "vue";
 import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
 import CategoryIndex from "src/components/votaciones/CategoryIndexComponent.vue";
+import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 
 
 export default defineComponent({
-    name: "indicePage",
+  name: "indicePage",
 
-    components: {
-        CategoryIndex,
-        CategoryCardIndex,
-    },
+  components: {
+    CategoryIndex,
+    CategoryCardIndex,
+  },
 
-    setup () {
-        return {
-
-        }
+  setup() {
+    const indiceStore = ref(useIndiceStore());
+    const categorias = indiceStore.value.categoriasArr;
+    return {
+      indiceStore,
+      categorias
     }
+  }
 })
 
 </script>
 
 <style lang="scss">
 body {
-  background-color: #2F353B;;
+  background-color: #2F353B;
+  ;
 }
 
 .center {
@@ -71,13 +72,11 @@ body {
 
 }
 
-.flex  {
+.flex {
   gap: 3em;
 }
 
 .myPadding {
   padding-top: 13%;
 }
-
-
 </style>

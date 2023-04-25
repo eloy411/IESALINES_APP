@@ -1,48 +1,69 @@
 <template>
   <div class="layout-padding row items-start">
-    <q-card class="card" inline>
-      <q-card-section class="icon">
-        <img v-if="votado" alt="check button" src="../../assets/Check_Red.png" />
-        <q-icon v-else size="2.25em" class="icon_background" name="circle"></q-icon>
-      </q-card-section>
-
-      <div class="card__body">
-        <q-card-title>
-          <div class="myFlex">
-            <div class="title"><a>A1</a></div>
-            <div><a class="text"><b>Campaña integral de promoción de producto</b></a></div>
-          </div>
-          <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
-        </q-card-title>
-
-        <q-card-section class="vistas">
-          <div>
-            <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5" track-color="secondary"
-              class="q-ma-md" />
-            2/3 Obras vistas
-          </div>
+    <div v-for="(subcategoria, index) in subcategorias" :key="index">
+      <q-card class="card" inline>
+        <q-card-section class="icon">
+          <img v-if="votado" alt="check button" src="../../assets/Check_Red.png" />
+          <q-icon v-else size="2.25em" class="icon_background" name="circle"></q-icon>
         </q-card-section>
-      </div>
-      <q-card-actions align="center" class="q-pa-md">
-        <q-btn no-caps class="boton" flat>Acceder</q-btn>
-      </q-card-actions>
 
-    </q-card>
+        <div class="card__body">
+          <q-card-title>
+            <div class="myFlex">
+              <!-- <div class="title"><a>A1</a></div> -->
+              <div><a class="text"><b>{{ subcategoria.subcategoria.Subcategoria }}</b></a></div>
+            </div>
+            <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
+          </q-card-title>
+
+          <q-card-section class="vistas">
+            <div>
+              <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5"
+                track-color="secondary" class="q-ma-md" />
+              2/3 Obras vistas
+            </div>
+          </q-card-section>
+        </div>
+        <q-card-actions align="center" class="q-pa-md">
+          <q-btn no-caps class="boton" flat>Acceder</q-btn>
+        </q-card-actions>
+
+      </q-card>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, defineComponent } from "vue";
-
+import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 export default defineComponent({
   name: "CategoryCardIndex",
 
-  setup() {
+  props: {
+    categoria: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup(props) {
+    const indiceStore = useIndiceStore();
+    const categorias = ref(indiceStore.categoriasArr);
+    const subcategorias = ref([]);
+    if (props.categoria && props.categoria.Subcategorias) {
+      subcategorias.value = props.categoria.Subcategorias.map((subcategoria) => ({
+        subcategoria,
+        categoria: props.categoria.nombre,
+      }));
+    }
 
     const votado = ref(true)
     return {
       votado,
-      value: 80
+      value: 80,
+      indiceStore,
+      categorias,
+      subcategorias,
     }
   },
 
