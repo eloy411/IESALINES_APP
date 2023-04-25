@@ -30,7 +30,7 @@ export default defineComponent({
 
         await this.authStore.getUrlUserData(url);
 
-        await this.juradoStore.getJurados();
+        // await this.juradoStore.getJurados();
 
 
       }
