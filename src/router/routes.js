@@ -237,8 +237,8 @@ const routes = [
             component: () => import("src/pages/votaciones/votacionesPageTest.vue"),
           },
           {
-            path: "main",
-            name: "main",
+            path: "mainDialog",
+            name: "mainDialog",
             component: () => import("src/pages/votaciones/MainDialogVotacionesPage.vue"),
           },
           {

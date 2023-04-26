@@ -5,14 +5,15 @@
     <ul class="lista">
       <li v-for="(pCategoria, index) in categorias" :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
-        <label class="label_no_clicado" :for="`list_${index}`" @click="Clicked(pCategoria), getCategory(pCategoria)">
+        <label class="label_no_clicado" :for="`list_${index}`" @click="getCategory(pCategoria)">
           {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
         </label>
         <ul class="interior">
           <li v-for="(subcategoria) in pCategoria.Subcategorias" :key="subcategoria">
-            <a href="main" class="categoria_no_clicado" @click="Clicked2(e)">
+            <router-link class="categoria_no_clicado" to="/votaciones/mainDialog" @click="getSubcategory(subcategoria)">
               {{ subcategoria }}
-            </a>
+            </router-link>
+
           </li>
         </ul>
       </li>
@@ -56,10 +57,10 @@ export default defineComponent({
       elemento.style.display = "inline";
     },
     getCategory(categoria) {
-     
+
       const dataAuxString = JSON.stringify(categoria.Subcategorias)
       const dataAuxArr = dataAuxString.split("[")[1].split("]")[0].split(",")
-      console.log('holaaaa ' +  dataAuxArr[1]);
+      console.log('holaaaa ' + dataAuxArr[1]);
       this.indiceStore.categoriasAux = dataAuxArr;
       console.log(this.indiceStore.categoriasAux)
       // setTimeout(() => {
@@ -83,6 +84,12 @@ export default defineComponent({
 
     },
 
+    getSubcategory(subcategoria) {
+      console.log(subcategoria);
+      this.indiceStore.subcategory = subcategoria;
+      console.log("SUBCATEGORIA:" + this.indiceStore.subcategory)
+
+    }
 
   },
   mounted() {

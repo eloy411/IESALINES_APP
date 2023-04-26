@@ -6,7 +6,7 @@
     >
       <div v-if="explanationTriger == 1">
         <img class="imageLogo" src="../../assets/LogoAspid.png" />
-        <div class="box">
+        <div class="boxArea">
             <div style="display: flex">
                 <q-carousel
                     class="InsedeBox1"
@@ -120,7 +120,7 @@
   </script>
   
   <style>
-.box{
+.boxArea{
   top: 27%;
   position: fixed;
   display: flex;

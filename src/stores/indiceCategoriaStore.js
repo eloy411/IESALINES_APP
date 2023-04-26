@@ -10,7 +10,7 @@ export const useIndiceStore = defineStore("categoria", {
     categoriaSeleccionada:'',
     
     
-    subcategory:[],
+    subcategory:'',
     categoriasAux: [],
 
 
@@ -54,7 +54,7 @@ export const useIndiceStore = defineStore("categoria", {
             this.categoriasArr.push(auxObject);
           })
 
-          console.log("DSADADA-->",this.categoriasArr)
+          // console.log("DSADADA-->",this.categoriasArr)
         }
       } catch (error) {
         console.log(error);
