@@ -62,9 +62,9 @@ export default defineComponent({
       console.log('holaaaa ' +  dataAuxArr[1]);
       this.indiceStore.categoriasAux = dataAuxArr;
       console.log(this.indiceStore.categoriasAux)
-      setTimeout(() => {
-        this.indiceStore.categoriasAux='';
-      }, 5000); // Set variable to empty string after 1 second
+      // setTimeout(() => {
+      //   this.indiceStore.categoriasAux='';
+      // }, 5000); // Set variable to empty string after 1 second
       // for (let i= 0; i <.length; i++) {
       //   const auxObj = [];
       //   auxObj.push(categoria.Subcategorias[i].Subcategoria);
