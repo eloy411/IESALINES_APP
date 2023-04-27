@@ -1,37 +1,37 @@
 <template>
   <div class="layout-padding row items-start">
-    <div v-for="(subcategoria, index) in subcategorias" :key="index">
-      <q-card class="card" inline>
-        <q-card-section class="icon">
-          <img v-if="votado" alt="check button" src="../../assets/Check_Red.png" />
-          <q-icon v-else size="2.25em" class="icon_background" name="circle"></q-icon>
+    <!-- <div v-for="(subcategoria, index) in subcategorias" :key="index"> -->
+    <q-card class="card" inline>
+      <q-card-section class="icon">
+        <img v-if="votado" alt="check button" src="../../assets/Check_Red.png" />
+        <q-icon v-else size="2.25em" class="icon_background" name="circle"></q-icon>
+      </q-card-section>
+
+      <div class="card__body">
+        <q-card-title>
+          <div class="myFlex">
+            <!-- <div class="title"><a>A1</a></div> -->
+            <div><a class="text"><b>{{ subcategoria }}</b></a></div>
+          </div>
+          <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
+        </q-card-title>
+
+        <q-card-section class="vistas">
+          <div>
+            <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5" track-color="secondary"
+              class="q-ma-md" />
+            2/3 Obras vistas
+          </div>
         </q-card-section>
+      </div>
+      <q-card-actions align="center" class="q-pa-md">
 
-        <div class="card__body">
-          <q-card-title>
-            <div class="myFlex">
-              <!-- <div class="title"><a>A1</a></div> -->
-              <div><a class="text"><b>{{ subcategoria }}</b></a></div>
-            </div>
-            <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
-          </q-card-title>
+        <q-btn no-caps class="boton" flat :to="main">Acceder</q-btn>
 
-          <q-card-section class="vistas">
-            <div>
-              <q-circular-progress reverse :value="value" size="35px" :thickness="1" color="grey-5"
-                track-color="secondary" class="q-ma-md" />
-              2/3 Obras vistas
-            </div>
-          </q-card-section>
-        </div>
-        <q-card-actions align="center" class="q-pa-md">
+      </q-card-actions>
 
-          <q-btn no-caps class="boton" flat :to="main">Acceder</q-btn>
-
-        </q-card-actions>
-
-      </q-card>
-    </div>
+    </q-card>
+    <!-- </div> -->
   </div>
 </template>
 

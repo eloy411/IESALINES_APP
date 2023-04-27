@@ -10,8 +10,9 @@
         </label>
         <ul class="interior">
           <li v-for="(subcategoria) in pCategoria.Subcategorias" :key="subcategoria">
-            <router-link class="categoria_no_clicado" to="/votaciones/mainDialog" @click="getSubcategory(subcategoria)">
-              {{ subcategoria }}
+            <router-link class="categoria_no_clicado" to="/votaciones/mainDialog"
+              @click="getSubcategory(subcategoria[0], subcategoria[1]); getSubcatId(subcategoria[2])">
+              {{ subcategoria[0] }}
             </router-link>
 
           </li>
@@ -47,6 +48,7 @@ export default defineComponent({
       // subcategoriasFiltradas,
       // cards,
     }
+
   },
   methods: {
 
@@ -60,7 +62,7 @@ export default defineComponent({
 
       const dataAuxString = JSON.stringify(categoria.Subcategorias)
       const dataAuxArr = dataAuxString.split("[")[1].split("]")[0].split(",")
-      console.log('holaaaa ' + dataAuxArr[1]);
+      // console.log('holaaaa ' + dataAuxArr[1]);
       this.indiceStore.categoriasAux = dataAuxArr;
       console.log(this.indiceStore.categoriasAux)
       // setTimeout(() => {
@@ -84,12 +86,20 @@ export default defineComponent({
 
     },
 
-    getSubcategory(subcategoria) {
-      console.log(subcategoria);
+    getSubcategory(subcategoria, leyenda) {
+      console.log("leyendaaa" + subcategoria + '-------' + leyenda);
       this.indiceStore.subcategory = subcategoria;
+      this.indiceStore.leyenda = leyenda;
       console.log("SUBCATEGORIA:" + this.indiceStore.subcategory)
 
+    },
+
+    getSubcatId(subcatId) {
+      console.log("id subcategoriaaaaa" + subcatId);
+      this.indiceStore.subcatId = subcatId;
+      // this.indiceStore.getObrasFromSubcat();
     }
+
 
   },
   mounted() {

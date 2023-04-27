@@ -11,7 +11,7 @@
       <!--TextDescrip-->
       <div class="box">
         <div v-for="item in TitelDescArr" v-bind:key="item.name">
-          {{ item.descripción }}
+          {{ indiceStore.leyenda }}
         </div>
       </div>
 
@@ -20,84 +20,28 @@
       <div class="q-pa-md row items-center q-gutter-xl" style="justify-content: center">
         <!--Card 1-->
         <!--clicableCard-->
-        <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1" :to="main - content">
-          <!--Trofee-->
-          <div v-for="item in Trofee" v-bind:key="item.name">
-            <div v-if="Trofee == 1">
-              <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
+        <div v-for="(pObras) in obras" :key="pObras.Obra">
+          <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1" :to="main - content">
+            <!--Trofee-->
+            <div v-for="item in Trofee" v-bind:key="item.name">
+              <div v-if="Trofee == 1">
+                <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
+              </div>
             </div>
-          </div>
-          <!--Image-->
-          <img class="image" v-for="item in TitelDescArr" v-bind:key="item.name" :src="item.image1"
-            style="border-radius: 10px;">
-          <q-list style=" text-align: left;">
-            <q-item class="textBox">
-              <!--TextCard-->
-              <q-item-section>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card1tilte }}
-                </q-item-label>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card1desc }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-
-        <!--Card 2-->
-        <!--clicableCard-->
-        <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow2">
-          <!--Trofee-->
-          <div v-for="item in Trofee" v-bind:key="item.name">
-            <div v-if="Trofee == 2">
-              <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
-            </div>
-          </div>
-          <!--Image-->
-          <img class="image" v-for="item in TitelDescArr" v-bind:key="item.name" :src="item.image2"
-            style="border-radius: 10px;">
-          <q-list style=" text-align: left;">
-            <q-item class="textBox">
-              <!--TextCard-->
-              <q-item-section>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card2tilte }}
-                </q-item-label>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card2desc }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-
-        <!--Card 3-->
-        <!--clicableCard-->
-        <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow3">
-          <!--Trofee-->
-          <div v-for="item in Trofee" v-bind:key="item.name">
-            <div v-if="Trofee == 3">
-              <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
-            </div>
-          </div>
-          <!--Image-->
-          <img class="image" v-for="item in TitelDescArr" v-bind:key="item.name" :src="item.image3"
-            style="border-radius: 10px;">
-          <q-list style=" text-align: left;">
-            <q-item class="textBox">
-              <!--TextCard-->
-              <q-item-section>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card3tilte }}
-                </q-item-label>
-                <q-item-label v-for="item in TitelDescArr" v-bind:key="item.name">
-                  {{ item.Card3desc }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
+            <!--Image-->
+            <img class="image" style="border-radius: 10px;" :src="pObras.Thumbnail">
+            <q-list style=" text-align: left;">
+              <q-item class="textBox">
+                <!--TextCard-->
+                <q-item-section>
+                  <q-item-label>
+                    {{ pObras.Obra }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card>
+        </div>
       </div>
       <!--DesertButton-->
       <div class="row" id="desertStyle">
@@ -122,7 +66,7 @@ export default defineComponent({
     const cont = [0]
     const Trofee = ref([])
     const indiceStore = ref(useIndiceStore());
-    // const subcategoria = indiceStore.value.subcategory
+    const obras = indiceStore.value.obrasArr;
     return {
       TitelDescArr: [
         {
@@ -145,7 +89,9 @@ export default defineComponent({
       ],
       Trofee,
       indiceStore,
+      obras,
       // subcategoria,
+
 
       Awardrow1() {
         if (cont == 0) {
@@ -201,8 +147,8 @@ export default defineComponent({
 
     }
 
-  }
 
+  },
 
 })
 </script>
