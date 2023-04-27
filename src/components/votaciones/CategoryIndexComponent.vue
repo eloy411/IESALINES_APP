@@ -3,15 +3,15 @@
     <h4 class="titulo">Índice de categorías</h4>
 
     <ul class="lista">
-      <li v-for="(pCategoria, index) in categorias" :key="pCategoria.Categoria">
+      <li v-for="(pCategoria, index) in  categorias " :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
         <label class="label_no_clicado" :for="`list_${index}`" @click="getCategory(pCategoria)">
           {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
         </label>
         <ul class="interior">
-          <li v-for="(subcategoria) in pCategoria.Subcategorias" :key="subcategoria">
+          <li v-for="(subcategoria) in  pCategoria.Subcategorias " :key="subcategoria">
             <router-link class="categoria_no_clicado" to="/votaciones/mainDialog"
-              @click="getSubcategory(subcategoria[0], subcategoria[1]); getSubcatId(subcategoria[2])">
+              @click="getSubcategory(subcategoria[0], subcategoria[1]); getSubcatId(subcategoria[2]); handleCondition()">
               {{ subcategoria[0] }}
             </router-link>
 
@@ -20,19 +20,36 @@
       </li>
     </ul>
   </div>
+
+
+  <div>
+    <div v-if="condition ">
+      <CategoryCardIndex></CategoryCardIndex>
+    </div>
+    <div v-else>
+      <mainDialog></mainDialog>
+    </div>
+  </div>
 </template>
 
 <script>
 
 import { ref, defineComponent, computed } from "vue";
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
+import mainDialog from "src/components/votaciones/MainDialogVotacionesComponent.vue"
+import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
 
 export default defineComponent({
   name: "CategoryIndex",
+  components: {
+    mainDialog,
+    CategoryCardIndex,
+  },
 
   setup() {
     const indiceStore = ref(useIndiceStore());
     const categorias = indiceStore.value.categoriasArr;
+    const condition = false;
     // const cards = [];
     // const subcategoriasFiltradas = computed(() => {
     //   const categoriaSeleccionada = indiceStore.value.categoriaSeleccionada;
@@ -45,6 +62,7 @@ export default defineComponent({
     return {
       indiceStore,
       categorias,
+      condition
       // subcategoriasFiltradas,
       // cards,
     }
@@ -65,17 +83,6 @@ export default defineComponent({
       // console.log('holaaaa ' + dataAuxArr[1]);
       this.indiceStore.categoriasAux = dataAuxArr;
       console.log(this.indiceStore.categoriasAux)
-      // setTimeout(() => {
-      //   this.indiceStore.categoriasAux='';
-      // }, 5000); // Set variable to empty string after 1 second
-      // for (let i= 0; i <.length; i++) {
-      //   const auxObj = [];
-      //   auxObj.push(categoria.Subcategorias[i].Subcategoria);
-      // }
-
-      // this.indiceStore.subcategory = categoria.Subcategorias;
-      // console.log('holuuuu' + this.indiceStore.subcategory);
-      // this.indiceStore.checker = true;
 
     },
 
@@ -98,8 +105,11 @@ export default defineComponent({
       console.log("id subcategoriaaaaa" + subcatId);
       this.indiceStore.subcatId = subcatId;
       // this.indiceStore.getObrasFromSubcat();
-    }
+    },
 
+    handleCondition() {
+      this.condition = !this.condition;
+    }
 
   },
   mounted() {
@@ -182,5 +192,4 @@ li {
 
 .lista input:checked~ul {
   display: block;
-}
-</style>
+}</style>

@@ -1,10 +1,10 @@
 <template>
   <div class="myGrid">
-    <CategoryIndex class="border myGrid__index" />
+    <CategoryIndex class="border myGrid__index"  />
     <div class="border myGrid__card">
       <!-- <div v-for="(categoria) in categorias" :key="categoria"> -->
 
-          <CategoryCardIndex/>
+          <!-- <CategoryCardIndex/> -->
 
       <!-- </div> -->
     </div>
@@ -13,7 +13,7 @@
 
 <script>
 import { ref, defineComponent } from "vue";
-import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
+// import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
 import CategoryIndex from "src/components/votaciones/CategoryIndexComponent.vue";
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 
@@ -23,7 +23,7 @@ export default defineComponent({
 
   components: {
     CategoryIndex,
-    CategoryCardIndex,
+    // CategoryCardIndex,
   },
 
   setup() {

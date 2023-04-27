@@ -2,9 +2,9 @@
   <div class="myGrid">
     <CategoryIndex class="border myGrid__index" />
     <div class="border myGrid__card">
-      <div class="flex center myPadding">
+      <!-- <div class="flex center myPadding">
         <DialogComponent />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -12,14 +12,14 @@
 <script>
 import { ref, defineComponent } from "vue";
 import CategoryIndex from "src/components/votaciones/CategoryIndexComponent.vue";
-import  DialogComponent  from "src/components/votaciones/MainDialogVotacionesComponent.vue";
+// import  DialogComponent  from "src/components/votaciones/MainDialogVotacionesComponent.vue";
 
 export default defineComponent({
     name: "indicePage",
 
     components: {
         CategoryIndex,
-        DialogComponent
+        // DialogComponent
     },
 
     setup () {
