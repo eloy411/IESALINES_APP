@@ -19,17 +19,17 @@
         <!--Card 1-->
         <!--clicableCard-->
         <!-- <q-row> -->
-        <q-col cols="4" v-for="(obra, index) in obras" :key="index">
-          <router-link class="categoria_no_clicado" :to="`/main-content/${obra.id}`">
-            <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1">
+        <q-col cols="4" v-for="(obra, index) in  obras " :key="index">
+          <div class="categoria_no_clicado">
+            <q-card class="my-card cursor-pointer q-hoverable" clickable @click="toMedia(obra.id)">
               <!--Trofee-->
-              <div v-for="item in Trofee" v-bind:key="item.name">
-                <div v-if="Trofee == 1">
+              <div v-for=" item  in  Trofee " v-bind:key=" item.name ">
+                <div v-if=" Trofee == 1 ">
                   <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
                 </div>
               </div>
               <!--Image-->
-              <img class="image" style="border-radius: 10px;" :src="obra.Thumbnail">
+              <img class="image" style="border-radius: 10px;" :src=" obra.Thumbnail ">
               <q-list style=" text-align: left;">
                 <q-item class="textBox">
                   <!--TextCard-->
@@ -41,7 +41,7 @@
                 </q-item>
               </q-list>
             </q-card>
-          </router-link>
+          </div>
         </q-col>
         <!-- </q-row> -->
       </div>
@@ -80,6 +80,9 @@ export default defineComponent({
       // filteredObras,
       subcatId,
 
+      toMedia(idObra) {
+        this.$router.push({ name: 'main-content', params: { id: idObra } })
+      },
 
       Awardrow1() {
         if (cont == 0) {
@@ -218,6 +221,7 @@ export default defineComponent({
 }
 
 .my-card {
+  color: black;
   width: 100%;
   max-width: 15rem;
   border-radius: 0.625rem;

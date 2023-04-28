@@ -39,7 +39,7 @@ export const useIndiceStore = defineStore("categoria", {
         const userId = authStore.value.userId // get the userId from authStore
         console.log("ID"+userId);
         console.log(' ==== get categorias votaciones ====');
-        const res = await api.get(`http://localhost:8001/api/categorias/${userId}`);
+        const res = await api.get(`http://localhost:8001/api/categorias/`);
         console.log(res);
         this.categoriasArr=[];
         if (res.status >= 200 && res.status <= 400) {

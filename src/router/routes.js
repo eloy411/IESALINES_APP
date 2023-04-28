@@ -247,7 +247,7 @@ const routes = [
             component: () => import("src/pages/votaciones/CategoryIndexPage.vue"),
           },
           {
-            path: "main-content",
+            path: "main-content/:id",
             name: "main-content",
             component: () => import("src/pages/votaciones/ContentMainDialogVotacionesPage.vue"),
           },
