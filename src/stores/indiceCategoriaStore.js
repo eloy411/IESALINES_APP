@@ -42,32 +42,29 @@ export const useIndiceStore = defineStore("categoria", {
         console.log(res);
         this.categoriasArr=[];
         if (res.status >= 200 && res.status <= 400) {
-          console.log(res.data);
-          res.data.forEach(categoria => {
-            let auxObject = {
-              Categoria: `${categoria.id} - ${categoria.descrip}`,
-              Subcategorias: []
-            }
-            categoria.subcategorias.forEach(subcategoria => {
-          
-             
-                const nameSubcat=`${subcategoria.id_area}${subcategoria.codigo} - ${subcategoria.descrip}`
-                const subcatLeyenda=`${subcategoria.leyenda}`
-                const subcatId=`${subcategoria.id}`
-                const Subcategoria=[nameSubcat , subcatLeyenda, subcatId]
-              
-              // this.leyenda=subcategoria.leyenda;
-              // console.log("LEYENDA STORE ---------" +Subcategoria);
-              auxObject.Subcategorias.push(Subcategoria );
+          const categoriasArr = res.data.map((categoria) => {
+            const subcategorias = categoria.subcategorias.map((subcategoria) => {
+              const nameSubcat = `${subcategoria.id_area}${subcategoria.codigo} - ${subcategoria.descrip}`
+              const subcatLeyenda = `${subcategoria.leyenda}`
+              const subcatId = `${subcategoria.id}`
+              return [nameSubcat, subcatLeyenda, subcatId]
             })
-            this.categoriasArr.push(auxObject);
+            return {
+              Categoria: `${categoria.id} - ${categoria.descrip}`,
+              Subcategorias: subcategorias,
+            }
           })
+          this.categoriasArr = categoriasArr
+      }
+      console.log(this.categoriasArr);
+        return this.categoriasArr
 
           // console.log("DSADADA-->",this.categoriasArr)
-        }
+        
       } catch (error) {
         console.log(error);
       }
+    
     },
 
     async getObrasFromSubcat(){

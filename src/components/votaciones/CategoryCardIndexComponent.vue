@@ -11,7 +11,7 @@
         <q-card-title>
           <div class="myFlex">
             <!-- <div class="title"><a>A1</a></div> -->
-            <div><a class="text"><b>{{ subcategoria }}</b></a></div>
+            <div><a class="text"><b>{{ title }}</b></a></div>
           </div>
           <div class="subtitulo text-subtitle2">Aspid Oro y Plata</div>
         </q-card-title>
@@ -40,6 +40,9 @@ import { ref, defineComponent } from "vue";
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 export default defineComponent({
   name: "CategoryCardIndex",
+  props:{
+    title: String,
+  },
 
   setup() {
     const indiceStore = useIndiceStore();

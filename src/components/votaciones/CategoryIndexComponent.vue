@@ -3,13 +3,13 @@
     <h4 class="titulo">Índice de categorías</h4>
 
     <ul class="lista">
-      <li v-for="(pCategoria, index) in  categorias " :key="pCategoria.Categoria">
+      <li v-for="(pCategoria, index) in             categorias       " :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
         <label class="label_no_clicado" :for="`list_${index}`" @click="getCategory(pCategoria)">
           {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
         </label>
         <ul class="interior">
-          <li v-for="(subcategoria) in  pCategoria.Subcategorias " :key="subcategoria">
+          <li v-for="(subcategoria) in       pCategoria.Subcategorias        " :key="subcategoria">
             <router-link class="categoria_no_clicado" to="/votaciones/mainDialog"
               @click="getSubcategory(subcategoria[0], subcategoria[1]); getSubcatId(subcategoria[2]); handleCondition()">
               {{ subcategoria[0] }}
@@ -23,8 +23,12 @@
 
 
   <div>
-    <div v-if="condition ">
-      <CategoryCardIndex></CategoryCardIndex>
+    <div v-if=" condition " class="border myGrid__card">
+      <div class="flex center myPadding">
+        <div v-for="(  subcategoria ) in   subcatsAux    " :key=" subcategoria[2] ">
+          <CategoryCardIndex :title=" subcategoria[0] " />
+        </div>
+      </div>
     </div>
     <div v-else>
       <mainDialog></mainDialog>
@@ -34,7 +38,7 @@
 
 <script>
 
-import { ref, defineComponent, computed } from "vue";
+import { ref, defineComponent, computed, toRefs } from "vue";
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 import mainDialog from "src/components/votaciones/MainDialogVotacionesComponent.vue"
 import CategoryCardIndex from "src/components/votaciones/CategoryCardIndexComponent.vue";
@@ -48,21 +52,33 @@ export default defineComponent({
 
   setup() {
     const indiceStore = ref(useIndiceStore());
-    const categorias = indiceStore.value.categoriasArr;
-    const condition = false;
-    // const cards = [];
-    // const subcategoriasFiltradas = computed(() => {
-    //   const categoriaSeleccionada = indiceStore.value.categoriaSeleccionada;
-    //   return categoriaSeleccionada
-    //     ? categoriaSeleccionada.Subcategorias
-    //     : [];
-    // });
+    const { categoriasArr } = toRefs(indiceStore.value);
+    const condition = ref(true);
+    const subcatsAux = ref(indiceStore.value.categoriasAux);
+    const selectedCategoria = ref(null);
+    const obras = indiceStore.value.obrasArr;
 
 
     return {
+      categorias: computed(() => categoriasArr.value),
       indiceStore,
-      categorias,
-      condition
+      condition,
+      obras,
+      subcatsAux: computed(() => {
+        if (selectedCategoria.value) {
+          return selectedCategoria.value.Subcategorias;
+        } else {
+          return [];
+        }
+      }),
+      getCategory(categoria) {
+        console.log(categoria);
+        const dataAuxString = categoria.Subcategorias
+        this.indiceStore.categoriasAux = dataAuxString;
+        selectedCategoria.value = categoria;
+        console.log(this.indiceStore.categoriasAux)
+
+      },
       // subcategoriasFiltradas,
       // cards,
     }
@@ -76,15 +92,7 @@ export default defineComponent({
       var elemento = document.getElementById("icono");
       elemento.style.display = "inline";
     },
-    getCategory(categoria) {
 
-      const dataAuxString = JSON.stringify(categoria.Subcategorias)
-      const dataAuxArr = dataAuxString.split("[")[1].split("]")[0].split(",")
-      // console.log('holaaaa ' + dataAuxArr[1]);
-      this.indiceStore.categoriasAux = dataAuxArr;
-      console.log(this.indiceStore.categoriasAux)
-
-    },
 
     Clicked2(e) {
 
@@ -104,7 +112,7 @@ export default defineComponent({
     getSubcatId(subcatId) {
       console.log("id subcategoriaaaaa" + subcatId);
       this.indiceStore.subcatId = subcatId;
-      // this.indiceStore.getObrasFromSubcat();
+      this.indiceStore.getObrasFromSubcat();
     },
 
     handleCondition() {
@@ -112,13 +120,11 @@ export default defineComponent({
     }
 
   },
-  mounted() {
+  created() {
     this.indiceStore.getSubcategorias();
   },
 })
-
 </script>
-
 <style>
 li {
   font-family: 'Roboto';
