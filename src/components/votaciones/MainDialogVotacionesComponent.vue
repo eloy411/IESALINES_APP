@@ -3,16 +3,14 @@
     <div align="center">
       <!--TextHeader-->
       <div class="headertext">
-        <qt v-for="item in TitelDescArr" v-bind:key="item.name">
-          {{ indiceStore.subcategory }}
-        </qt>
+        {{ indiceStore.subcategory }}
       </div>
 
       <!--TextDescrip-->
       <div class="box">
-        <div v-for="item in TitelDescArr" v-bind:key="item.name">
-          {{ indiceStore.leyenda }}
-        </div>
+
+        {{ indiceStore.leyenda }}
+
       </div>
 
       <!--CARDS-->
@@ -20,42 +18,46 @@
       <div class="q-pa-md row items-center q-gutter-xl" style="justify-content: center">
         <!--Card 1-->
         <!--clicableCard-->
-        <div v-for="(pObras) in obras" :key="pObras.Obra">
-          <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1" :to="main - content">
-            <!--Trofee-->
-            <div v-for="item in Trofee" v-bind:key="item.name">
-              <div v-if="Trofee == 1">
-                <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
+        <!-- <q-row> -->
+        <q-col cols="4" v-for="(obra, index) in obras" :key="index">
+          <router-link class="categoria_no_clicado" :to="`/main-content/${obra.id}`">
+            <q-card class="my-card cursor-pointer q-hoverable" clickable @click="Awardrow1">
+              <!--Trofee-->
+              <div v-for="item in Trofee" v-bind:key="item.name">
+                <div v-if="Trofee == 1">
+                  <img class="premiStyle" style="position:absolute;" src="../../assets/sello_oro.svg">
+                </div>
               </div>
-            </div>
-            <!--Image-->
-            <img class="image" style="border-radius: 10px;" :src="pObras.Thumbnail">
-            <q-list style=" text-align: left;">
-              <q-item class="textBox">
-                <!--TextCard-->
-                <q-item-section>
-                  <q-item-label>
-                    {{ pObras.Obra }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </div>
+              <!--Image-->
+              <img class="image" style="border-radius: 10px;" :src="obra.Thumbnail">
+              <q-list style=" text-align: left;">
+                <q-item class="textBox">
+                  <!--TextCard-->
+                  <q-item-section>
+                    <q-item-label>
+                      {{ obra.Obra }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card>
+          </router-link>
+        </q-col>
+        <!-- </q-row> -->
       </div>
-      <!--DesertButton-->
-      <div class="row" id="desertStyle">
-        <div style="margin-top:5px">
-          Después de ver y evaluar todas las obras de esta categoría considero que debe quedar desierta
-        </div>
-        <button class="burttonStyle">Desierto</button>
+    </div>
+    <!--DesertButton-->
+    <div class="row" id="desertStyle">
+      <div style="margin-top:5px">
+        Después de ver y evaluar todas las obras de esta categoría considero que debe quedar desierta
       </div>
+      <button class="burttonStyle">Desierto</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, defineComponent } from 'vue'
+import { ref, defineComponent, computed, toRefs } from 'vue'
 import { useIndiceStore } from "src/stores/indiceCategoriaStore";
 export default defineComponent({
 
@@ -66,31 +68,17 @@ export default defineComponent({
     const cont = [0]
     const Trofee = ref([])
     const indiceStore = ref(useIndiceStore());
-    const obras = indiceStore.value.obrasArr;
+    const { obrasArr } = toRefs(indiceStore.value);
+    const subcatId = ref(indiceStore.value.subcatId);
+    console.log("VALOR DE STOREEE" + subcatId.value)
+
+
     return {
-      TitelDescArr: [
-        {
-          titulo: 'A1. Campaña integral de promoción de producto',
-          descripción: 'La fecha exacta del nacimiento de Dante es desconocida, aunque generalmente se cree que fue alrededor de 1265. Esto puede deducirse de las alusiones autobiográficas reflejadas en la Vita nuova.4​Dante participó activamente en las luchas políticas de su tiempo, por lo que fue desterrado de su ciudad natal, y fue un activo defensor de la unidad italiana. Escribió varios tratados en latín sobre literatura, política y filosofía. A su pluma se debe el tratado en latín De Monarchia, de 1311, que constituye una exposición detallada de sus ideas políticas, entre las cuales se encuentran la necesidad de la existencia de un Sacro Imperio Romano y la separación de la Iglesia y el Estado.5​ En 1289 participó en la batalla de Campaldino durante la guerra entre Florencia y Arezzo, y contribuyó así a la victoria de los florentinos.​​​',
-
-          Card1tilte: 'Titulo campaña',
-          Card1desc: 'En dos lineas',
-          image1: 'https://cdn.quasar.dev/img/parallax2.jpg',
-
-          Card2tilte: 'Titulo campaña',
-          Card2desc: 'En dos lineas',
-          image2: 'https://cdn.quasar.dev/img/parallax2.jpg',
-
-          Card3tilte: 'Titulo campaña',
-          Card3desc: 'En dos lineas',
-          image3: 'https://cdn.quasar.dev/img/parallax2.jpg',
-
-        },
-      ],
       Trofee,
       indiceStore,
-      obras,
-      // subcategoria,
+      obras: computed(() => obrasArr.value),
+      // filteredObras,
+      subcatId,
 
 
       Awardrow1() {

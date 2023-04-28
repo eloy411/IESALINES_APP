@@ -26,6 +26,7 @@ export const useIndiceStore = defineStore("categoria", {
     ],
 
     obrasArr:[{
+      id:'',
       Obra:'',
       Thumbnail:''
     }]
@@ -74,10 +75,12 @@ export const useIndiceStore = defineStore("categoria", {
         const res = await api.get(`http://localhost:8001/api/obras/${this.subcatId}`);
         console.log(res);
         if (res.status >= 200 && res.status <= 400) {
+          this.obrasArr=[];
           console.log(res.data)
 
           res.data.forEach(obra=> {
             const auxObject ={
+              id:`${obra.id}`,
               Obra:`${obra.titulo}`,
               Thumbnail:`${obra.media.cabecera}`,
             }

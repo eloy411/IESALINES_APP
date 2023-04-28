@@ -8,8 +8,9 @@
           <q-toolbar-title shrink class="row items-center">
             <img src="~assets/logo.svg" style="height: 30px" />
           </q-toolbar-title>
-          <li class="linksNavA text linksNav">Índice</li>
-          <li class="linksNavA text linksNav"><a href="/votaciones/ayuda" style="text-decoration: none;color:white"> Ayuda</a></li>
+          <li class="linksNavA text linksNav"><a href="/votaciones/card">Índice</a></li>
+          <li class="linksNavA text linksNav"><a href="/votaciones/ayuda" style="text-decoration: none;color:white">
+              Ayuda</a></li>
           <li><q-btn no-caps rounded color="red" class="q-ml-xl text" label="Ranking" /></li>
         </ul>
 

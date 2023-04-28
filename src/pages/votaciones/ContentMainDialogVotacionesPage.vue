@@ -7,7 +7,7 @@ import { ref, defineComponent } from "vue";
 import  MainContentComponent  from "src/components/votaciones/MainContentComponent.vue";
 
 export default defineComponent({
-  name: "ComponentMainDialogVotacionesPage",
+  name: "ContentMainDialogVotacionesPage",
 
   components: {
     MainContentComponent

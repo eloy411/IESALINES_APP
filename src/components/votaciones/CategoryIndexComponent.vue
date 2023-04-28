@@ -3,13 +3,13 @@
     <h4 class="titulo">Índice de categorías</h4>
 
     <ul class="lista">
-      <li v-for="(pCategoria, index) in             categorias       " :key="pCategoria.Categoria">
+      <li v-for="(pCategoria, index) in              categorias        " :key="pCategoria.Categoria">
         <input type="checkbox" :id="`list_${index}`" name="list">
         <label class="label_no_clicado" :for="`list_${index}`" @click="getCategory(pCategoria)">
           {{ pCategoria.Categoria }} <q-icon id="icono" name="check_circle_outline" />
         </label>
         <ul class="interior">
-          <li v-for="(subcategoria) in       pCategoria.Subcategorias        " :key="subcategoria">
+          <li v-for="(subcategoria) in        pCategoria.Subcategorias         " :key="subcategoria">
             <router-link class="categoria_no_clicado" to="/votaciones/mainDialog"
               @click="getSubcategory(subcategoria[0], subcategoria[1]); getSubcatId(subcategoria[2]); handleCondition()">
               {{ subcategoria[0] }}
@@ -25,13 +25,15 @@
   <div>
     <div v-if=" condition " class="border myGrid__card">
       <div class="flex center myPadding">
-        <div v-for="(  subcategoria ) in   subcatsAux    " :key=" subcategoria[2] ">
+        <div v-for="(   subcategoria  ) in    subcatsAux     " :key=" subcategoria[2] ">
           <CategoryCardIndex :title=" subcategoria[0] " />
         </div>
       </div>
     </div>
     <div v-else>
-      <mainDialog></mainDialog>
+      <div class="flex center myPadding">
+        <mainDialog></mainDialog>
+      </div>
     </div>
   </div>
 </template>
@@ -56,14 +58,11 @@ export default defineComponent({
     const condition = ref(true);
     const subcatsAux = ref(indiceStore.value.categoriasAux);
     const selectedCategoria = ref(null);
-    const obras = indiceStore.value.obrasArr;
-
 
     return {
       categorias: computed(() => categoriasArr.value),
       indiceStore,
       condition,
-      obras,
       subcatsAux: computed(() => {
         if (selectedCategoria.value) {
           return selectedCategoria.value.Subcategorias;
@@ -198,4 +197,5 @@ li {
 
 .lista input:checked~ul {
   display: block;
-}</style>
+}
+</style>
