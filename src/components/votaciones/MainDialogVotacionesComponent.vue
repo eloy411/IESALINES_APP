@@ -29,7 +29,7 @@
                 </div>
               </div>
               <!--Image-->
-              <img class="image" style="border-radius: 10px;" :src=" obra.Thumbnail ">
+              <img class="image" style="border-radius: 10px;" :src="obra.thumbnail">
               <q-list style=" text-align: left;">
                 <q-item class="textBox">
                   <!--TextCard-->

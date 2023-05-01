@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { useIndiceStore } from 'src/stores/indiceCategoriaStore'
 import { ref, defineComponent } from 'vue'
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
@@ -119,6 +120,11 @@ export default defineComponent({
   },
   setup() {
 
+    const indiceStore = ref(useIndiceStore());
+    const obrasArr =  ref(indiceStore.value.obrasArr);
+    const videos = ref(obrasArr.value.videos);
+    console.log("VIDEOOOOOOOOOOSSSSSSSSSSSSSSSSSSSSSSSSS");
+    console.log(obrasArr.value[0]);
     return {
       images: [{id: 1,url:'../../assets/Obras/obra1.png'}, {id: 2,url:'../../assets/Obras/obra2.png'}, {id: 3,url:'../../assets/Obras/obra3.png'}]
 

@@ -1,5 +1,5 @@
-import { boot } from 'quasar/wrappers'
-import axios from 'axios'
+import { boot } from "quasar/wrappers";
+import axios from "axios";
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -9,7 +9,10 @@ import axios from 'axios'
 // for each client)
 
 axios.defaults.withCredentials = true;
-const api = axios.create({ baseURL: 'http://localhost:8001', withCredentials: true})
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -22,6 +25,6 @@ export default boot(({ app }) => {
 
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
-})
+});
 
-export { api }
+export { api };
